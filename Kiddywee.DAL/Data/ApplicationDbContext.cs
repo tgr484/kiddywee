@@ -1,0 +1,53 @@
+﻿using Kiddywee.DAL.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Kiddywee.DAL.Data
+{
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
+    {
+        public ApplicationDbContext(DbContextOptions options) : base(options)
+        {
+
+        }
+        
+        public DbSet<Person> People { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        //protected override void OnModelCreating(ModelBuilder builder)
+        //{
+        //    builder.Entity<IdentityRole>().HasData(new List<IdentityRole>
+        //    {
+        //        new IdentityRole {
+        //            Id =  Guid.NewGuid().ToString(),
+        //            Name = "Admin",
+        //            NormalizedName = "ADMIN"
+        //        },
+        //        new IdentityRole {
+        //            Id =  Guid.NewGuid().ToString(),
+        //            Name = "Teacher",
+        //            NormalizedName = "TEACHER"
+        //        },
+        //        new IdentityRole {
+        //            Id =  Guid.NewGuid().ToString(),
+        //            Name = "Student",
+        //            NormalizedName = "STUDENT"
+        //        },
+        //        new IdentityRole {
+        //            Id =  Guid.NewGuid().ToString(),
+        //            Name = "Parent",
+        //            NormalizedName = "PARENT"
+        //        },
+        //        new IdentityRole {
+        //            Id =  Guid.NewGuid().ToString(),
+        //            Name = "GlobalAdmin",
+        //            NormalizedName = "GLOBALADMIN"
+        //        },
+        //    });
+        //    base.OnModelCreating(builder);
+        //}
+    }
+}
