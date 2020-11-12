@@ -12,5 +12,9 @@ namespace Kiddywee.DAL.Models
         public DateTime DateOfCreation { get; set; } = DateTime.UtcNow;
         public bool IsActive { get; set; } = true;
 
+        public string CreatedById { get; set; } = String.Empty;
+
+        public ApplicationUser CreatedBy { get; set; }
+
     }
 }
