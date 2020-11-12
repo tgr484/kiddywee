@@ -14,7 +14,13 @@ namespace Kiddywee.DAL.Data
         {
 
         }
-        
+
+        #region Debug Information
+        public DbSet<AppUserAction> AppUserActions { get; set; }
+        public DbSet<AppError> AppErrors { get; set; }
+        #endregion
+
+
         public DbSet<Person> People { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Organization> Organizations { get; set; }
@@ -28,6 +34,12 @@ namespace Kiddywee.DAL.Data
         public DbSet<LessonPlan> LessonPlans { get; set; }
         public DbSet<LessonPlanWeakly> LessonPlanWeaklies { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<AppError>().ToTable("AppErrors", "log");
+            builder.Entity<AppUserAction>().ToTable("AppUserActions", "log");
+            base.OnModelCreating(builder);
+        }
         //protected override void OnModelCreating(ModelBuilder builder)
         //{
         //    builder.Entity<IdentityRole>().HasData(new List<IdentityRole>
