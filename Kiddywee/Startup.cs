@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Kiddywee.BLL.Core;
+using Kiddywee.Core;
 using Kiddywee.DAL.Data;
 using Kiddywee.DAL.Interfaces;
 using Kiddywee.DAL.Models;
@@ -70,8 +71,14 @@ namespace Kiddywee
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
-
             services.AddControllersWithViews();
+
+            services.AddMvc(o => 
+                { 
+                    o.EnableEndpointRouting = false;
+                    o.Filters.Add(typeof(CustomFilter));
+                }
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
