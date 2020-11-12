@@ -16,7 +16,9 @@ namespace Kiddywee.DAL.Models
 
         public DateTime? DateOfBirth { get; set; }
 
-        
+        public Guid? ChildInfoId { get; set; }
+
+        public ChildInfo ChildInfo { get; set; }
 
     }
 }

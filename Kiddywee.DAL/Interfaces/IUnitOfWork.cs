@@ -10,6 +10,9 @@ namespace Kiddywee.DAL.Interfaces
     public interface IUnitOfWork
     {
         IGenericRepository<Person> People { get; }
+
+        IGenericRepository<ChildInfo> ChildInfos { get; }
+        IGenericRepository<MedicalInfo> MedicalInfos { get; }
         IGenericRepository<Contact> Contacts { get; }       
         IGenericRepository<Organization> Organizations { get;  }
         

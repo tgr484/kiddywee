@@ -15,6 +15,9 @@ namespace Kiddywee.DAL.Repositories
         private readonly ApplicationDbContext _context;
 
         private IGenericRepository<Person> _peopleRepository;
+        private IGenericRepository<ChildInfo> _childInfoRepository;
+        private IGenericRepository<MedicalInfo> _medicalInfoRepository;
+
         private IGenericRepository<Contact> _contactsRepository;
         private IGenericRepository<Organization> _organizationsRepository;
         private IGenericRepository<Class> _classesRepository;
@@ -31,6 +34,9 @@ namespace Kiddywee.DAL.Repositories
         }
 
         public IGenericRepository<Person> People => _peopleRepository ??= new GenericRepository<Person>(_context);
+        public IGenericRepository<ChildInfo> ChildInfos => _childInfoRepository ??= new GenericRepository<ChildInfo>(_context);
+        public IGenericRepository<MedicalInfo> MedicalInfos => _medicalInfoRepository ??= new GenericRepository<MedicalInfo>(_context);
+
         public IGenericRepository<Contact> Contacts => _contactsRepository ??= new GenericRepository<Contact>(_context);
         public IGenericRepository<Organization> Organizations => _organizationsRepository ??= new GenericRepository<Organization>(_context);
         public IGenericRepository<Class> Classes => _classesRepository ??= new GenericRepository<Class>(_context);

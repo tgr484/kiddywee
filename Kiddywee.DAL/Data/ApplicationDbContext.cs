@@ -20,8 +20,12 @@ namespace Kiddywee.DAL.Data
         public DbSet<AppError> AppErrors { get; set; }
         #endregion
 
-
+        
         public DbSet<Person> People { get; set; }
+        public DbSet<ChildInfo> ChildInfos { get; set; }
+        public DbSet<MedicalInfo> MedicalInfos { get; set; }
+
+
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Organization> Organizations { get; set; }
 
