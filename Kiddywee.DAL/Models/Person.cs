@@ -7,6 +7,11 @@ namespace Kiddywee.DAL.Models
 {
     public class Person
     {
+        public Person()
+        {
+            Contacts = new List<PersonToContact>();
+        }
+
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
         public DateTime DateOfCreation { get; set; } = DateTime.UtcNow;
@@ -20,5 +25,13 @@ namespace Kiddywee.DAL.Models
 
         public ChildInfo ChildInfo { get; set; }
 
+        public List<PersonToContact> Contacts { get; set; }
+        public Guid? StaffInfoId { get; set; }
+        public StaffInfo StaffInfo { get; set; }
+
+        public static Person Create(string firstName, string lastName)
+        {
+            return new Person() { FirstName = firstName, LastName = lastName };
+        }
     }
 }

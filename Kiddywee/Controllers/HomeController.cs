@@ -8,9 +8,11 @@ using Microsoft.Extensions.Logging;
 using Kiddywee.Models;
 using Kiddywee.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Kiddywee.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

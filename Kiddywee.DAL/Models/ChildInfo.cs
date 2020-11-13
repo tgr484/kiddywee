@@ -25,9 +25,7 @@ namespace Kiddywee.DAL.Models
         public Curriculum Curriculum { get; set; }
 
         public EnumPipeLineType PipeLineType { get; set; }
-
-        public Guid PersonId { get; set; }
-        
+         
         public Guid? MedicalInfoId { get; set; }
         public MedicalInfo MedicalInfo { get; set; }
         public Guid? ImmunisationId { get; set; }

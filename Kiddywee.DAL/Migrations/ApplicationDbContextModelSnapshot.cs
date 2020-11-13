@@ -214,9 +214,6 @@ namespace Kiddywee.DAL.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("PersonId")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("PictureAuthorized")
                         .HasColumnType("boolean");
 
@@ -292,7 +289,7 @@ namespace Kiddywee.DAL.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ChildId")
+                    b.Property<Guid?>("ChildId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("ContactType")
@@ -616,6 +613,9 @@ namespace Kiddywee.DAL.Migrations
                     b.Property<string>("FileRealName")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("InfoId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
@@ -660,9 +660,6 @@ namespace Kiddywee.DAL.Migrations
                     b.Property<Guid?>("ChildInfoId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ChildInfoId1")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("timestamp without time zone");
 
@@ -678,11 +675,161 @@ namespace Kiddywee.DAL.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("StaffInfoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("StaffInfoId1")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ChildInfoId1");
+                    b.HasIndex("ChildInfoId");
+
+                    b.HasIndex("StaffInfoId1");
 
                     b.ToTable("People");
+                });
+
+            modelBuilder.Entity("Kiddywee.DAL.Models.PersonToContact", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ContactId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("PersonId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContactId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("PersonToContacts");
+                });
+
+            modelBuilder.Entity("Kiddywee.DAL.Models.StaffInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CheckInTime")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CheckOutTime")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ChildAbuseCert")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("EmploymentType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("FingerPrinting")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("FirstAidTraining")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid?>("MedicalInfoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PersonId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<int>("PhoneNumberDigitPin")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("PromedicalFormDueDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Salary")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SalaryType")
+                        .HasColumnType("integer");
+
+                    b.Property<List<int>>("Schedule")
+                        .HasColumnType("integer[]");
+
+                    b.Property<DateTime?>("Scr")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("StaffRole")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("MedicalInfoId");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.ToTable("StaffInfo");
+                });
+
+            modelBuilder.Entity("Kiddywee.DAL.Models.StaffTraining", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("StaffInfoId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("StaffInfoId");
+
+                    b.ToTable("StaffTraining");
                 });
 
             modelBuilder.Entity("Kiddywee.DAL.Models.Subject", b =>
@@ -915,9 +1062,7 @@ namespace Kiddywee.DAL.Migrations
                 {
                     b.HasOne("Kiddywee.DAL.Models.Person", "Child")
                         .WithMany()
-                        .HasForeignKey("ChildId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ChildId");
 
                     b.HasOne("Kiddywee.DAL.Models.ApplicationUser", "CreatedBy")
                         .WithMany()
@@ -1072,7 +1217,60 @@ namespace Kiddywee.DAL.Migrations
                 {
                     b.HasOne("Kiddywee.DAL.Models.ChildInfo", "ChildInfo")
                         .WithMany()
-                        .HasForeignKey("ChildInfoId1");
+                        .HasForeignKey("ChildInfoId");
+
+                    b.HasOne("Kiddywee.DAL.Models.StaffInfo", "StaffInfo")
+                        .WithMany()
+                        .HasForeignKey("StaffInfoId1");
+                });
+
+            modelBuilder.Entity("Kiddywee.DAL.Models.PersonToContact", b =>
+                {
+                    b.HasOne("Kiddywee.DAL.Models.Contact", "Contact")
+                        .WithMany()
+                        .HasForeignKey("ContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Kiddywee.DAL.Models.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("Kiddywee.DAL.Models.Person", "Person")
+                        .WithMany("Contacts")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Kiddywee.DAL.Models.StaffInfo", b =>
+                {
+                    b.HasOne("Kiddywee.DAL.Models.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("Kiddywee.DAL.Models.MedicalInfo", "MedicalInfo")
+                        .WithMany()
+                        .HasForeignKey("MedicalInfoId");
+
+                    b.HasOne("Kiddywee.DAL.Models.Organization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Kiddywee.DAL.Models.StaffTraining", b =>
+                {
+                    b.HasOne("Kiddywee.DAL.Models.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("Kiddywee.DAL.Models.StaffInfo", "StaffInfo")
+                        .WithMany("StaffTrainings")
+                        .HasForeignKey("StaffInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Kiddywee.DAL.Models.Subject", b =>

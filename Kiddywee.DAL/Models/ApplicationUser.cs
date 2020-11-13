@@ -11,5 +11,10 @@ namespace Kiddywee.DAL.Models
         public Person Person { get; set; }
         public DateTime DateOfCreation { get; set; } = DateTime.UtcNow;
         public bool IsActive { get; set; } = true;
+
+        public static ApplicationUser Create(Guid personId, string email)
+        {
+            return new ApplicationUser() { PersonId = personId, Email = email, UserName = email};
+        }
     }
 }

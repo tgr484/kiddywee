@@ -27,6 +27,7 @@ namespace Kiddywee.DAL.Data
 
 
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<PersonToContact> PersonToContacts { get; set; }
         public DbSet<Organization> Organizations { get; set; }
 
         public DbSet<Class> Classes { get; set; }

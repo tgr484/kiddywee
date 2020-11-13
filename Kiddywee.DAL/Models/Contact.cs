@@ -19,7 +19,7 @@ namespace Kiddywee.DAL.Models
 
         public string Notes { get; set; }
 
-        public Guid ChildId { get; set; }
+        public Guid? ChildId { get; set; }
 
         public Person Child { get; set; }
         public Guid? GuardianId { get; set; }
