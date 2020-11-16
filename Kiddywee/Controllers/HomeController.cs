@@ -13,20 +13,20 @@ using Microsoft.AspNetCore.Authorization;
 namespace Kiddywee.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork) : base(unitOfWork)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
+            
         }
 
         public async Task<IActionResult> Index()
         {
-            var cc = await _unitOfWork.Contacts.GetOneAsync(p => p.Id == new Guid(),p => p.Include(x => x.Guardian));
+            //var cc = await _unitOfWork.Contacts.GetOneAsync(p => p.Id == new Guid(),p => p.Include(x => x.Guardian));
             return View();
         }
 

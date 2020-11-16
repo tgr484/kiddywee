@@ -1,0 +1,34 @@
+﻿@model ClassCreateViewModel 
+@{
+    Layout = null;
+}
+<div class="modal-header">
+    <h4 class="modal-title" id="myLargeModalLabel">Create New Class</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="javascipt: window.location.reload()">×</button>
+</div>
+<div class="modal-body">
+    <form class="form-material" id="Save" asp-action="Create" asp-controller="Class" method="post">
+
+        <div class="form-group">
+            <label>Class name <span class="help"></span></label>
+            <input type="text" asp-for="Name" class="form-control form-control-line" placeholder="Enter class name...">
+        </div>
+        <div class="form-group">
+            <label for="example-email">Select stage type <span class="help"></span></label>
+            <select class="form-control " asp-for="StageType" asp-items="Html.GetEnumSelectList<EnumStageType>()"></select>
+        </div>
+        <div class="form-group">
+            <label>Enrollment Spots<span class="help"></span></label>
+            <input type="text" asp-for="EnrollmentSpots" class="form-control form-control-line" placeholder="Max no. of children">
+        </div>
+        <div class="form-group">
+            <label>Teacher/student ratio<span class="help"></span>
+            </label>
+            <input type="text" asp-for="TeacherStudentRatio" class="form-control form-control-line" placeholder="Teachers/students">
+        </div> 
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal" onclick="javascipt: window.location.reload()">Close</button>
+    <button type="submit" class="btn btn-info waves-effect" form="Save">Save</button>
+</div>

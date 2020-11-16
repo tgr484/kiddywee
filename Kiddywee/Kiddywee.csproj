@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\assets\node_modules\owlcarousel2\**" />
+    <Content Remove="wwwroot\assets\node_modules\owlcarousel2\**" />
+    <EmbeddedResource Remove="wwwroot\assets\node_modules\owlcarousel2\**" />
+    <None Remove="wwwroot\assets\node_modules\owlcarousel2\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\assets\node_modules\bootstrap-datepicker\bootstrap-datepicker.min.css" />
     <Content Include="wwwroot\assets\node_modules\bootstrap-material-datetimepicker\bower.json" />
     <Content Include="wwwroot\assets\node_modules\bootstrap-material-datetimepicker\css\bootstrap-material-datetimepicker.css" />
@@ -623,8 +630,10 @@
     <Content Include="wwwroot\assets\node_modules\multiselect\css\multi-select.css" />
     <Content Include="wwwroot\assets\node_modules\multiselect\img\switch.png" />
     <Content Include="wwwroot\assets\node_modules\nestable\nestable.css" />
+    <Content Include="wwwroot\assets\node_modules\owl.carousel\owl.carousel.css" />
     <Content Include="wwwroot\assets\node_modules\owl.carousel\owl.carousel.min.css" />
     <Content Include="wwwroot\assets\node_modules\owl.carousel\owl.theme.default.css" />
+    <Content Include="wwwroot\assets\node_modules\owl.carousel\owl.theme.default.min.css" />
     <Content Include="wwwroot\assets\node_modules\perfect-scrollbar\dist\css\perfect-scrollbar.min.css" />
     <Content Include="wwwroot\assets\node_modules\prism\prism-old.css" />
     <Content Include="wwwroot\assets\node_modules\prism\prism.css" />
@@ -762,7 +771,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration" Version="3.1.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
   <ItemGroup>

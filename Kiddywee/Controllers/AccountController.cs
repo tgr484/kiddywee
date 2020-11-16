@@ -6,7 +6,8 @@ using Kiddywee.BLL.Interfaces;
 using Kiddywee.BLL.Repositories;
 using Kiddywee.DAL.Interfaces;
 using Kiddywee.DAL.Models;
-using Kiddywee.DAL.ViewModels.Account;
+using Kiddywee.DAL.ViewModels.AccountViewModels;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,7 +50,7 @@ namespace Kiddywee.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    if (String.IsNullOrEmpty(returnUrl) && String.IsNullOrEmpty(returnUrl.Replace("/","")))
+                    if (String.IsNullOrEmpty(returnUrl) || (returnUrl != null && String.IsNullOrEmpty(returnUrl.Replace("/",""))))
                     {
                         return RedirectToAction("Index", "Home");
                     }
@@ -59,6 +60,13 @@ namespace Kiddywee.Controllers
             }
             ViewData["ReturnUrl"] = returnUrl;
             return View(model);
+        }
+
+        [HttpGet]       
+        public  async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]

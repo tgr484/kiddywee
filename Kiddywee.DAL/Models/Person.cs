@@ -26,6 +26,10 @@ namespace Kiddywee.DAL.Models
         public ChildInfo ChildInfo { get; set; }
 
         public List<PersonToContact> Contacts { get; set; }
+
+        public Guid? OrganizationId { get; set; } 
+
+        public Organization Orgnization { get; set; }
         public Guid? StaffInfoId { get; set; }
         public StaffInfo StaffInfo { get; set; }
 
