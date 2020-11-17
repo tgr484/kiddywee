@@ -19,6 +19,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Razor;
 
 namespace Kiddywee
 {
@@ -76,8 +77,8 @@ namespace Kiddywee
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
-            services.AddControllersWithViews();
-
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+   
             services.AddMvc(o => 
                 { 
                     o.EnableEndpointRouting = false;
