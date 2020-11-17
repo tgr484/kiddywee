@@ -1,6 +1,7 @@
 ﻿@{
     var items = (List<ClassViewModel>)ViewBag.Classes;
 }
+
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
     </div>
@@ -13,34 +14,50 @@
 <div class="owl-carousel owl-theme">
     @if (items.Any())
     {
-        <div class="item ">
-            <div class="social-widget ">
-                <div class="soc-header " style="background:#c7edd0" title="All">All</div>
-                <div class="soc-content">
-                    <div class="col-6 b-r">
-                        <h3 class="font-medium">@items.Sum(x => x.ChildIn)</h3>
-                        <h5 class="text-muted">kids in</h5>
+        <div class="item el-element-overlay">
+            <div class="social-widget el-card-item">
+                <div class="el-overlay-1">
+                    <div class="soc-header " style="background:#c7edd0" title="All">All</div>
+                    <div class="soc-content">
+                        <div class="col-6 b-r">
+                            <h3 class="font-medium">@items.Sum(x => x.ChildIn)</h3>
+                            <h5 class="text-muted">kids in</h5>
+                        </div>
+                        <div class="col-6">
+                            <h3 class="font-medium">@items.Sum(x => x.StaffIn)</h3>
+                            <h5 class="text-muted">staff in</h5>
+                        </div>
                     </div>
-                    <div class="col-6">
-                        <h3 class="font-medium">@items.Sum(x => x.StaffIn)</h3>
-                        <h5 class="text-muted">staff in</h5>
+                    <div class="el-overlay">
+                        <ul class="el-info">
+                            <li><a class="btn default btn-outline" href="javascript:void(0);"><i class="sl-icon-magnifier"></i></a></li>
+                            <li><a class="btn default btn-outline" href="javascript:void(0);"><i class="sl-icon-link"></i></a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
         foreach (var item in items)
         {
-            <div class="item ">
-                <div class="social-widget ">
-                    <div class="soc-header " style="background:#c7edfb" title="@item.ClassName">@item.ShortClassName</div>
-                    <div class="soc-content">
-                        <div class="col-6 b-r">
-                            <h3 class="font-medium">@item.ChildIn</h3>
-                            <h5 class="text-muted">kids in</h5>
+            <div class="item el-element-overlay">
+                <div class="social-widget el-card-item">
+                    <div class="el-overlay-1">
+                        <div class="soc-header " style="background:#c7edfb" title="@item.ClassName">@item.ShortClassName</div>
+                        <div class="soc-content">
+                            <div class="col-6 b-r">
+                                <h3 class="font-medium">@item.ChildIn</h3>
+                                <h5 class="text-muted">kids in</h5>
+                            </div>
+                            <div class="col-6">
+                                <h3 class="font-medium">@item.StaffIn</h3>
+                                <h5 class="text-muted">staff in</h5>
+                            </div>
                         </div>
-                        <div class="col-6">
-                            <h3 class="font-medium">@item.StaffIn</h3>
-                            <h5 class="text-muted">staff in</h5>
+                        <div class="el-overlay">
+                            <ul class="el-info">
+                                <li><a class="btn default btn-outline image-popup-vertical-fit" href="../assets/images/users/1.jpg"><i class="sl-icon-magnifier"></i></a></li>
+                                <li><a class="btn default btn-outline" href="javascript:void(0);"><i class="sl-icon-link"></i></a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
