@@ -26,6 +26,7 @@ namespace Kiddywee.Controllers
 
         public async Task<IActionResult> Index()
         {
+          
             //var cc = await _unitOfWork.Contacts.GetOneAsync(p => p.Id == new Guid(),p => p.Include(x => x.Guardian));
             return View();
         }

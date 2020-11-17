@@ -74,17 +74,19 @@ namespace Kiddywee
                 });
             services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+     
 
 
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
-   
+            services.AddControllersWithViews().AddRazorRuntimeCompilation(); 
             services.AddMvc(o => 
                 { 
                     o.EnableEndpointRouting = false;
                     o.Filters.Add(typeof(CustomFilter));
                 }
             );
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, CustomClaims>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

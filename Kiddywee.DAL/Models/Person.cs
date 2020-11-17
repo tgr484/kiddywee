@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kiddywee.DAL.ViewModels.PersonViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -7,6 +8,7 @@ namespace Kiddywee.DAL.Models
 {
     public class Person
     {
+        //Add CreatedById
         public Person()
         {
             Contacts = new List<PersonToContact>();
@@ -36,6 +38,33 @@ namespace Kiddywee.DAL.Models
         public static Person Create(string firstName, string lastName)
         {
             return new Person() { FirstName = firstName, LastName = lastName };
+        }
+
+        public static Person Create(PersonCreateViewModel model)
+        {
+            return new Person() { 
+                FirstName = model.FirstName, 
+                LastName = model.LastName,   
+                DateOfBirth = model.DateOfBirth
+                
+            };
+        }
+
+        public static List<PersonViewModel> Init(List<Person> people)
+        {
+            var result = new List<PersonViewModel>();
+            foreach (var item in people)
+            {
+                var viewModel = new PersonViewModel()
+                {
+                    Id = item.Id,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName
+                };
+                result.Add(viewModel);
+            }
+
+            return result;
         }
     }
 }

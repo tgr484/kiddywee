@@ -1,4 +1,5 @@
-﻿using Kiddywee.DAL.Interfaces;
+﻿using Kiddywee.BLL.Core;
+using Kiddywee.DAL.Interfaces;
 using Kiddywee.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -14,6 +15,7 @@ namespace Kiddywee.Controllers
     {
         public IUnitOfWork _unitOfWork;
         public string _userId = null;
+        public Guid? _organizationId = null;
 
         public BaseController(IUnitOfWork unitOfWork)
         {
@@ -24,6 +26,11 @@ namespace Kiddywee.Controllers
         {
             ViewBag.Classes = Class.Init(_unitOfWork.Classes.Get());
             _userId = context.HttpContext.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!context.HttpContext.User.IsInRole(Constants.ROLE_GLOBALADMIN))
+            {
+                _organizationId = context.HttpContext.User.Identity.GetOrganizationId();
+            } 
 
 
             base.OnActionExecuting(context);

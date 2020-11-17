@@ -1,0 +1,64 @@
+﻿@model PersonCreateViewModel
+@{
+    Layout = null;
+}
+<div class="modal-header">
+    <h4 class="modal-title" id="myLargeModalLabel">Create New Class</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="javascipt: window.location.reload()">×</button>
+</div>
+<div class="modal-body">
+    <form class="form-material" id="SavePerson" asp-action="Create" asp-controller="Person" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Firstname <span class="help"></span></label>
+                    <input type="text" asp-for="FirstName" class="form-control form-control-line" placeholder="Enter firstname...">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Lastname<span class="help"></span></label>
+                    <input type="text" asp-for="LastName" class="form-control form-control-line" placeholder="Enter lastname">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Address<span class="help"></span></label>
+            <input type="text" asp-for="Address" class="form-control form-control-line" placeholder="Enter address">
+        </div>
+        <div class="form-group">
+            <label>Date Of Birth<span class="help"></span></label>
+            <input type="date" asp-for="DateOfBirth" class="form-control form-control-line" placeholder="Enter date">
+        </div>
+        <div class="form-group">
+            <label>Next medical<span class="help"></span></label>
+            <input type="date" asp-for="NextMedical" class="form-control form-control-line" placeholder="Enter date">
+        </div>
+        <div class="form-group">
+            <label>Weekly schedule<span class="help"></span></label> <br />
+            @foreach (EnumWeeklyScheduleType item in Enum.GetValues(typeof(EnumWeeklyScheduleType)))
+            {
+                <input name="WeaklySchedule" type="checkbox" value="@item" /> @item
+                <text>&nbsp; &nbsp; &nbsp;</text>
+            }
+        </div>
+        <div class="form-group">
+            <label>Daily schedule<span class="help"></span></label> <br />
+            @foreach (EnumDailyScheduleType item in Enum.GetValues(typeof(EnumDailyScheduleType)))
+            {
+                <input name="DailySchedule" type="checkbox" value="@item" /> @item
+                <text>&nbsp; &nbsp;</text>
+            }
+        </div>
+        <div class="form-group">
+            <label for="example-email">Pipeline Type<span class="help"></span></label>
+            <select class="form-control " asp-for="PipeLineType" asp-items="Html.GetEnumSelectList<EnumPipeLineType>()"></select>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal" onclick="javascipt: window.location.reload()">Close</button>
+    <button type="submit" class="btn btn-info waves-effect" form="SavePerson">Save</button>
+</div>
+
+

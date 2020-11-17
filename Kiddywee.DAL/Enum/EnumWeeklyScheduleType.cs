@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kiddywee.DAL.Enum
 {
-    public enum EnumWeaklyScheduleType
+    public enum EnumWeeklyScheduleType
     {
         Mon, Tue, Wed, Thu, Fri
     }

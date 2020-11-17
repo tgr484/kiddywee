@@ -115,6 +115,15 @@
                     $(".modal").show();
                 })
             });
+
+            $(document).on("click", ".add-child", function () {
+                var url = $(this).data("url");
+                $.get(url, function (data) {
+                    $(".modal-content").html(data)
+                    $("body").addClass("modal-open");
+                    $(".modal").show();
+                })
+            });
         })
     </script>
 </body>
