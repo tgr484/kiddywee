@@ -12,6 +12,7 @@ namespace Kiddywee.DAL.Interfaces
         IGenericRepository<Person> People { get; }
 
         IGenericRepository<ChildInfo> ChildInfos { get; }
+        IGenericRepository<StaffInfo> StaffInfos { get; }
         IGenericRepository<MedicalInfo> MedicalInfos { get; }
         IGenericRepository<Contact> Contacts { get; }       
         IGenericRepository<PersonToContact> PersonToContacts { get; }       
@@ -25,6 +26,7 @@ namespace Kiddywee.DAL.Interfaces
         IGenericRepository<CurriculumToSubject> CurriculumToSubjects { get;  }
         IGenericRepository<LessonPlan> LessonPlans { get;  }
         IGenericRepository<LessonPlanWeakly> LessonPlanWeaklies { get;  }
+        IGenericRepository<PersonToClass> PersonToClasses { get; }
         void Save();
         Task<IdentityResult> SaveAsync();
     }

@@ -1,0 +1,97 @@
+﻿@model StaffCreateViewModel
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <h4 class="modal-title" id="myLargeModalLabel">Create New Staff</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="javascipt: window.location.reload()">×</button>
+</div>
+<div class="modal-body">
+    <form class="form-material" id="SavePerson" asp-action="CreateStaff" asp-controller="Person" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Firstname <span class="help"></span></label>
+                    <input type="text" asp-for="FirstName" class="form-control form-control-line" placeholder="Enter firstname...">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Lastname<span class="help"></span></label>
+                    <input type="text" asp-for="LastName" class="form-control form-control-line" placeholder="Enter lastname">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="form-group">
+                <select class="form-control" asp-for="ClassId" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Date Of Birth<span class="help"></span></label>
+            <input type="date" asp-for="DateOfBirth" class="form-control form-control-line" placeholder="Enter date">
+        </div>
+        <div class="form-group">
+            <label>
+                Medical form due date<span class="help"></span>
+            </label>
+            <input type="date" asp-for="PromedicalFormDueDate" class="form-control form-control-line" placeholder="Enter date">
+        </div>
+        <div class="form-group">
+            <label>
+                Child abuse cert<span class="help"></span>
+            </label>
+            <input type="date" asp-for="ChildAbuseCert" class="form-control form-control-line" placeholder="Enter date">
+        </div>
+        <div class="form-group">
+            <label>
+                First aid training<span class="help"></span>
+            </label>
+            <input type="date" asp-for="FirstAidTraining" class="form-control form-control-line" placeholder="Enter date">
+        </div>
+        <div class="form-group">
+            <label>
+                Scr<span class="help"></span>
+            </label>
+            <input type="date" asp-for="Scr" class="form-control form-control-line" placeholder="Enter date">
+        </div>
+        <div class="form-group">
+            <label>
+                Finger Printing<span class="help"></span>
+            </label>
+            <input type="date" asp-for="FingerPrinting" class="form-control form-control-line" placeholder="Enter date">
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label>Salary<span class="help"></span></label>
+                    <input type="number" asp-for="Salary" class="form-control form-control-line" placeholder="Enter date">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="example-email">Salary type<span class="help"></span></label>
+                    <select class="form-control " asp-for="SalaryType" asp-items="Html.GetEnumSelectList<EnumSalaryType>()"></select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Weekly schedule<span class="help"></span></label> <br />
+            @foreach (EnumWeeklyScheduleType item in Enum.GetValues(typeof(EnumWeeklyScheduleType)))
+            {
+                <input name="WeaklySchedule" type="checkbox" value="@item" /> @item
+                <text>&nbsp; &nbsp; &nbsp;</text>
+            }
+        </div>
+
+        <div class="form-group">
+            <label for="example-email">Employment Type<span class="help"></span></label>
+            <select class="form-control " asp-for="EmploymentType" asp-items="Html.GetEnumSelectList<EnumEmploymentType>()"></select>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal" onclick="javascipt: window.location.reload()">Close</button>
+    <button type="submit" class="btn btn-info waves-effect" form="SavePerson">Save</button>
+</div>

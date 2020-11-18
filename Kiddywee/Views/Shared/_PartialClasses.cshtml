@@ -30,7 +30,8 @@
                     </div>
                     <div class="el-overlay">
                         <ul class="el-info">
-                            <li><a class="btn default btn-outline" href="javascript:void(0);"><i class="sl-icon-magnifier"></i></a></li>
+                            <li><a class="btn default btn-outline class-select" href="javascript:void(0);" 
+                                   data-url="@Url.Action("Index", "Person", new {id = 0})"><i class="sl-icon-magnifier"></i></a></li>
                             <li><a class="btn default btn-outline" href="javascript:void(0);"><i class="sl-icon-link"></i></a></li>
                         </ul>
                     </div>
@@ -55,7 +56,7 @@
                         </div>
                         <div class="el-overlay">
                             <ul class="el-info">
-                                <li><a class="btn default btn-outline image-popup-vertical-fit" href="../assets/images/users/1.jpg"><i class="sl-icon-magnifier"></i></a></li>
+                                <li><a class="btn default btn-outline class-select"  data-url="@Url.Action("Index", "Person", new {id = item.ClassId})"><i class="sl-icon-magnifier"></i></a></li>
                                 <li><a class="btn default btn-outline" href="javascript:void(0);"><i class="sl-icon-link"></i></a></li>
                             </ul>
                         </div>

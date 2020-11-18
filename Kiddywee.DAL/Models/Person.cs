@@ -12,6 +12,7 @@ namespace Kiddywee.DAL.Models
         public Person()
         {
             Contacts = new List<PersonToContact>();
+            PersonToClasses = new List<PersonToClass>();
         }
 
         [Key]
@@ -35,21 +36,29 @@ namespace Kiddywee.DAL.Models
         public Guid? StaffInfoId { get; set; }
         public StaffInfo StaffInfo { get; set; }
 
+        public List<PersonToClass> PersonToClasses { get; set; }
         public static Person Create(string firstName, string lastName)
         {
             return new Person() { FirstName = firstName, LastName = lastName };
         }
 
-        public static Person Create(PersonCreateViewModel model)
+        public static Person Create(ChildCreateViewModel model)
         {
             return new Person() { 
                 FirstName = model.FirstName, 
                 LastName = model.LastName,   
-                DateOfBirth = model.DateOfBirth
-                
+                DateOfBirth = model.DateOfBirth 
             };
         }
-
+        public static Person Create(StaffCreateViewModel model)
+        {
+            return new Person()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                DateOfBirth = model.DateOfBirth
+            };
+        }
         public static List<PersonViewModel> Init(List<Person> people)
         {
             var result = new List<PersonViewModel>();
@@ -65,6 +74,6 @@ namespace Kiddywee.DAL.Models
             }
 
             return result;
-        }
+        }        
     }
 }

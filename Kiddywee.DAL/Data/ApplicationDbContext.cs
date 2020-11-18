@@ -23,6 +23,7 @@ namespace Kiddywee.DAL.Data
         
         public DbSet<Person> People { get; set; }
         public DbSet<ChildInfo> ChildInfos { get; set; }
+        public DbSet<StaffInfo> StaffInfos { get; set; }
         public DbSet<MedicalInfo> MedicalInfos { get; set; }
 
 
@@ -38,6 +39,8 @@ namespace Kiddywee.DAL.Data
         public DbSet<CurriculumToSubject> CurriculumToSubjects { get; set; }
         public DbSet<LessonPlan> LessonPlans { get; set; }
         public DbSet<LessonPlanWeakly> LessonPlanWeaklies { get; set; }
+
+        public DbSet<PersonToClass> PersonToClasses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

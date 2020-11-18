@@ -124,9 +124,29 @@
                     $(".modal").show();
                 })
             });
+
+            $(document).on("click", ".add-staff", function () {
+                var url = $(this).data("url");
+                $.get(url, function (data) {
+                    $(".modal-content").html(data)
+                    $("body").addClass("modal-open");
+                    $(".modal").show();
+                })
+            });
+
+            $(document).on("click", ".class-select", function () {
+                loadPeople();
+            });
+
+
+            function loadPeople() { 
+                var url = $(this).data("url");
+                $.get(url, function (data) {
+                    $(".people").html(data) 
+                })
+            }
         })
     </script>
-</body>
-
+</body> 
 </html>
 

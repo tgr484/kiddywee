@@ -22,11 +22,7 @@ namespace Kiddywee.DAL.Models
         public string Notes { get; set; }
 
         public List<int> WeaklySchedule { get; set; }
-        public List<int> DailySchedule { get; set; }
-
-        public Guid ClassId { get; set; }
-
-        public Class Class { get; set; }
+        public List<int> DailySchedule { get; set; }        
 
         public Guid? CurriculumId { get; set; }
 
@@ -45,14 +41,13 @@ namespace Kiddywee.DAL.Models
 
         public bool PictureAuthorized { get; set; }
 
-        public static ChildInfo Create(PersonCreateViewModel model, Guid classId, string userId)
+        public static ChildInfo Create(ChildCreateViewModel model, string userId)
         {
             return new ChildInfo()
             {
                 Address = model.Address,
-                ClassId = classId,
-                WeaklySchedule = model.WeaklySchedule.Select(x => Convert.ToInt32(x)).ToList(),
-                DailySchedule = model.DailySchedule.Select(x => Convert.ToInt32(x)).ToList(), 
+                WeaklySchedule = model.WeaklySchedule?.Select(x => Convert.ToInt32(x)).ToList(),
+                DailySchedule = model.DailySchedule?.Select(x => Convert.ToInt32(x)).ToList(), 
                 PipeLineType = model.PipeLineType,
                 NextMedical = model.NextMedical,
                 CreatedById = userId

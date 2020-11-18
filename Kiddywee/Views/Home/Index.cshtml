@@ -1,15 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-}
-
+} 
 <div class="row page-titles">
     
     <div class="col-md-12 align-self-center text-left d-none d-md-block">
-        <button type="button" class="btn btn-info add-child" data-url="@Url.Action("Create", "Person")">
+        <button type="button" class="btn btn-info add-child" data-url="@Url.Action("CreateChild", "Person")">
             <i class="fa fa-plus-circle"></i> Add Child
+        </button>
+
+        <button type="button" class="btn btn-info add-staff" data-url="@Url.Action("CreateStaff", "Person")">
+            <i class="fa fa-plus-circle"></i> Add Staff
         </button>
     </div>
 </div>
 <div class="people">
-    
+    @*<partial name="~/Person/Index.cshtml" />*@
 </div>
