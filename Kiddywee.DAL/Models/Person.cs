@@ -13,6 +13,8 @@ namespace Kiddywee.DAL.Models
         {
             Contacts = new List<PersonToContact>();
             PersonToClasses = new List<PersonToClass>();
+            Attendances = new List<Attendance>();
+
         }
 
         [Key]
@@ -36,6 +38,7 @@ namespace Kiddywee.DAL.Models
         public Guid? StaffInfoId { get; set; }
         public StaffInfo StaffInfo { get; set; }
 
+        public List<Attendance> Attendances { get; set; }
         public List<PersonToClass> PersonToClasses { get; set; }
         public static Person Create(string firstName, string lastName)
         {
@@ -70,7 +73,10 @@ namespace Kiddywee.DAL.Models
                 {
                     Id = item.Id,
                     FirstName = item.FirstName,
-                    LastName = item.LastName
+                    LastName = item.LastName,
+                    DateOfBirth = item.DateOfBirth,
+                    StaffInfo = item.StaffInfo,
+                    ChildInfo = item.ChildInfo
                 };
                 result.Add(viewModel);
             }

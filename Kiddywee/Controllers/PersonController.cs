@@ -25,13 +25,16 @@ namespace Kiddywee.Controllers
             if (!id.HasValue)
             {
                 people = await _unitOfWork.People
-                    .GetAsync(p => p.OrganizationId == _organizationId);
+                    .GetAsync(p => p.OrganizationId == _organizationId, include:p=>p.Include(x=>x.StaffInfo).Include(x=>x.ChildInfo));
             }
             else
             {
                 people = await _unitOfWork.People.GetAsync(p => p.OrganizationId == _organizationId 
                     && p.PersonToClasses.Any(x => x.ClassId == id.Value),
-                    include: p => p.Include(x => x.PersonToClasses));            }
+                    include: p => p.Include(x => x.PersonToClasses)
+                                   .Include(x => x.StaffInfo)
+                                   .Include(x => x.ChildInfo));       
+            }
 
 
             var model = Person.Init(people);

@@ -74,6 +74,8 @@
     @await RenderSectionAsync("Script", false)
     <script>
         $(document).ready(function () {
+            loadClass("person/");
+
             $('.owl-carousel').owlCarousel({
                 loop: false,
                 margin: 10,
@@ -83,38 +85,38 @@
 
             $(document).on("click", ".add-class", function () {
                 var url = $(this).data("url");
-                $.get(url, function (data) {
-                    $(".modal-content").html(data)
-                    $("body").addClass("modal-open");
-                    $(".modal").show();
-                })
+                loadModal(url);
             });
 
             $(document).on("click", ".add-child", function () {
                 var url = $(this).data("url");
-                $.get(url, function (data) {
-                    $(".modal-content").html(data)
-                    $("body").addClass("modal-open");
-                    $(".modal").show();
-                })
+                loadModal(url);
             });
 
             $(document).on("click", ".add-staff", function () {
                 var url = $(this).data("url");
+                loadModal(url);
+            });
+
+            $(document).on("click", ".class-select", function () {
+                var url = $(this).data("url");
+                loadClass(url);
+            });
+
+
+            function loadModal(url) {
                 $.get(url, function (data) {
                     $(".modal-content").html(data)
                     $("body").addClass("modal-open");
                     $(".modal").show();
                 })
-            });
+            }
 
-            $(document).on("click", ".class-select", function () {
-                var url = $(this).data("url");
-                console.log(url);
+            function loadClass(url) {
                 $.get(url, function (data) {
                     $(".people").html(data)
                 })
-            });
+            }
         })
     </script>
 </body> 
