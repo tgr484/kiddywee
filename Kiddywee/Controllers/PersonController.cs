@@ -24,16 +24,15 @@ namespace Kiddywee.Controllers
             var people = new List<Person>();
             if (!id.HasValue)
             {
-                 people = await _unitOfWork.People
-              .GetAsync(p => p.OrganizationId == _organizationId);
+                people = await _unitOfWork.People
+                    .GetAsync(p => p.OrganizationId == _organizationId);
             }
             else
             {
-                people = await _unitOfWork.People.GetAsync(p => p.OrganizationId == _organizationId
-                && p.PersonToClasses.Any(x => x.ClassId == id),
-                include: p => p.Include(x => x.PersonToClasses));
-            }           
-          
+                people = await _unitOfWork.People.GetAsync(p => p.OrganizationId == _organizationId 
+                    && p.PersonToClasses.Any(x => x.ClassId == id.Value),
+                    include: p => p.Include(x => x.PersonToClasses));            }
+
 
             var model = Person.Init(people);
             return View(model);
@@ -54,7 +53,7 @@ namespace Kiddywee.Controllers
 
             if (ModelState.IsValid)
             {
-                var person = Person.Create(model);
+                var person = Person.Create(model, _organizationId.Value);
                 await _unitOfWork.People.Insert(person);
                 var personResult = await _unitOfWork.SaveAsync();
                 if (personResult.Succeeded)
@@ -91,15 +90,15 @@ namespace Kiddywee.Controllers
         {
             if (ModelState.IsValid)
             {
-                var person = Person.Create(model);
+                var person = Person.Create(model, _organizationId.Value);
                 await _unitOfWork.People.Insert(person);
                 var personResult = await _unitOfWork.SaveAsync();
-                if(personResult.Succeeded)
+                if (personResult.Succeeded)
                 {
-                    var childInfo = ChildInfo.Create(model,  _userId);
+                    var childInfo = ChildInfo.Create(model, _userId);
                     await _unitOfWork.ChildInfos.Insert(childInfo);
-                    var childResult = await _unitOfWork.SaveAsync();     
-                    if(childResult.Succeeded)
+                    var childResult = await _unitOfWork.SaveAsync();
+                    if (childResult.Succeeded)
                     {
                         person.ChildInfoId = childInfo.Id;
 
@@ -110,7 +109,7 @@ namespace Kiddywee.Controllers
                 }
 
                 return Redirect(Request.Headers["Referer"].ToString());
-            } 
+            }
             return View(model);
         }
     }

@@ -42,21 +42,23 @@ namespace Kiddywee.DAL.Models
             return new Person() { FirstName = firstName, LastName = lastName };
         }
 
-        public static Person Create(ChildCreateViewModel model)
+        public static Person Create(ChildCreateViewModel model, Guid organizationId)
         {
-            return new Person() { 
-                FirstName = model.FirstName, 
-                LastName = model.LastName,   
-                DateOfBirth = model.DateOfBirth 
+            return new Person() {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                DateOfBirth = model.DateOfBirth,
+                OrganizationId = organizationId
             };
         }
-        public static Person Create(StaffCreateViewModel model)
+        public static Person Create(StaffCreateViewModel model, Guid organizationId)
         {
             return new Person()
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                DateOfBirth = model.DateOfBirth
+                DateOfBirth = model.DateOfBirth,
+                OrganizationId = organizationId,
             };
         }
         public static List<PersonViewModel> Init(List<Person> people)

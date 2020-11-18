@@ -2,6 +2,9 @@
 @{
     Layout = null;
 }
-<p >123</p>
+@foreach(PersonViewModel item in Model)
+{
+    <p>@item.FirstName @item.LastName</p>
+}
 
 
