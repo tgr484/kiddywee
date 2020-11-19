@@ -41,6 +41,26 @@ namespace Kiddywee.DAL.Models
         }
 
 
+        public void Update(ClassEditViewModel model)
+        {
+            Name = model.Name;
+            EnrollmentSpots = model.EnrollmentSpots;
+            StageType = model.StageType;
+            TeacherStudentRatio = model.TeacherStudentRatio;
+        }
+        public static ClassEditViewModel Init(Class @class, List<Class> classesExeptSelected)
+        {
+            return new ClassEditViewModel()
+            {
+                Name = @class.Name,
+                EnrollmentSpots = @class.EnrollmentSpots,
+                StageType = @class.StageType,
+                OrganizationId = @class.OrganizationId,
+                TeacherStudentRatio = @class.TeacherStudentRatio,
+                ClassId = @class.Id,
+                Classes = classesExeptSelected
+            };
+        }
         public static Class Create(ClassCreateViewModel model, string userId)
         {
             return new Class()

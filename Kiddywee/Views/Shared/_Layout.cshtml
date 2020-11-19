@@ -103,6 +103,11 @@
                 loadModal(url);
             });
 
+            $(document).on("click", ".class-edit", function () {
+                var url = $(this).data("url");
+                loadModal(url);
+            });
+
             $(document).on("click", ".class-select", function () {
                 var url = $(this).data("url");
                 loadClass(url);
