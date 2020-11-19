@@ -18,10 +18,7 @@ namespace Kiddywee.DAL.Models
 
         public EnumStaffRoleType StaffRole { get; set; }
 
-        public List<int> Schedule { get; set; }
-
-        public Guid? MedicalInfoId { get; set; }
-        public MedicalInfo MedicalInfo { get; set; }
+        public List<int> Schedule { get; set; } 
 
         public string PhoneNumber { get; set; }
         public int PhoneNumberDigitPin { get; set; }

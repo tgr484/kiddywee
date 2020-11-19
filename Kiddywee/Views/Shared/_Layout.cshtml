@@ -98,11 +98,20 @@
                 loadModal(url);
             });
 
+            $(document).on("click", ".edit-person", function () {
+                var url = $(this).data("url");
+                loadModal(url);
+            });
+
             $(document).on("click", ".class-select", function () {
                 var url = $(this).data("url");
                 loadClass(url);
             });
 
+            $(document).on("click", ".class-select", function () {
+                var url = $(this).data("url");
+                loadClass(url);
+            });
 
             function loadModal(url) {
                 $.get(url, function (data) {
@@ -111,6 +120,8 @@
                     $(".modal").show();
                 })
             }
+
+            
 
             function loadClass(url) {
                 $.get(url, function (data) {

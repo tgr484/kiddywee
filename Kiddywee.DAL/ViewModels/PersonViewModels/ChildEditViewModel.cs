@@ -1,22 +1,23 @@
 ﻿using Kiddywee.DAL.Enum;
 using Kiddywee.DAL.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Kiddywee.DAL.ViewModels.PersonViewModels
 {
-    public class ChildCreateViewModel
+    public class ChildEditViewModel
     {
-        public ChildCreateViewModel()
+        public ChildEditViewModel()
         {
             Classes = new List<Class>();
         }
+
         public List<Class> Classes { get; set; }
 
-        public Guid ClassId { get; set; } 
+        public Guid ClassId { get; set; }
 
         public string Address { get; set; }
 
@@ -25,10 +26,10 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         public string Notes { get; set; }
 
         public List<EnumWeeklyScheduleType> WeaklySchedule { get; set; }
-        public List<EnumDailyScheduleType> DailySchedule { get; set; } 
-      
+        public List<EnumDailyScheduleType> DailySchedule { get; set; }
+
         public EnumPipeLineType PipeLineType { get; set; }
-        
+
         public bool Allergies { get; set; }
         public string AllergiesNotes { get; set; }
 
@@ -37,6 +38,7 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
 
         public DateTime? DateOfBirth { get; set; }
 
-        public IFormFile MedicalInfo { get; set; }
+        public Guid PersonId { get; set; }
+   
     }
 }

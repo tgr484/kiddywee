@@ -12,6 +12,21 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
 
         public DateTime? DateOfBirth { get; set; }
 
+        //public string EditButtonClass 
+        //{ 
+        //    get
+        //    {
+        //        return StaffInfo != null ? "edit-staff" : "edit-child";
+        //    }
+        //}
+
+        public string EditAction
+        {
+            get
+            {
+                return StaffInfo != null ? "EditStaff" : "EditChild";
+            }
+        }
         public string NormalizedDateOfBirth 
         { 
             get{ 

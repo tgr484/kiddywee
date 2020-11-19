@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201119154048_MedicalInfoList.cs" />
+    <Compile Remove="Migrations\20201119154048_MedicalInfoList.Designer.cs" />
+    <Compile Remove="Migrations\20201119154617_MedicalInfosList.cs" />
+    <Compile Remove="Migrations\20201119154617_MedicalInfosList.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.5" />

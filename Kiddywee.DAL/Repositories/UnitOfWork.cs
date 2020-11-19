@@ -19,6 +19,7 @@ namespace Kiddywee.DAL.Repositories
         private IGenericRepository<ChildInfo> _childInfoRepository;
         private IGenericRepository<StaffInfo> _staffInfoRepository;
         private IGenericRepository<MedicalInfo> _medicalInfoRepository;
+        private IGenericRepository<Immunization> _immunizationRepository;
 
         private IGenericRepository<Contact> _contactsRepository;
         private IGenericRepository<PersonToContact> _personToContactsRepository;
@@ -45,6 +46,7 @@ namespace Kiddywee.DAL.Repositories
         public IGenericRepository<ChildInfo> ChildInfos => _childInfoRepository ??= new GenericRepository<ChildInfo>(_context);
         public IGenericRepository<StaffInfo> StaffInfos => _staffInfoRepository ??= new GenericRepository<StaffInfo>(_context);
         public IGenericRepository<MedicalInfo> MedicalInfos => _medicalInfoRepository ??= new GenericRepository<MedicalInfo>(_context);
+        public IGenericRepository<Immunization> Immunizations => _immunizationRepository ??= new GenericRepository<Immunization>(_context);
 
         public IGenericRepository<Contact> Contacts => _contactsRepository ??= new GenericRepository<Contact>(_context);
         public IGenericRepository<PersonToContact> PersonToContacts => _personToContactsRepository ??= new GenericRepository<PersonToContact>(_context);

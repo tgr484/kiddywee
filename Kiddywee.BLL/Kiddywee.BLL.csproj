@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="2.9.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
     <PackageReference Include="MimeKit" Version="2.9.2" />
   </ItemGroup>

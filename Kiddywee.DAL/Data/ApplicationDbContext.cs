@@ -26,6 +26,7 @@ namespace Kiddywee.DAL.Data
         public DbSet<ChildInfo> ChildInfos { get; set; }
         public DbSet<StaffInfo> StaffInfos { get; set; }
         public DbSet<MedicalInfo> MedicalInfos { get; set; }
+        public DbSet<Immunization> Immunizations { get; set; }
 
 
         public DbSet<Contact> Contacts { get; set; }

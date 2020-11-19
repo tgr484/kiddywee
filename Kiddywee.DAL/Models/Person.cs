@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 
 namespace Kiddywee.DAL.Models
@@ -14,7 +15,8 @@ namespace Kiddywee.DAL.Models
             Contacts = new List<PersonToContact>();
             PersonToClasses = new List<PersonToClass>();
             Attendances = new List<Attendance>();
-
+            MedicalInfos = new List<MedicalInfo>();
+            Immunizations = new List<Immunization>();
         }
 
         [Key]
@@ -40,6 +42,11 @@ namespace Kiddywee.DAL.Models
 
         public List<Attendance> Attendances { get; set; }
         public List<PersonToClass> PersonToClasses { get; set; }
+
+        public List<MedicalInfo> MedicalInfos { get; set; }
+
+        public List<Immunization> Immunizations { get; set; }
+
         public static Person Create(string firstName, string lastName)
         {
             return new Person() { FirstName = firstName, LastName = lastName };
@@ -79,9 +86,23 @@ namespace Kiddywee.DAL.Models
                     ChildInfo = item.ChildInfo
                 };
                 result.Add(viewModel);
-            }
-
+            } 
             return result;
         }        
+
+        public void Update(ChildEditViewModel model)
+        {
+            FirstName = model.FirstName;
+            LastName = model.LastName;
+            DateOfBirth = model.DateOfBirth;
+            ChildInfo.Address = model.Address;
+            ChildInfo.Allergies = model.Allergies;
+            ChildInfo.AllergiesNotes = model.AllergiesNotes;
+            ChildInfo.DailySchedule = model.DailySchedule?.Select(x => Convert.ToInt32(x)).ToList();
+            ChildInfo.WeaklySchedule = model.WeaklySchedule?.Select(x => Convert.ToInt32(x)).ToList();
+            ChildInfo.PipeLineType = model.PipeLineType;
+            ChildInfo.NextMedical = model.NextMedical;
+            ChildInfo.Notes = model.Notes;             
+        }
     }
 }

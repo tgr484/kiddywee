@@ -1,13 +1,13 @@
-﻿@model ChildCreateViewModel
-@{
+﻿@model ChildEditViewModel
+@{ 
     Layout = null;
 }
 <div class="modal-header">
-    <h4 class="modal-title" id="myLargeModalLabel">Create New Child</h4>
+    <h4 class="modal-title" id="myLargeModalLabel">Edit Child</h4>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="javascipt: window.location.reload()">×</button>
 </div>
 <div class="modal-body">
-    <form class="form-material" id="SavePerson" asp-action="CreateChild" asp-controller="Person" 
+    <form class="form-material" id="SavePerson" asp-action="EditChild" asp-controller="Person"
           method="post" enctype="multipart/form-data">
         <div class="row">
             <div class="col-md-4">
@@ -53,15 +53,17 @@
             <label>Weekly schedule<span class="help"></span></label> <br />
             @foreach (EnumWeeklyScheduleType item in Enum.GetValues(typeof(EnumWeeklyScheduleType)))
             {
-                <input name="WeaklySchedule" type="checkbox" value="@item" /> @item
-                <text>&nbsp; &nbsp; &nbsp;</text>
-            }
+                <input name="WeaklySchedule" type="checkbox" value="@item" 
+                       checked="@Model.WeaklySchedule.Any(p=>p == item)" /> @item
+                    <text>&nbsp; &nbsp; &nbsp;</text>
+                }
         </div>
         <div class="form-group">
             <label>Daily schedule<span class="help"></span></label> <br />
             @foreach (EnumDailyScheduleType item in Enum.GetValues(typeof(EnumDailyScheduleType)))
             {
-                <input name="DailySchedule" type="checkbox" value="@item" /> @item
+                <input name="DailySchedule" type="checkbox" value="@item" 
+                       checked="@Model.DailySchedule.Any(p=>p == item)" /> @item
                 <text>&nbsp; &nbsp;</text>
             }
         </div>
@@ -69,15 +71,14 @@
             <label for="example-email">Pipeline Type<span class="help"></span></label>
             <select class="form-control " asp-for="PipeLineType" asp-items="Html.GetEnumSelectList<EnumPipeLineType>()"></select>
         </div>
-        <div class="form-group">
+        <input type="hidden" asp-for="PersonId" />
+        @*<div class="form-group">
             <label for="example-email">Medical form</label>
-            <input type="file" asp-for="MedicalInfo"/>
-        </div>
+            <input type="file" asp-for="MedicalInfo" />
+        </div>*@
     </form>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal" onclick="javascipt: window.location.reload()">Close</button>
     <button type="submit" class="btn btn-info waves-effect" form="SavePerson">Save</button>
 </div>
-
-

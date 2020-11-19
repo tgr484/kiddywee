@@ -29,8 +29,8 @@ namespace Kiddywee.Controllers
             }
             else
             {
-                people = await _unitOfWork.People.GetAsync(p => p.OrganizationId == _organizationId 
-                    && p.PersonToClasses.Any(x => x.ClassId == id.Value),
+                people = await _unitOfWork.People.GetAsync(p => p.OrganizationId == _organizationId  
+                    && p.PersonToClasses.Any(x => x.ClassId == id.Value && x.IsActive),
                     include: p => p.Include(x => x.PersonToClasses)
                                    .Include(x => x.StaffInfo)
                                    .Include(x => x.ChildInfo));       
@@ -40,7 +40,7 @@ namespace Kiddywee.Controllers
             var model = Person.Init(people);
             return View(model);
         }
-
+        #region Create
         [HttpGet]
         public async Task<IActionResult> CreateStaff()
         {
@@ -90,7 +90,7 @@ namespace Kiddywee.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateChild(ChildCreateViewModel model)
-        {
+        { 
             if (ModelState.IsValid)
             {
                 var person = Person.Create(model, _organizationId.Value);
@@ -98,15 +98,22 @@ namespace Kiddywee.Controllers
                 var personResult = await _unitOfWork.SaveAsync();
                 if (personResult.Succeeded)
                 {
+                    if(model.MedicalInfo != null)
+                    {
+                        var medicalInfo = MedicalInfo.Create(model.MedicalInfo, _userId, person.Id);
+                        await _unitOfWork.MedicalInfos.Insert(medicalInfo);
+                    }                    
+
                     var childInfo = ChildInfo.Create(model, _userId);
                     await _unitOfWork.ChildInfos.Insert(childInfo);
-                    var childResult = await _unitOfWork.SaveAsync();
+
+                    var childResult = await _unitOfWork.SaveAsync(); 
                     if (childResult.Succeeded)
                     {
-                        person.ChildInfoId = childInfo.Id;
-
-                        var personToClass = PersonToClass.Create(person.Id, model.ClassId, _userId);
+                        person.ChildInfoId = childInfo.Id; 
+                        var personToClass = PersonToClass.Create(person.Id, model.ClassId, _userId); 
                         await _unitOfWork.PersonToClasses.Insert(personToClass);
+
                         await _unitOfWork.SaveAsync();
                     }
                 }
@@ -115,5 +122,67 @@ namespace Kiddywee.Controllers
             }
             return View(model);
         }
+        #endregion
+
+        #region Edit
+        [HttpGet]
+        public async Task<IActionResult> EditStaff(Guid personId)
+        {            
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditStaff(StaffEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+             
+            }
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditChild(Guid personId)
+        {
+            var person = await _unitOfWork.People.GetOneAsync(x => x.Id == personId,
+                                                                   include: p => p.Include(w => w.ChildInfo)
+                                                                                  .Include(e => e.MedicalInfos)
+                                                                                  .Include(r => r.PersonToClasses));
+
+            var classes = await _unitOfWork.Classes.GetAsync(x => x.OrganizationId == _organizationId);
+
+            var model = ChildInfo.Init(person, classes);
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditChild(ChildEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var person = await _unitOfWork.People.GetOneAsync(x => x.Id == model.PersonId,
+                                                                   include: p => p.Include(w => w.ChildInfo)
+                                                                                  .Include(e => e.MedicalInfos)
+                                                                                  .Include(r => r.PersonToClasses));
+
+                person.Update(model);               
+
+                _unitOfWork.People.Update(person);
+                var result = await _unitOfWork.SaveAsync();
+                if(result.Succeeded)
+                {
+                    var personToClasses = person.PersonToClasses;
+
+                    personToClasses.ForEach(x => x.IsActive = false);                   
+                    _unitOfWork.PersonToClasses.UpdateRange(personToClasses); 
+                    await _unitOfWork.PersonToClasses.Insert(PersonToClass.Create(person.Id, model.ClassId, _userId));
+                    var result2 = await _unitOfWork.SaveAsync();
+                }
+                return Redirect(Request.Headers["Referer"].ToString());
+
+            }
+            return View(model);
+        }
+        #endregion
     }
 }
