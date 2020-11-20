@@ -1,5 +1,6 @@
 ﻿using Kiddywee.DAL.Enum;
 using Kiddywee.DAL.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -42,6 +43,8 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
 
         public DateTime? Scr { get; set; }
         public DateTime? FingerPrinting { get; set; }
+
+        public IFormFile MedicalInfo { get; set; }
 
     }
 }

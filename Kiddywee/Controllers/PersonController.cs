@@ -25,15 +25,15 @@ namespace Kiddywee.Controllers
             if (!id.HasValue)
             {
                 people = await _unitOfWork.People
-                    .GetAsync(p => p.OrganizationId == _organizationId, include:p=>p.Include(x=>x.StaffInfo).Include(x=>x.ChildInfo));
+                    .GetAsync(p => p.OrganizationId == _organizationId, include: p => p.Include(x => x.StaffInfo).Include(x => x.ChildInfo));
             }
             else
             {
-                people = await _unitOfWork.People.GetAsync(p => p.OrganizationId == _organizationId  
+                people = await _unitOfWork.People.GetAsync(p => p.OrganizationId == _organizationId
                     && p.PersonToClasses.Any(x => x.ClassId == id.Value && x.IsActive),
                     include: p => p.Include(x => x.PersonToClasses)
                                    .Include(x => x.StaffInfo)
-                                   .Include(x => x.ChildInfo));       
+                                   .Include(x => x.ChildInfo));
             }
 
 
@@ -61,6 +61,13 @@ namespace Kiddywee.Controllers
                 var personResult = await _unitOfWork.SaveAsync();
                 if (personResult.Succeeded)
                 {
+                    if (model.MedicalInfo != null)
+                    {
+                        var medicalInfo = MedicalInfo.Create(model.MedicalInfo, _userId, person.Id);
+                        await _unitOfWork.MedicalInfos.Insert(medicalInfo);
+                    }
+
+
                     var staffInfo = StaffInfo.Create(model, _userId);
                     staffInfo.OrganizationId = _organizationId.Value;
                     await _unitOfWork.StaffInfos.Insert(staffInfo);
@@ -90,7 +97,7 @@ namespace Kiddywee.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateChild(ChildCreateViewModel model)
-        { 
+        {
             if (ModelState.IsValid)
             {
                 var person = Person.Create(model, _organizationId.Value);
@@ -98,20 +105,20 @@ namespace Kiddywee.Controllers
                 var personResult = await _unitOfWork.SaveAsync();
                 if (personResult.Succeeded)
                 {
-                    if(model.MedicalInfo != null)
+                    if (model.MedicalInfo != null)
                     {
                         var medicalInfo = MedicalInfo.Create(model.MedicalInfo, _userId, person.Id);
                         await _unitOfWork.MedicalInfos.Insert(medicalInfo);
-                    }                    
+                    }
 
                     var childInfo = ChildInfo.Create(model, _userId);
                     await _unitOfWork.ChildInfos.Insert(childInfo);
 
-                    var childResult = await _unitOfWork.SaveAsync(); 
+                    var childResult = await _unitOfWork.SaveAsync();
                     if (childResult.Succeeded)
                     {
-                        person.ChildInfoId = childInfo.Id; 
-                        var personToClass = PersonToClass.Create(person.Id, model.ClassId, _userId); 
+                        person.ChildInfoId = childInfo.Id;
+                        var personToClass = PersonToClass.Create(person.Id, model.ClassId, _userId);
                         await _unitOfWork.PersonToClasses.Insert(personToClass);
 
                         await _unitOfWork.SaveAsync();
@@ -127,8 +134,17 @@ namespace Kiddywee.Controllers
         #region Edit
         [HttpGet]
         public async Task<IActionResult> EditStaff(Guid personId)
-        {            
-            return View();
+        {
+            var person = await _unitOfWork.People.GetOneAsync(x => x.Id == personId,
+                                                                   include: p => p.Include(w => w.StaffInfo)
+                                                                                  //.Include(e => e.MedicalInfos)
+                                                                                  .Include(r => r.PersonToClasses));
+
+            var classes = await _unitOfWork.Classes.GetAsync(x => x.OrganizationId == _organizationId);
+
+            var model = StaffInfo.Init(person, classes);
+
+            return View(model);
         }
 
         [HttpPost]
@@ -136,7 +152,25 @@ namespace Kiddywee.Controllers
         {
             if (ModelState.IsValid)
             {
-             
+                var person = await _unitOfWork.People.GetOneAsync(x => x.Id == model.PersonId,
+                                                                      include: p => p.Include(w => w.StaffInfo)
+                                                                                     //.Include(e => e.MedicalInfos)
+                                                                                     .Include(r => r.PersonToClasses));
+
+                person.Update(model);
+
+                _unitOfWork.People.Update(person);
+                var result = await _unitOfWork.SaveAsync();
+                if (result.Succeeded)
+                {
+                    var personToClasses = person.PersonToClasses;
+
+                    personToClasses.ForEach(x => x.IsActive = false);
+                    _unitOfWork.PersonToClasses.UpdateRange(personToClasses);
+                    await _unitOfWork.PersonToClasses.Insert(PersonToClass.Create(person.Id, model.ClassId, _userId));
+                    var result2 = await _unitOfWork.SaveAsync();
+                }
+                return Redirect(Request.Headers["Referer"].ToString());
             }
             return View();
         }
@@ -151,7 +185,7 @@ namespace Kiddywee.Controllers
             var classes = await _unitOfWork.Classes.GetAsync(x => x.OrganizationId == _organizationId);
 
             var model = ChildInfo.Init(person, classes);
-            
+
             return View(model);
         }
 
@@ -165,16 +199,16 @@ namespace Kiddywee.Controllers
                                                                                   .Include(e => e.MedicalInfos)
                                                                                   .Include(r => r.PersonToClasses));
 
-                person.Update(model);               
+                person.Update(model);
 
                 _unitOfWork.People.Update(person);
                 var result = await _unitOfWork.SaveAsync();
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     var personToClasses = person.PersonToClasses;
 
-                    personToClasses.ForEach(x => x.IsActive = false);                   
-                    _unitOfWork.PersonToClasses.UpdateRange(personToClasses); 
+                    personToClasses.ForEach(x => x.IsActive = false);
+                    _unitOfWork.PersonToClasses.UpdateRange(personToClasses);
                     await _unitOfWork.PersonToClasses.Insert(PersonToClass.Create(person.Id, model.ClassId, _userId));
                     var result2 = await _unitOfWork.SaveAsync();
                 }

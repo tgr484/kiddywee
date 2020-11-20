@@ -11,7 +11,8 @@ namespace Kiddywee.DAL.Models
     {
         public StaffInfo()
         {
-            StaffTrainings = new List<StaffTraining>(); 
+            StaffTrainings = new List<StaffTraining>();
+            Schedule = new List<int>();
         }
         public Guid OrganizationId { get; set; }
         public Organization Organization { get; set; }
@@ -63,6 +64,39 @@ namespace Kiddywee.DAL.Models
                 Scr = model.Scr,
                 StaffRole = model.StaffRole,        
 
+            };
+        }
+
+        public static StaffEditViewModel Init(Person person, List<Class> classes)
+        {
+            var si = person.StaffInfo != null ? person.StaffInfo : new StaffInfo();
+
+            var classId = person.PersonToClasses.FirstOrDefault(x => x.PersonId == person.Id && x.IsActive == true)
+                != null ? person.PersonToClasses.FirstOrDefault(x => x.PersonId == person.Id && x.IsActive == true).ClassId
+                        : new Guid();
+            return new StaffEditViewModel()
+            {
+                PersonId = person.Id,
+                Classes = classes,               
+                ClassId = classId,
+                Schedule = si.Schedule?.Cast<EnumWeeklyScheduleType>().ToList(),
+                DateOfBirth = person.DateOfBirth,
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                CheckInTime = si.CheckInTime,
+                CheckOutTime = si.CheckOutTime,
+                ChildAbuseCert = si.ChildAbuseCert,
+                EmploymentType = si.EmploymentType,
+                FingerPrinting = si.FingerPrinting,
+                FirstAidTraining = si.FirstAidTraining,
+                PhoneNumber = si.PhoneNumber,
+                PhoneNumberDigitPin = si.PhoneNumberDigitPin,
+                PromedicalFormDueDate = si.PromedicalFormDueDate,
+                Salary = si.Salary,
+                SalaryType = si.SalaryType,
+                Scr = si.Scr,
+                StaffRole = si.StaffRole
+                
             };
         }
     }

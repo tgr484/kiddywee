@@ -62,14 +62,14 @@ namespace Kiddywee.DAL.Models
                 Allergies = ci.Allergies,
                 AllergiesNotes = ci.AllergiesNotes,
                 ClassId = classId,
-                DailySchedule =  ci.DailySchedule.Cast<EnumDailyScheduleType>().ToList(),
+                DailySchedule =  ci.DailySchedule?.Cast<EnumDailyScheduleType>().ToList(),
                 DateOfBirth = person.DateOfBirth,
                 FirstName = person.FirstName,
                 LastName = person.LastName,
                 NextMedical = ci.NextMedical,
                 Notes = ci.Notes,
                 PipeLineType = ci.PipeLineType,
-                WeaklySchedule = ci.WeaklySchedule.Cast<EnumWeeklyScheduleType>().ToList(),
+                WeaklySchedule = ci.WeaklySchedule?.Cast<EnumWeeklyScheduleType>().ToList(),
                 PersonId = person.Id
             };
         }

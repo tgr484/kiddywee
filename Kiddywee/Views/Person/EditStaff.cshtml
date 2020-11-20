@@ -1,14 +1,14 @@
-﻿@model StaffCreateViewModel
+﻿@model StaffEditViewModel
 @{
     Layout = null;
 }
 
 <div class="modal-header">
-    <h4 class="modal-title" id="myLargeModalLabel">Create New Staff</h4>
+    <h4 class="modal-title" id="myLargeModalLabel">Edit Staff</h4>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="javascipt: window.location.reload()">×</button>
 </div>
 <div class="modal-body">
-    <form class="form-material" id="SavePerson" asp-action="CreateStaff" asp-controller="Person" method="post">
+    <form class="form-material" id="SavePerson" asp-action="EditStaff" asp-controller="Person" method="post">
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
@@ -88,14 +88,13 @@
             <label>Weekly schedule<span class="help"></span></label> <br />
             @foreach (EnumWeeklyScheduleType item in Enum.GetValues(typeof(EnumWeeklyScheduleType)))
             {
-                <input name="Schedule" type="checkbox" value="@item" /> @item
+                <input name="Schedule" type="checkbox" value="@item" checked="@Model.Schedule.Any(x => x == item)" /> @item
                 <text>&nbsp; &nbsp; &nbsp;</text>
             }
         </div>
-        <div class="form-group">
-            <label for="example-email">Medical form</label>
-            <input type="file" asp-for="MedicalInfo" />
-        </div>
+
+
+        <input type="hidden" asp-for="PersonId" />
 
     </form>
 </div>
