@@ -118,6 +118,13 @@
                 loadClass(url);
             });
 
+            $(document).on("click", ".checkInOut-person", function () {
+                var that = $(this);
+                var url = that.data("url");
+                ajaxAction(url, that);
+                
+            });
+
             function loadModal(url) {
                 $.get(url, function (data) {
                     $(".modal-content").html(data)
@@ -126,8 +133,57 @@
                 })
             }
 
-            
+            function ajaxAction(url, that) {
+                $.ajax({
+                    type: "GET",
+                    url: url, 
+                    dataType: "JSON",
+                    success: function (response) {
+                        $.toast({
+                            heading: response.header,
+                            text: response.message,
+                            position: 'bottom-right',
+                            loaderBg: response.color,
+                            icon: response.icon,
+                            hideAfter: 10000
+                        });  
 
+
+                        if (that.find('.sl-icon-logout').length !== 0) {   
+                            that.find('.sl-icon-logout').remove(); 
+                            that.append($("<i class='sl-icon-login'></i>")); 
+
+                            that.parent().parent().parent().parent().parent().removeClass('person-in');
+                            that.parent().parent().parent().parent().parent().addClass('person-out'); 
+
+                        } else { 
+                            that.find('.sl-icon-login').remove(); 
+                            that.append($("<i class='sl-icon-logout'></i>")); 
+
+                            that.parent().parent().parent().parent().parent().removeClass('person-out');
+                            that.parent().parent().parent().parent().parent().addClass('person-in'); 
+                        }
+
+                        $.ajax({
+                            type: "GET",
+                            url: "class/initclasses",
+                            dataType: "JSON", 
+                        }).done(function(data) {
+                           
+                            $.each(data, function (key, value) { 
+                                $('#kids-in-' + value.classId).html(value.childrenIn);
+                                $('#staff-in-' + value.classId).html(value.staffIn);
+                            });
+                        });
+
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(thrownError);
+                        alert("Error");
+                    }
+                });
+            }
+            
             function loadClass(url) {
                 $.get(url, function (data) {
                     $(".people").html(data)

@@ -6491,3 +6491,11 @@ User card page
         top: 0px;
         height: 100%;
     }
+
+.person-in {
+    border-left: 3px solid green !important;
+}
+
+.person-out {
+    border-left: 3px solid red !important;
+}

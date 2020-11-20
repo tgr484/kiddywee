@@ -10,15 +10,24 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        public Guid? ClassId { get; set; }
         public DateTime? DateOfBirth { get; set; }
 
-        //public string EditButtonClass 
-        //{ 
-        //    get
-        //    {
-        //        return StaffInfo != null ? "edit-staff" : "edit-child";
-        //    }
-        //}
+        public string CheckInOutIcon
+        {
+            get 
+            {
+                return IsIn ? "<i class='sl-icon-logout'></i>" : "<i class='sl-icon-login'></i>";
+            }
+        }
+        public bool IsIn { get; set; }
+        public string AttendanceCssClass
+        {
+            get
+            {
+                return IsIn ? "person-in" : "person-out";
+            }
+        }
 
         public string EditAction
         {

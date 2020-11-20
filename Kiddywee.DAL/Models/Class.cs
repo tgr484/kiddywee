@@ -2,6 +2,7 @@
 using Kiddywee.DAL.ViewModels.ClassesViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Kiddywee.DAL.Models
@@ -13,6 +14,8 @@ namespace Kiddywee.DAL.Models
             Curriculums = new List<Curriculum>();
             DailyReportTypes = new List<int>();
             Subjects = new List<Subject>();
+            Attendances = new List<Attendance>();
+            PersonToClasses = new List<PersonToClass>();
         }
 
         public Guid OrganizationId { get; set; }
@@ -23,19 +26,55 @@ namespace Kiddywee.DAL.Models
 
         public List<int> DailyReportTypes { get; set; }
 
+        public List<PersonToClass> PersonToClasses { get; set; }
         public List<Curriculum> Curriculums { get; set; }
         public List<Subject> Subjects { get; set; }
-
+        public List<Attendance> Attendances { get; set; }
         public int? EnrollmentSpots { get; set; }
 
         public int? TeacherStudentRatio { get; set; }
 
-        public static List<ClassViewModel> Init(List<Class> classes)
+        public static List<ClassViewModel> Init(List<Class> classes, List<Attendance> attendances, List<Person> persons)
         {
             var result = new List<ClassViewModel>();
+            var staffInOrganization = persons.Where(x => x.StaffInfo != null);
+            var childrenInOrganization = persons.Where(x => x.ChildInfo != null);
             foreach (var cls in classes)
             {
-                result.Add(new ClassViewModel() { ClassName = cls.Name, ClassId = cls.Id });
+                var attendanceForClass = attendances.Where(x => x.ClassId == cls.Id);
+                
+                var staffInClass = staffInOrganization.Where(x => x.PersonToClasses.Any(p => p.IsActive && p.ClassId == cls.Id));
+                var childrenInClass = childrenInOrganization.Where(x => x.PersonToClasses.Any(p => p.IsActive && p.ClassId == cls.Id));
+                
+                
+                int staffInCount = 0;
+                int childrenInCount = 0;
+
+                foreach(var item in staffInClass)
+                {
+                    var staffLastAttendance = attendanceForClass.Where(x => x.PersonId == item.Id).OrderByDescending(e => e.DateOfCreation).FirstOrDefault();
+                    if (staffLastAttendance != null && staffLastAttendance.AttendanceType == EnumAttendanceType.In)
+                    {
+                        ++staffInCount;
+                    }
+                }
+
+                foreach (var item in childrenInClass)
+                {
+                    var childLastAttendance = attendanceForClass.Where(x => x.PersonId == item.Id).OrderByDescending(e => e.DateOfCreation).FirstOrDefault();
+                    if (childLastAttendance != null && childLastAttendance.AttendanceType == EnumAttendanceType.In)
+                    {
+                        ++childrenInCount;
+                    }
+                }
+
+                result.Add(
+                    new ClassViewModel() {
+                            ClassName = cls.Name, 
+                            ClassId = cls.Id,
+                            StaffIn = staffInCount,
+                            ChildrenIn = childrenInCount
+                });
             }
             return result;
         }

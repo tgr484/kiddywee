@@ -25,7 +25,11 @@ namespace Kiddywee.Controllers
             if (!id.HasValue)
             {
                 people = await _unitOfWork.People
-                    .GetAsync(p => p.OrganizationId == _organizationId, include: p => p.Include(x => x.StaffInfo).Include(x => x.ChildInfo));
+                    .GetAsync(p => p.OrganizationId == _organizationId, 
+                    include: p => p.Include(x => x.StaffInfo)
+                                   .Include(x => x.ChildInfo)
+                                   .Include(x => x.PersonToClasses)
+                                   .Include(x => x.Attendances));
             }
             else
             {
@@ -33,7 +37,8 @@ namespace Kiddywee.Controllers
                     && p.PersonToClasses.Any(x => x.ClassId == id.Value && x.IsActive),
                     include: p => p.Include(x => x.PersonToClasses)
                                    .Include(x => x.StaffInfo)
-                                   .Include(x => x.ChildInfo));
+                                   .Include(x => x.ChildInfo)
+                                   .Include(x => x.Attendances));
             }
 
 

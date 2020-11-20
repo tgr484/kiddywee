@@ -1,4 +1,5 @@
-﻿using Kiddywee.DAL.ViewModels.PersonViewModels;
+﻿using Kiddywee.DAL.Enum;
+using Kiddywee.DAL.ViewModels.PersonViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -76,6 +77,20 @@ namespace Kiddywee.DAL.Models
             var result = new List<PersonViewModel>();
             foreach (var item in people)
             {
+                var classId = item.PersonToClasses.FirstOrDefault(x => x.IsActive)?.ClassId;
+
+                var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+                var lastAttendance = item.Attendances
+                                            .Where(x => x.IsActive && x.Date >= startDate && x.Date <= endDate)
+                                            .OrderByDescending(x => x.DateOfCreation).FirstOrDefault();
+                bool isIn = false;
+                if (lastAttendance != null && lastAttendance.AttendanceType == EnumAttendanceType.In)
+                {
+                    isIn = true;
+                }
+
+
                 var viewModel = new PersonViewModel()
                 {
                     Id = item.Id,
@@ -83,7 +98,9 @@ namespace Kiddywee.DAL.Models
                     LastName = item.LastName,
                     DateOfBirth = item.DateOfBirth,
                     StaffInfo = item.StaffInfo,
-                    ChildInfo = item.ChildInfo
+                    ChildInfo = item.ChildInfo,
+                    ClassId = classId,
+                    IsIn = isIn
                 };
                 result.Add(viewModel);
             } 
