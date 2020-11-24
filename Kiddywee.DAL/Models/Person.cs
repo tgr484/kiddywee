@@ -16,8 +16,6 @@ namespace Kiddywee.DAL.Models
             Contacts = new List<PersonToContact>();
             PersonToClasses = new List<PersonToClass>();
             Attendances = new List<Attendance>();
-            MedicalInfos = new List<MedicalInfo>();
-            Immunizations = new List<Immunization>();
         }
 
         [Key]
@@ -42,11 +40,7 @@ namespace Kiddywee.DAL.Models
         public StaffInfo StaffInfo { get; set; }
 
         public List<Attendance> Attendances { get; set; }
-        public List<PersonToClass> PersonToClasses { get; set; }
-
-        public List<MedicalInfo> MedicalInfos { get; set; }
-
-        public List<Immunization> Immunizations { get; set; }
+        public List<PersonToClass> PersonToClasses { get; set; }      
 
         public string FullName { get {return $"{FirstName} {LastName}";}}
 

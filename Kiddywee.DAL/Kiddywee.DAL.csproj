@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="FileMigrations\20201124175019_FileInfos.cs" />
+    <Compile Remove="FileMigrations\20201124175019_FileInfos.Designer.cs" />
+    <Compile Remove="FileMigrations\20201124175835_FileInfos.cs" />
+    <Compile Remove="FileMigrations\20201124175835_FileInfos.Designer.cs" />
+    <Compile Remove="FileMigrations\20201124180001_FileInfos.cs" />
+    <Compile Remove="FileMigrations\20201124180001_FileInfos.Designer.cs" />
+    <Compile Remove="FileMigrations\20201124180134_FileInfos.cs" />
+    <Compile Remove="FileMigrations\20201124180134_FileInfos.Designer.cs" />
     <Compile Remove="Migrations\20201119154048_MedicalInfoList.cs" />
     <Compile Remove="Migrations\20201119154048_MedicalInfoList.Designer.cs" />
     <Compile Remove="Migrations\20201119154617_MedicalInfosList.cs" />
@@ -31,6 +39,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.5" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="FileMigrations\" />
   </ItemGroup>
 
 </Project>

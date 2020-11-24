@@ -18,16 +18,12 @@ namespace Kiddywee.DAL.Data
         #region Debug Information
         public DbSet<AppUserAction> AppUserActions { get; set; }
         public DbSet<AppError> AppErrors { get; set; }
-        #endregion
+        #endregion 
 
-        
         public DbSet<Person> People { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<ChildInfo> ChildInfos { get; set; }
-        public DbSet<StaffInfo> StaffInfos { get; set; }
-        public DbSet<MedicalInfo> MedicalInfos { get; set; }
-        public DbSet<Immunization> Immunizations { get; set; }
-
+        public DbSet<StaffInfo> StaffInfos { get; set; } 
 
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<PersonToContact> PersonToContacts { get; set; }

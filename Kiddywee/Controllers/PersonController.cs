@@ -71,8 +71,8 @@ namespace Kiddywee.Controllers
                 {
                     if (model.MedicalInfo != null)
                     {
-                        var medicalInfo = MedicalInfo.Create(model.MedicalInfo, _userId, person.Id);
-                        await _unitOfWork.MedicalInfos.Insert(medicalInfo);
+                        var medicalInfo = FileInfo.Create(model.MedicalInfo, _userId, DAL.Enum.EnumFileType.MedicalInfo,person.Id);
+                        await _unitOfWork.FileInfos.Insert(medicalInfo);
                     }
 
 
@@ -115,8 +115,8 @@ namespace Kiddywee.Controllers
                 {
                     if (model.MedicalInfo != null)
                     {
-                        var medicalInfo = MedicalInfo.Create(model.MedicalInfo, _userId, person.Id);
-                        await _unitOfWork.MedicalInfos.Insert(medicalInfo);
+                        var medicalInfo = FileInfo.Create(model.MedicalInfo, _userId, DAL.Enum.EnumFileType.MedicalInfo,person.Id);
+                        await _unitOfWork.FileInfos.Insert(medicalInfo);
                     }
 
                     var childInfo = ChildInfo.Create(model, _userId);
@@ -187,7 +187,6 @@ namespace Kiddywee.Controllers
         {
             var person = await _unitOfWork.People.GetOneAsync(x => x.Id == personId,
                                                                    include: p => p.Include(w => w.ChildInfo)
-                                                                                  .Include(e => e.MedicalInfos)
                                                                                   .Include(r => r.PersonToClasses));
 
             var classes = await _unitOfWork.Classes.GetAsync(x => x.OrganizationId == _organizationId);
@@ -204,7 +203,7 @@ namespace Kiddywee.Controllers
             {
                 var person = await _unitOfWork.People.GetOneAsync(x => x.Id == model.PersonId,
                                                                    include: p => p.Include(w => w.ChildInfo)
-                                                                                  .Include(e => e.MedicalInfos)
+                                                                                 
                                                                                   .Include(r => r.PersonToClasses));
 
                 person.Update(model);

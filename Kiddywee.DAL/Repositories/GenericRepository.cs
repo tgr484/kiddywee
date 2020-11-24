@@ -20,6 +20,11 @@ namespace Kiddywee.DAL.Repositories
             _dbSet = context.Set<TEntity>();
         }
 
+        public GenericRepository(FileDbContext context)
+        {
+            _dbSet = context.Set<TEntity>();
+        }
+
         public List<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
             IQueryable<TEntity> query = _dbSet;

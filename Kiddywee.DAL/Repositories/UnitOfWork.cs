@@ -13,13 +13,13 @@ namespace Kiddywee.DAL.Repositories
     {
         private bool _disposed;
         private readonly ApplicationDbContext _context;
+        private readonly FileDbContext _fileContext;
 
         private IGenericRepository<Person> _peopleRepository;
         private IGenericRepository<Attendance> _attendancesRepository;
         private IGenericRepository<ChildInfo> _childInfoRepository;
         private IGenericRepository<StaffInfo> _staffInfoRepository;
-        private IGenericRepository<MedicalInfo> _medicalInfoRepository;
-        private IGenericRepository<Immunization> _immunizationRepository;
+        private IGenericRepository<FileInfo> _fileInfoRepository;
 
         private IGenericRepository<Contact> _contactsRepository;
         private IGenericRepository<PersonToContact> _personToContactsRepository;
@@ -36,17 +36,17 @@ namespace Kiddywee.DAL.Repositories
 
 
         
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork(ApplicationDbContext context, FileDbContext fileContext)
         {
             _context = context;
+            _fileContext = fileContext;
         }
         public IGenericRepository<PersonToClass> PersonToClasses => _personToClassesRepository ??= new GenericRepository<PersonToClass>(_context);
         public IGenericRepository<Person> People => _peopleRepository ??= new GenericRepository<Person>(_context);
         public IGenericRepository<Attendance> Attendances => _attendancesRepository ??= new GenericRepository<Attendance>(_context);
         public IGenericRepository<ChildInfo> ChildInfos => _childInfoRepository ??= new GenericRepository<ChildInfo>(_context);
         public IGenericRepository<StaffInfo> StaffInfos => _staffInfoRepository ??= new GenericRepository<StaffInfo>(_context);
-        public IGenericRepository<MedicalInfo> MedicalInfos => _medicalInfoRepository ??= new GenericRepository<MedicalInfo>(_context);
-        public IGenericRepository<Immunization> Immunizations => _immunizationRepository ??= new GenericRepository<Immunization>(_context);
+        public IGenericRepository<FileInfo> FileInfos => _fileInfoRepository ??= new GenericRepository<FileInfo>(_fileContext);
 
         public IGenericRepository<Contact> Contacts => _contactsRepository ??= new GenericRepository<Contact>(_context);
         public IGenericRepository<PersonToContact> PersonToContacts => _personToContactsRepository ??= new GenericRepository<PersonToContact>(_context);

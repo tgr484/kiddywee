@@ -9,13 +9,14 @@ namespace Kiddywee.DAL.Interfaces
 {
     public interface IUnitOfWork
     {
+        
+        
         IGenericRepository<Person> People { get; }
         IGenericRepository<Attendance> Attendances { get; }
 
         IGenericRepository<ChildInfo> ChildInfos { get; }
         IGenericRepository<StaffInfo> StaffInfos { get; }
-        IGenericRepository<MedicalInfo> MedicalInfos { get; }
-        IGenericRepository<Immunization> Immunizations { get; }
+        IGenericRepository<FileInfo> FileInfos { get; }
         IGenericRepository<Contact> Contacts { get; }       
         IGenericRepository<PersonToContact> PersonToContacts { get; }       
         IGenericRepository<Organization> Organizations { get;  }

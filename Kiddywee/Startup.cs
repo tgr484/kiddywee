@@ -45,6 +45,11 @@ namespace Kiddywee
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddDbContext<FileDbContext>(options =>
+            {
+                options.UseNpgsql(Configuration.GetConnectionString("FileConnection"));
+            });
+
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = false;
