@@ -158,22 +158,23 @@
                             loaderBg: response.color,
                             icon: response.icon,
                             hideAfter: 10000
-                        });  
+                        });
+                        
 
-
-                        if (that.find('.sl-icon-logout').length !== 0) {   
-                            that.find('.sl-icon-logout').remove(); 
-                            that.append($("<i class='sl-icon-login'></i>")); 
+                        if (that.find('.sl-icon-logout').length !== 0) {  
+                            
+                            //that.append($("<i class='sl-icon-login'></i>")); 
 
                             that.parent().parent().parent().parent().parent().removeClass('person-in');
-                            that.parent().parent().parent().parent().parent().addClass('person-out'); 
+                            that.parent().parent().parent().parent().parent().addClass('person-was'); 
+                            that.find('.sl-icon-logout').parent().parent().remove(); 
+
 
                         } else { 
-                            that.find('.sl-icon-login').remove(); 
-                            that.append($("<i class='sl-icon-logout'></i>")); 
-
                             that.parent().parent().parent().parent().parent().removeClass('person-out');
                             that.parent().parent().parent().parent().parent().addClass('person-in'); 
+                            that.find('.sl-icon-login').remove();
+                            that.append($("<i class='sl-icon-logout'></i>"));
                         }
 
                         $.ajax({

@@ -6493,11 +6493,27 @@ User card page
     }
 
 .person-in {
-    border-left: 3px solid green !important;
+    border-left: 4px solid green !important;
+}
+
+.person-was {
+    border-left: 4px solid magenta !important;
 }
 
 .person-out {
-    border-left: 3px solid red !important;
+    border-left: 4px solid red !important;
+}
+
+.person-staff {
+    border-right: 2px solid #1144AA !important;
+    border-bottom: 2px solid #1144AA !important;
+    border-top: 2px solid #1144AA !important;
+}
+
+.person-child {
+    border-right: 2px solid #FFA700 !important;
+    border-bottom: 2px solid #FFA700 !important;
+    border-top: 2px solid #FFA700 !important;
 }
 
 .attendance-accordeon {

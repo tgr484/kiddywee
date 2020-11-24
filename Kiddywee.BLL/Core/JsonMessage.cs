@@ -10,5 +10,7 @@ namespace Kiddywee.BLL.Core
         public string Header { get; set; }
         public string Message { get; set; }
         public string Icon { get; set; }
+
+        public object AdditionalData { get; set; }
     }
 }

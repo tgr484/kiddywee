@@ -8,7 +8,7 @@ namespace Kiddywee.DAL.Data
 {
     public class FileDbContext : DbContext
     {
-        public FileDbContext(DbContextOptions options) : base(options)
+        public FileDbContext(DbContextOptions<FileDbContext> options) : base(options)
         {
 
         }

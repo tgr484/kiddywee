@@ -23,6 +23,10 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         {
             get
             {
+                if(CheckInTime.HasValue && CheckOutTime.HasValue)
+                {
+                    return "person-was";
+                }
                 return (CheckInTime.HasValue && !CheckOutTime.HasValue) ? "person-in" : "person-out";
             }
         }
@@ -54,16 +58,16 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         }
        
 
-        public string CardBorderColor 
+        public string PersonRoleCssClass 
         { 
             get {                
                 if (this.StaffInfo != null)
                 {
-                    return "#1144AA";
+                    return "person-staff";
                 }
                 else
                 {
-                    return "#FFA700";
+                    return "person-child";
                 }
             }
             set { } 
