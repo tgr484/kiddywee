@@ -1,6 +1,8 @@
 ﻿using Kiddywee.DAL.Enum;
+using Kiddywee.DAL.ViewModels.AttendanceViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Kiddywee.DAL.Models
@@ -38,5 +40,23 @@ namespace Kiddywee.DAL.Models
                 };
         }
 
+        public static List<AttendanceViewModel> Init(List<Attendance> attendancesForToday)
+        {
+            var result = new List<AttendanceViewModel>();
+
+            //var grouppedByPersonAttendanceList = attendancesForToday.GroupBy(x => x.PersonId);            
+            foreach(var item in attendancesForToday)
+            {
+                var attendance = new AttendanceViewModel()
+                {
+                    AttendanceId = item.Id,
+                    Name = item.Person.FullName,
+                    AttendanceType = item.AttendanceType,
+                    Date = item.Date 
+                };
+                result.Add(attendance);
+            } 
+            return result;
+        }
     }
 }

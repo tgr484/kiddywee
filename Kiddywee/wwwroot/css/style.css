@@ -6499,3 +6499,8 @@ User card page
 .person-out {
     border-left: 3px solid red !important;
 }
+
+.attendance-accordeon {
+    margin-top: 20px;
+    margin-bottom: 20px !important;
+}

@@ -9,6 +9,8 @@ using Kiddywee.Models;
 using Kiddywee.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Kiddywee.DAL.ViewModels.AttendanceViewModels;
+using Kiddywee.DAL.Models;
 
 namespace Kiddywee.Controllers
 {
@@ -24,11 +26,28 @@ namespace Kiddywee.Controllers
             
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime? date)
         {
-          
-            //var cc = await _unitOfWork.Contacts.GetOneAsync(p => p.Id == new Guid(),p => p.Include(x => x.Guardian));
-            return View();
+            DateTime startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day); ;
+            DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59); ;
+            if (date.HasValue)
+            {
+                startDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day);
+                endDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, 23, 59, 59);
+            }
+            
+            var attendancesForDay = 
+                await _unitOfWork.Attendances.GetAsync(x => x.IsActive
+                                                                        && x.Date >= startDate
+                                                                        && x.Date <= endDate
+                                                                        && x.OrganizationId == _organizationId.Value, include: x=> x.Include(p=> p.Person));
+            var model = Attendance.Init(attendancesForDay);
+            
+
+
+
+
+            return View(model);
         }
 
         public IActionResult Privacy()

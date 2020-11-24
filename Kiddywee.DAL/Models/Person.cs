@@ -48,6 +48,9 @@ namespace Kiddywee.DAL.Models
 
         public List<Immunization> Immunizations { get; set; }
 
+        public string FullName { get {return $"{FirstName} {LastName}";}}
+
+
         public static Person Create(string firstName, string lastName)
         {
             return new Person() { FirstName = firstName, LastName = lastName };

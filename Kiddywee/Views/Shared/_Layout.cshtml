@@ -189,6 +189,16 @@
                     $(".people").html(data)
                 })
             }
+            
+
+            var table = $('#attendance').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'csv', 'pdf', 'print'
+                ]
+            });
+           
+            
         })
     </script>
 </body> 
