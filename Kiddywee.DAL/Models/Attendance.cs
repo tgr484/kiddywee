@@ -12,9 +12,13 @@ namespace Kiddywee.DAL.Models
         public Guid PersonId { get; set; }
         public Person Person { get; set; }
 
-        public DateTime Date { get; set; }
+        //public DateTime Date { get; set; }
 
-        public EnumAttendanceType AttendanceType { get; set; }
+        public DateTime InDate { get; set; }
+
+        public DateTime? OutDate { get; set; }
+
+        //public EnumAttendanceType AttendanceType { get; set; }
 
         public Guid ClassId { get; set; }
 
@@ -24,19 +28,16 @@ namespace Kiddywee.DAL.Models
             Guid personId,
             Guid classId,
             Guid? organizationId,
-            EnumAttendanceType attendanceType,
-            string createdById,
-            DateTime? date = null)
+            string createdById
+            )
         {
-            date = date.HasValue ? date : DateTime.UtcNow; 
             return new Attendance()
                 {
                     PersonId = personId,
                     ClassId = classId,
                     OrganizationId = organizationId.Value,
-                    AttendanceType = attendanceType,
+                    InDate = DateTime.UtcNow,
                     CreatedById = createdById,
-                    Date = date.Value
                 };
         }
 
@@ -44,18 +45,18 @@ namespace Kiddywee.DAL.Models
         {
             var result = new List<AttendanceViewModel>();
 
-            //var grouppedByPersonAttendanceList = attendancesForToday.GroupBy(x => x.PersonId);            
-            foreach(var item in attendancesForToday)
-            {
-                var attendance = new AttendanceViewModel()
-                {
-                    AttendanceId = item.Id,
-                    Name = item.Person.FullName,
-                    AttendanceType = item.AttendanceType,
-                    Date = item.Date 
-                };
-                result.Add(attendance);
-            } 
+            ////var grouppedByPersonAttendanceList = attendancesForToday.GroupBy(x => x.PersonId);            
+            //foreach(var item in attendancesForToday)
+            //{
+            //    var attendance = new AttendanceViewModel()
+            //    {
+            //        AttendanceId = item.Id,
+            //        Name = item.Person.FullName,
+            //        AttendanceType = item.AttendanceType,
+            //        Date = item.Date 
+            //    };
+            //    result.Add(attendance);
+            //} 
             return result;
         }
     }

@@ -48,6 +48,7 @@ namespace Kiddywee.DAL.Data
         {
             builder.Entity<AppError>().ToTable("AppErrors", "log");
             builder.Entity<AppUserAction>().ToTable("AppUserActions", "log");
+            //builder.Entity<File>().ToTable("Files", "Files");
             base.OnModelCreating(builder);
         }
         //protected override void OnModelCreating(ModelBuilder builder)

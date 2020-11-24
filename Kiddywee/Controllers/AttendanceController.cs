@@ -2,6 +2,7 @@
 using Kiddywee.DAL.Enum;
 using Kiddywee.DAL.Interfaces;
 using Kiddywee.DAL.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,30 +25,42 @@ namespace Kiddywee.Controllers
         public async Task<JsonResult> CheckInOut(Guid personId, Guid classId)
         {
             var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
 
-
-            var attendanceExist = _unitOfWork.Attendances.
-                    Get(p => p.ClassId == classId && p.PersonId == personId
-                        && (p.Date >= startDate && p.Date <= DateTime.UtcNow), 
-                        orderBy: p=>p.OrderByDescending(x=>x.DateOfCreation)).FirstOrDefault();
-
-            var attendanceType = EnumAttendanceType.In;
-            if (attendanceExist != null)
+            var inAttendance = await _unitOfWork.Attendances.GetOneAsync(x => x.IsActive && x.InDate >= startDate && x.InDate <= endDate);
+            //Checkout
+            if(inAttendance != null)
             {
-                attendanceType = attendanceExist.AttendanceType == EnumAttendanceType.In 
-                    ? EnumAttendanceType.Out : EnumAttendanceType.In; 
-            } 
-
-            var attendance = Attendance.Create(personId, classId, _organizationId, attendanceType, _userId);
-            await _unitOfWork.Attendances.Insert(attendance);
-            var result =  await _unitOfWork.SaveAsync();
-
-            if (result.Succeeded)
-            {
-                return Json(new JsonMessage {  Color = "#ff6849", Message = "Success", Header = "Success", Icon = "success" });
+                if(inAttendance.OutDate.HasValue)
+                {
+                    return Json(new JsonMessage { Color = "#ff6849", Message = "Person already checked out", Header = "Error", Icon = "success" });
+                }
+                else
+                {
+                    inAttendance.OutDate = DateTime.UtcNow;
+                    _unitOfWork.Attendances.Update(inAttendance);                    
+                    var result = await _unitOfWork.SaveAsync();
+                    if (result.Succeeded)
+                    {
+                        return Json(new JsonMessage { Color = "#ff6849", Message = "Person checked out", Header = "Success", Icon = "success" });
+                    }
+                    return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error" });
+                }
             }
+            //Checkin
+            else
+            {
+                var attendance = Attendance.Create(personId, classId, _organizationId, _userId);
+                await _unitOfWork.Attendances.Insert(attendance);
+                var result = await _unitOfWork.SaveAsync();
 
-            return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error" });
+                if (result.Succeeded)
+                {
+                    return Json(new JsonMessage { Color = "#ff6849", Message = "Person checked in", Header = "Success", Icon = "success" });
+                }
+
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error" });
+            }            
         }
     }
 }

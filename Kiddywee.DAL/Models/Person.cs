@@ -84,11 +84,11 @@ namespace Kiddywee.DAL.Models
 
                 var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
                 var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
-                var lastAttendance = item.Attendances
-                                            .Where(x => x.IsActive && x.Date >= startDate && x.Date <= endDate)
-                                            .OrderByDescending(x => x.DateOfCreation).FirstOrDefault();
+                var attendance = item.Attendances
+                                            .FirstOrDefault(x => x.IsActive && x.InDate >= startDate && x.InDate <= endDate);
+                
                 bool isIn = false;
-                if (lastAttendance != null && lastAttendance.AttendanceType == EnumAttendanceType.In)
+                if (attendance != null && !attendance.OutDate.HasValue)
                 {
                     isIn = true;
                 }

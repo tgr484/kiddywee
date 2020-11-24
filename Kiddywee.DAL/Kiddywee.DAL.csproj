@@ -9,6 +9,12 @@
     <Compile Remove="Migrations\20201119154048_MedicalInfoList.Designer.cs" />
     <Compile Remove="Migrations\20201119154617_MedicalInfosList.cs" />
     <Compile Remove="Migrations\20201119154617_MedicalInfosList.Designer.cs" />
+    <Compile Remove="Migrations\20201124151637_Files.cs" />
+    <Compile Remove="Migrations\20201124151637_Files.Designer.cs" />
+    <Compile Remove="Migrations\20201124152005_Files.cs" />
+    <Compile Remove="Migrations\20201124152005_Files.Designer.cs" />
+    <Compile Remove="Migrations\20201124153034_Files.cs" />
+    <Compile Remove="Migrations\20201124153034_Files.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

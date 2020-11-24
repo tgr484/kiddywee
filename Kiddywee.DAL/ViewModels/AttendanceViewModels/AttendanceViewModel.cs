@@ -9,13 +9,10 @@ namespace Kiddywee.DAL.ViewModels.AttendanceViewModels
     {
         public Guid AttendanceId { get; set; } 
         public string Name { get; set; } 
-        public DateTime? Date { get; set; }
-        public EnumAttendanceType AttendanceType { get; set; } 
+        public DateTime InDate { get; set; }
+        public DateTime? OutDate { get; set; }
 
-    
-        //public int Hours()
-        //{
-          
-        //}
+        public Guid ClassId { get; set; }    
+        
     }
 }

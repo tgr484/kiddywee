@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using Kiddywee.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Kiddywee.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201124150945_AttendanceNew")]
+    partial class AttendanceNew
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -507,35 +509,6 @@ namespace Kiddywee.DAL.Migrations
                     b.ToTable("CurriculumToSubjects");
                 });
 
-            modelBuilder.Entity("Kiddywee.DAL.Models.File", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("text");
-
-                    b.Property<byte[]>("Data")
-                        .HasColumnType("bytea");
-
-                    b.Property<DateTime>("DateOfCreation")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Extention")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RealName")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Files","files");
-                });
-
             modelBuilder.Entity("Kiddywee.DAL.Models.Immunization", b =>
                 {
                     b.Property<Guid>("Id")
@@ -695,8 +668,17 @@ namespace Kiddywee.DAL.Migrations
                     b.Property<DateTime>("DateOfCreation")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Guid>("FileId")
-                        .HasColumnType("uuid");
+                    b.Property<byte[]>("FileData")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("FileExtention")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FileRealName")
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -707,8 +689,6 @@ namespace Kiddywee.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("FileId");
 
                     b.HasIndex("PersonId");
 
@@ -1337,12 +1317,6 @@ namespace Kiddywee.DAL.Migrations
                     b.HasOne("Kiddywee.DAL.Models.ApplicationUser", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById");
-
-                    b.HasOne("Kiddywee.DAL.Models.File", "File")
-                        .WithMany()
-                        .HasForeignKey("FileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("Kiddywee.DAL.Models.Person", "Person")
                         .WithMany("MedicalInfos")

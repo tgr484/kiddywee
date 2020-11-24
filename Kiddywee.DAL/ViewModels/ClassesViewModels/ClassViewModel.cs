@@ -27,7 +27,11 @@ namespace Kiddywee.DAL.ViewModels.ClassesViewModels
 
         }
         public int ChildrenIn { get; set; }
+
+        public int ChildrenTotal { get; set; }
         public int StaffIn { get; set; }
+
+        public int StaffTotal { get; set; }
         public Guid ClassId { get; set; }
     }
 }

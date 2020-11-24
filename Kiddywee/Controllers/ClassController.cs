@@ -16,13 +16,13 @@ namespace Kiddywee.Controllers
     public class ClassController : BaseController
     {
         public ClassController(IUnitOfWork unitOfWork) : base(unitOfWork)
-        { 
-            _unitOfWork = unitOfWork; 
+        {
+            _unitOfWork = unitOfWork;
         }
 
 
         public IActionResult Create(string id)
-        { 
+        {
             return View();
         }
 
@@ -55,7 +55,7 @@ namespace Kiddywee.Controllers
             if (ModelState.IsValid)
             {
                 var @class = await _unitOfWork.Classes.GetOneAsync(x => x.Id == model.ClassId);
-                if(model.IsMove && model.MoveClassId.HasValue)
+                if (model.IsMove && model.MoveClassId.HasValue)
                 {
                     //Удаление классов
 
@@ -66,7 +66,7 @@ namespace Kiddywee.Controllers
                     var personToClasses = await _unitOfWork.PersonToClasses.GetAsync(x => x.IsActive && x.ClassId == model.ClassId);
                     personToClasses.ForEach(x => x.IsActive = false);
                     var newPersonToClasses = new List<PersonToClass>();
-                    foreach(var item in personToClasses)
+                    foreach (var item in personToClasses)
                     {
                         newPersonToClasses.Add(PersonToClass.Create(item.PersonId, model.MoveClassId.Value, _userId));
                     }
@@ -80,7 +80,7 @@ namespace Kiddywee.Controllers
                     @class.Update(model);
                     _unitOfWork.Classes.Update(@class);
                     await _unitOfWork.SaveAsync();
-                }                
+                }
                 return Redirect(Request.Headers["Referer"].ToString());
             }
             return View(model);
@@ -88,15 +88,15 @@ namespace Kiddywee.Controllers
 
 
         public async Task<JsonResult> InitClasses()
-        { 
+        {
             var result = new List<ClassViewModel>();
             var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
 
             var classes = await _unitOfWork.Classes.GetAsync(p => p.IsActive && p.OrganizationId == _organizationId.Value);
             var attendancesForToday = _unitOfWork.Attendances.Get(x => x.IsActive
-                                                                        && x.Date >= startDate
-                                                                        && x.Date <= endDate
+                                                                        && x.InDate >= startDate
+                                                                        && x.InDate <= endDate
                                                                         && x.OrganizationId == _organizationId.Value);
 
             var persons = _unitOfWork.People.Get(p => p.OrganizationId == _organizationId,
@@ -110,14 +110,14 @@ namespace Kiddywee.Controllers
 
                 var staffInClass = staffInOrganization.Where(x => x.PersonToClasses.Any(p => p.IsActive && p.ClassId == cls.Id));
                 var childrenInClass = childrenInOrganization.Where(x => x.PersonToClasses.Any(p => p.IsActive && p.ClassId == cls.Id));
-                 
+
                 int staffInCount = 0;
                 int childrenInCount = 0;
 
                 foreach (var item in staffInClass)
                 {
-                    var staffLastAttendance = attendanceForClass.Where(x => x.PersonId == item.Id).OrderByDescending(e => e.DateOfCreation).FirstOrDefault();
-                    if (staffLastAttendance != null && staffLastAttendance.AttendanceType == EnumAttendanceType.In)
+                    var attendance = attendanceForClass.FirstOrDefault(x => x.PersonId == item.Id);
+                    if (attendance != null && !attendance.OutDate.HasValue)
                     {
                         ++staffInCount;
                     }
@@ -125,8 +125,8 @@ namespace Kiddywee.Controllers
 
                 foreach (var item in childrenInClass)
                 {
-                    var childLastAttendance = attendanceForClass.Where(x => x.PersonId == item.Id).OrderByDescending(e => e.DateOfCreation).FirstOrDefault();
-                    if (childLastAttendance != null && childLastAttendance.AttendanceType == EnumAttendanceType.In)
+                    var attendance = attendanceForClass.FirstOrDefault(x => x.PersonId == item.Id);
+                    if (attendance != null && !attendance.OutDate.HasValue)
                     {
                         ++childrenInCount;
                     }
@@ -138,12 +138,29 @@ namespace Kiddywee.Controllers
                         ClassName = cls.Name,
                         ClassId = cls.Id,
                         StaffIn = staffInCount,
-                        ChildrenIn = childrenInCount
+                        ChildrenIn = childrenInCount,
+                        StaffTotal = staffInClass.Count(),
+                        ChildrenTotal = childrenInClass.Count()
                     });
             }
 
-            var jsonresult = result.Select(p => new { ClassId = p.ClassId.ToString(), StaffIn = p.StaffIn, ChildrenIn = p.ChildrenIn }).ToList();
-            jsonresult.Add(new { ClassId = "0", StaffIn = result.Sum(p=>p.StaffIn), ChildrenIn = result.Sum(p=>p.ChildrenIn) }); 
+            var jsonresult = result.Select(p => new
+            {
+                ClassId = p.ClassId.ToString(),
+                StaffIn = p.StaffIn,
+                StaffTotal = p.StaffTotal,
+                ChildrenIn = p.ChildrenIn,
+                ChildrenTotal = p.ChildrenTotal
+            }).ToList();
+
+            jsonresult.Add(new
+            {
+                ClassId = "0",
+                StaffIn = result.Sum(p => p.StaffIn),
+                StaffTotal = result.Sum(p => p.StaffTotal),
+                ChildrenIn = result.Sum(p => p.ChildrenIn),
+                ChildrenTotal = result.Sum(p => p.ChildrenTotal)
+            }); ;
             return Json(jsonresult.OrderBy(p => p.ClassId).ToList());
         }
     }

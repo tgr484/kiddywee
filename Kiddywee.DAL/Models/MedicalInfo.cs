@@ -11,10 +11,10 @@ namespace Kiddywee.DAL.Models
         public Guid PersonId { get; set; }
         public Person Person { get; set; }
 
-        public string FileName { get; set; }
-        public string FileExtention { get; set; }
-        public string FileRealName { get; set; }
-        public byte[] FileData { get; set; }
+        public Guid FileId { get; set; }
+
+        public File File { get; set; }
+        
 
 
         public static MedicalInfo Create(IFormFile file, string createdById, Guid personId)
@@ -23,10 +23,14 @@ namespace Kiddywee.DAL.Models
             {
                 CreatedById = createdById,
                 PersonId = personId,
-                FileRealName = file.FileName,
-                FileExtention = file.ContentType,
-                FileName = Guid.NewGuid().ToString(),
-                FileData = file.GetBytes()
+                File = new File()
+                {
+                    Extention = file.ContentType,
+                    Name = file.FileName,
+                    RealName = Guid.NewGuid().ToString(),
+                    Data = file.GetBytes(),
+                    CreatedById = createdById
+                }                
             }; 
             return result;
         }

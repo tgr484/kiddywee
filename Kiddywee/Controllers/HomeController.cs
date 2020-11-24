@@ -38,8 +38,8 @@ namespace Kiddywee.Controllers
             
             var attendancesForDay = 
                 await _unitOfWork.Attendances.GetAsync(x => x.IsActive
-                                                                        && x.Date >= startDate
-                                                                        && x.Date <= endDate
+                                                                        && x.InDate >= startDate
+                                                                        && x.InDate <= endDate
                                                                         && x.OrganizationId == _organizationId.Value, include: x=> x.Include(p=> p.Person));
             var model = Attendance.Init(attendancesForDay);
             
