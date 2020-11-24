@@ -1,0 +1,13 @@
+﻿@model List<AttendanceViewModel>
+@{
+    Layout = null;
+}
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Name</td>
+        <td>@item.InDate</td>
+        <td>@item.OutDate</td>
+        <td>@item.Hours</td>
+    </tr>
+}

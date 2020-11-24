@@ -75,7 +75,7 @@
     <script>
         $(document).ready(function () {
             loadClass("person/");
-
+            loadAttendance("attendance/");
             $('.owl-carousel').owlCarousel({
                 loop: false,
                 margin: 10,
@@ -133,6 +133,18 @@
                 })
             }
 
+            function loadAttendance(url) {
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'text',
+                    success: function (data) {
+                        $("#attendanceTableBody").html(data);
+                    }
+                });
+            };
+
+
             function ajaxAction(url, that) {
                 $.ajax({
                     type: "GET",
@@ -174,6 +186,8 @@
                                 $('#kids-in-' + value.classId).html(value.childrenIn);
                                 $('#staff-in-' + value.classId).html(value.staffIn);
                             });
+                            loadAttendance("attendance/");
+
                         });
 
                     },

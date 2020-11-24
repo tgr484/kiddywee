@@ -1,6 +1,7 @@
 ﻿using Kiddywee.DAL.Interfaces;
 using Kiddywee.DAL.Models;
 using Kiddywee.DAL.ViewModels.PersonViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace Kiddywee.Controllers
 {
+    [Authorize]
+
     public class PersonController : BaseController
     {
         public PersonController(IUnitOfWork unitOfWork) : base(unitOfWork)
