@@ -45,18 +45,18 @@ namespace Kiddywee.DAL.Models
         {
             var result = new List<AttendanceViewModel>();
 
-            ////var grouppedByPersonAttendanceList = attendancesForToday.GroupBy(x => x.PersonId);            
-            //foreach(var item in attendancesForToday)
-            //{
-            //    var attendance = new AttendanceViewModel()
-            //    {
-            //        AttendanceId = item.Id,
-            //        Name = item.Person.FullName,
-            //        AttendanceType = item.AttendanceType,
-            //        Date = item.Date 
-            //    };
-            //    result.Add(attendance);
-            //} 
+            var grouppedByPersonAttendanceList = attendancesForToday.GroupBy(x => x.PersonId);
+            foreach (var item in attendancesForToday)
+            {
+                var attendance = new AttendanceViewModel()
+                {
+                    AttendanceId = item.Id,
+                    Name = item.Person.FullName,
+                    InDate = item.InDate,
+                    OutDate = item.OutDate
+                };
+                result.Add(attendance);
+            }
             return result;
         }
     }

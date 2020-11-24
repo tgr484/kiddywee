@@ -23,10 +23,7 @@
                 </div>
             </div>
         </div>
-
-        @*<div>
-            <input type="date" />
-        </div>*@
+      
 
         <div class="table-responsive m-t-40">
             <table id="attendance"
@@ -35,23 +32,29 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Time</th>
+                        <th>In</th>
+                        <th>Out</th>
                         <th>Hours</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
                         <th>Name</th>
-                        <th>Time</th>
+                        <th>In</th>
+                        <th>Out</th>
                         <th>Hours</th>
                     </tr>
                 </tfoot>
                 <tbody>
-                    <tr>
-                        <th>Name</th>
-                        <th>Time</th>
-                        <th>Hours</th>
-                    </tr>
+                    @foreach(var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.InDate</td>
+                            <td>@item.OutDate</td>
+                            <td>@item.Hours</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>

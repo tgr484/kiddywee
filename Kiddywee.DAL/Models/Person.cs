@@ -84,13 +84,14 @@ namespace Kiddywee.DAL.Models
 
                 var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
                 var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
-                var attendance = item.Attendances
-                                            .FirstOrDefault(x => x.IsActive && x.InDate >= startDate && x.InDate <= endDate);
-                
-                bool isIn = false;
-                if (attendance != null && !attendance.OutDate.HasValue)
+                var attendance = item.Attendances.FirstOrDefault(x => x.IsActive && x.InDate >= startDate && x.InDate <= endDate);
+
+                DateTime? checkInTime = null;
+                DateTime? checkOutTime = null;
+                if (attendance != null)
                 {
-                    isIn = true;
+                    checkInTime = attendance.InDate;
+                    checkOutTime = attendance.OutDate;
                 }
 
 
@@ -103,7 +104,8 @@ namespace Kiddywee.DAL.Models
                     StaffInfo = item.StaffInfo,
                     ChildInfo = item.ChildInfo,
                     ClassId = classId,
-                    IsIn = isIn
+                    CheckInTime = checkInTime,
+                    CheckOutTime = checkOutTime
                 };
                 result.Add(viewModel);
             } 

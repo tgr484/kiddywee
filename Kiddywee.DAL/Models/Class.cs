@@ -34,50 +34,52 @@ namespace Kiddywee.DAL.Models
 
         public int? TeacherStudentRatio { get; set; }
 
-        //public static List<ClassViewModel> Init(List<Class> classes, List<Attendance> attendances, List<Person> persons)
-        //{
-        //    var result = new List<ClassViewModel>();
-        //    var staffInOrganization = persons.Where(x => x.StaffInfo != null);
-        //    var childrenInOrganization = persons.Where(x => x.ChildInfo != null);
-        //    foreach (var cls in classes)
-        //    {
-        //        var attendanceForClass = attendances.Where(x => x.ClassId == cls.Id);
-                
-        //        var staffInClass = staffInOrganization.Where(x => x.PersonToClasses.Any(p => p.IsActive && p.ClassId == cls.Id));
-        //        var childrenInClass = childrenInOrganization.Where(x => x.PersonToClasses.Any(p => p.IsActive && p.ClassId == cls.Id));
-                
-                
-        //        int staffInCount = 0;
-        //        int childrenInCount = 0;
+        public static List<ClassViewModel> Init(List<Class> classes, List<Attendance> attendances, List<Person> persons)
+        {
+            var result = new List<ClassViewModel>();
+            var staffInOrganization = persons.Where(x => x.StaffInfo != null);
+            var childrenInOrganization = persons.Where(x => x.ChildInfo != null);
+            foreach (var cls in classes)
+            {
+                var attendanceForClass = attendances.Where(x => x.ClassId == cls.Id);
 
-        //        foreach(var item in staffInClass)
-        //        {
-        //            var staffLastAttendance = attendanceForClass.Where(x => x.PersonId == item.Id).OrderByDescending(e => e.DateOfCreation).FirstOrDefault();
-        //            if (staffLastAttendance != null && staffLastAttendance.AttendanceType == EnumAttendanceType.In)
-        //            {
-        //                ++staffInCount;
-        //            }
-        //        }
+                var staffInClass = staffInOrganization.Where(x => x.PersonToClasses.Any(p => p.IsActive && p.ClassId == cls.Id));
+                var childrenInClass = childrenInOrganization.Where(x => x.PersonToClasses.Any(p => p.IsActive && p.ClassId == cls.Id));
 
-        //        foreach (var item in childrenInClass)
-        //        {
-        //            var childLastAttendance = attendanceForClass.Where(x => x.PersonId == item.Id).OrderByDescending(e => e.DateOfCreation).FirstOrDefault();
-        //            if (childLastAttendance != null && childLastAttendance.AttendanceType == EnumAttendanceType.In)
-        //            {
-        //                ++childrenInCount;
-        //            }
-        //        }
+                int staffInCount = 0;
+                int childrenInCount = 0;
 
-        //        result.Add(
-        //            new ClassViewModel() {
-        //                    ClassName = cls.Name, 
-        //                    ClassId = cls.Id,
-        //                    StaffIn = staffInCount,
-        //                    ChildrenIn = childrenInCount
-        //        });
-        //    }
-        //    return result;
-        //}
+                foreach (var item in staffInClass)
+                {
+                    var attendance = attendanceForClass.FirstOrDefault(x => x.PersonId == item.Id);
+                    if (attendance != null && !attendance.OutDate.HasValue)
+                    {
+                        ++staffInCount;
+                    }
+                }
+
+                foreach (var item in childrenInClass)
+                {
+                    var attendance = attendanceForClass.FirstOrDefault(x => x.PersonId == item.Id);
+                    if (attendance != null && !attendance.OutDate.HasValue)
+                    {
+                        ++childrenInCount;
+                    }
+                }
+
+                result.Add(
+                    new ClassViewModel()
+                    {
+                        ClassName = cls.Name,
+                        ClassId = cls.Id,
+                        StaffIn = staffInCount,
+                        ChildrenIn = childrenInCount,
+                        StaffTotal = staffInClass.Count(),
+                        ChildrenTotal = childrenInClass.Count()
+                    });
+            }
+            return result;
+        }
 
 
         public void Update(ClassEditViewModel model)

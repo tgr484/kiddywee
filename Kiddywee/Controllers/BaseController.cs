@@ -31,25 +31,25 @@ namespace Kiddywee.Controllers
                 _organizationId = context.HttpContext.User.Identity.GetOrganizationId();
             }
 
-            //SetClasses(); 
+            SetClasses();
             base.OnActionExecuting(context);
         }
 
-        //private void SetClasses()
-        //{
-        //    var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-        //    var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+        private void SetClasses()
+        {
+            var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
 
-        //    var classes = _unitOfWork.Classes.Get(p=>p.IsActive && p.OrganizationId == _organizationId.Value);
-        //    var attendancesForToday = _unitOfWork.Attendances.Get(x => x.IsActive
-        //                                                                && x.Date >= startDate
-        //                                                                && x.Date <= endDate
-        //                                                                && x.OrganizationId == _organizationId.Value);
+            var classes = _unitOfWork.Classes.Get(p => p.IsActive && p.OrganizationId == _organizationId.Value);
+            var attendancesForToday = _unitOfWork.Attendances.Get(x => x.IsActive
+                                                                        && x.InDate >= startDate
+                                                                        && x.InDate <= endDate
+                                                                        && x.OrganizationId == _organizationId.Value);
 
-        //    var persons = _unitOfWork.People.Get(p => p.OrganizationId == _organizationId, 
-        //        include: p => p.Include(x => x.StaffInfo).Include(x => x.ChildInfo).Include(p => p.PersonToClasses));
+            var persons = _unitOfWork.People.Get(p => p.OrganizationId == _organizationId,
+                include: p => p.Include(x => x.StaffInfo).Include(x => x.ChildInfo).Include(p => p.PersonToClasses));
 
-        //    ViewBag.Classes = Class.Init(classes, attendancesForToday, persons);
-        //} 
+            ViewBag.Classes = Class.Init(classes, attendancesForToday, persons);
+        }
     }
 }

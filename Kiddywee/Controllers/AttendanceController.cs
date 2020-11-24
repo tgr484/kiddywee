@@ -27,13 +27,13 @@ namespace Kiddywee.Controllers
             var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
 
-            var inAttendance = await _unitOfWork.Attendances.GetOneAsync(x => x.IsActive && x.InDate >= startDate && x.InDate <= endDate);
+            var inAttendance = await _unitOfWork.Attendances.GetOneAsync(x => x.IsActive && x.PersonId == personId && x.InDate >= startDate && x.InDate <= endDate);
             //Checkout
             if(inAttendance != null)
             {
                 if(inAttendance.OutDate.HasValue)
                 {
-                    return Json(new JsonMessage { Color = "#ff6849", Message = "Person already checked out", Header = "Error", Icon = "success" });
+                    return Json(new JsonMessage { Color = "#ff0000", Message = "Person already checked out", Header = "Error", Icon = "success" });
                 }
                 else
                 {
@@ -44,7 +44,7 @@ namespace Kiddywee.Controllers
                     {
                         return Json(new JsonMessage { Color = "#ff6849", Message = "Person checked out", Header = "Success", Icon = "success" });
                     }
-                    return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error" });
+                    return Json(new JsonMessage { Color = "#ff0000", Message = "Error", Header = "Error", Icon = "error" });
                 }
             }
             //Checkin
@@ -59,7 +59,7 @@ namespace Kiddywee.Controllers
                     return Json(new JsonMessage { Color = "#ff6849", Message = "Person checked in", Header = "Success", Icon = "success" });
                 }
 
-                return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error" });
+                return Json(new JsonMessage { Color = "#ff0000", Message = "Error", Header = "Error", Icon = "error" });
             }            
         }
     }

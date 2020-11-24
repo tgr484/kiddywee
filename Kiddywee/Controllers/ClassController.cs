@@ -104,45 +104,7 @@ namespace Kiddywee.Controllers
 
             var staffInOrganization = persons.Where(x => x.StaffInfo != null);
             var childrenInOrganization = persons.Where(x => x.ChildInfo != null);
-            foreach (var cls in classes)
-            {
-                var attendanceForClass = attendancesForToday.Where(x => x.ClassId == cls.Id);
-
-                var staffInClass = staffInOrganization.Where(x => x.PersonToClasses.Any(p => p.IsActive && p.ClassId == cls.Id));
-                var childrenInClass = childrenInOrganization.Where(x => x.PersonToClasses.Any(p => p.IsActive && p.ClassId == cls.Id));
-
-                int staffInCount = 0;
-                int childrenInCount = 0;
-
-                foreach (var item in staffInClass)
-                {
-                    var attendance = attendanceForClass.FirstOrDefault(x => x.PersonId == item.Id);
-                    if (attendance != null && !attendance.OutDate.HasValue)
-                    {
-                        ++staffInCount;
-                    }
-                }
-
-                foreach (var item in childrenInClass)
-                {
-                    var attendance = attendanceForClass.FirstOrDefault(x => x.PersonId == item.Id);
-                    if (attendance != null && !attendance.OutDate.HasValue)
-                    {
-                        ++childrenInCount;
-                    }
-                }
-
-                result.Add(
-                    new ClassViewModel()
-                    {
-                        ClassName = cls.Name,
-                        ClassId = cls.Id,
-                        StaffIn = staffInCount,
-                        ChildrenIn = childrenInCount,
-                        StaffTotal = staffInClass.Count(),
-                        ChildrenTotal = childrenInClass.Count()
-                    });
-            }
+            result = Class.Init(classes, attendancesForToday, persons);            
 
             var jsonresult = result.Select(p => new
             {
