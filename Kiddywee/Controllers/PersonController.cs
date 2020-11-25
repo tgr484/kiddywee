@@ -22,10 +22,10 @@ namespace Kiddywee.Controllers
 
 
 
-        public async Task<IActionResult> Index(Guid? id)
+        public async Task<IActionResult> Index(Guid? classId)
         {
             var people = new List<Person>();
-            if (!id.HasValue)
+            if (!classId.HasValue)
             {
                 people = await _unitOfWork.People
                     .GetAsync(p => p.OrganizationId == _organizationId, 
@@ -37,7 +37,7 @@ namespace Kiddywee.Controllers
             else
             {
                 people = await _unitOfWork.People.GetAsync(p => p.OrganizationId == _organizationId
-                    && p.PersonToClasses.Any(x => x.ClassId == id.Value && x.IsActive),
+                    && p.PersonToClasses.Any(x => x.ClassId == classId.Value && x.IsActive),
                     include: p => p.Include(x => x.PersonToClasses)
                                    .Include(x => x.StaffInfo)
                                    .Include(x => x.ChildInfo)
@@ -45,7 +45,7 @@ namespace Kiddywee.Controllers
             }
 
 
-            var model = Person.Init(people);
+            var model = Person.Init(people, classId);
             return View(model);
         }
         #region Create

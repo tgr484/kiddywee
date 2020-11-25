@@ -33,16 +33,16 @@ namespace Kiddywee.DAL.Models
 
         public List<PersonToContact> Contacts { get; set; }
 
-        public Guid? OrganizationId { get; set; } 
+        public Guid? OrganizationId { get; set; }
 
         public Organization Orgnization { get; set; }
         public Guid? StaffInfoId { get; set; }
         public StaffInfo StaffInfo { get; set; }
 
         public List<Attendance> Attendances { get; set; }
-        public List<PersonToClass> PersonToClasses { get; set; }      
+        public List<PersonToClass> PersonToClasses { get; set; }
 
-        public string FullName { get {return $"{FirstName} {LastName}";}}
+        public string FullName { get { return $"{FirstName} {LastName}"; } }
 
 
         public static Person Create(string firstName, string lastName)
@@ -52,7 +52,8 @@ namespace Kiddywee.DAL.Models
 
         public static Person Create(ChildCreateViewModel model, Guid organizationId)
         {
-            return new Person() {
+            return new Person()
+            {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 DateOfBirth = model.DateOfBirth,
@@ -69,16 +70,24 @@ namespace Kiddywee.DAL.Models
                 OrganizationId = organizationId,
             };
         }
-        public static List<PersonViewModel> Init(List<Person> people)
+        public static List<PersonViewModel> Init(List<Person> people, Guid? classId)
         {
             var result = new List<PersonViewModel>();
             foreach (var item in people)
             {
-                var classId = item.PersonToClasses.FirstOrDefault(x => x.IsActive)?.ClassId;
+                //var classId = item.PersonToClasses.FirstOrDefault(x => x.IsActive)?.ClassId;
 
                 var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
                 var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
-                var attendance = item.Attendances.FirstOrDefault(x => x.IsActive && x.InDate >= startDate && x.InDate <= endDate);
+                Attendance attendance = null;
+                if (classId.HasValue)
+                {
+                    attendance = item.Attendances.FirstOrDefault(x => x.IsActive && x.InDate >= startDate && x.InDate <= endDate && x.ClassId == classId.Value);
+                }
+                else
+                {
+                    attendance = item.Attendances.Where(x => x.IsActive && x.InDate >= startDate && x.InDate <= endDate).OrderBy(x => x.InDate).FirstOrDefault();
+                }
 
                 DateTime? checkInTime = null;
                 DateTime? checkOutTime = null;
@@ -86,6 +95,12 @@ namespace Kiddywee.DAL.Models
                 {
                     checkInTime = attendance.InDate;
                     checkOutTime = attendance.OutDate;
+                }
+
+                ///Костыль для чекаута из школы
+                if (classId.HasValue == false)
+                {
+                    checkOutTime = null;
                 }
 
 
@@ -102,9 +117,9 @@ namespace Kiddywee.DAL.Models
                     CheckOutTime = checkOutTime
                 };
                 result.Add(viewModel);
-            } 
+            }
             return result;
-        }        
+        }
 
         public void Update(ChildEditViewModel model)
         {
@@ -118,7 +133,7 @@ namespace Kiddywee.DAL.Models
             ChildInfo.WeaklySchedule = model.WeaklySchedule?.Select(x => Convert.ToInt32(x)).ToList();
             ChildInfo.PipeLineType = model.PipeLineType;
             ChildInfo.NextMedical = model.NextMedical;
-            ChildInfo.Notes = model.Notes;             
+            ChildInfo.Notes = model.Notes;
         }
 
         public void Update(StaffEditViewModel model)
