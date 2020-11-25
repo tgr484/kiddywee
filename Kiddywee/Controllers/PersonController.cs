@@ -28,7 +28,7 @@ namespace Kiddywee.Controllers
             if (!classId.HasValue)
             {
                 people = await _unitOfWork.People
-                    .GetAsync(p => p.OrganizationId == _organizationId, 
+                    .GetAsync(p => p.OrganizationId == _organizationId,
                     include: p => p.Include(x => x.StaffInfo)
                                    .Include(x => x.ChildInfo)
                                    .Include(x => x.PersonToClasses)
@@ -70,7 +70,7 @@ namespace Kiddywee.Controllers
                 {
                     if (model.MedicalInfo != null)
                     {
-                        var medicalInfo = FileInfo.Create(model.MedicalInfo, _userId, DAL.Enum.EnumFileType.MedicalInfo,person.Id);
+                        var medicalInfo = FileInfo.Create(model.MedicalInfo, _userId, DAL.Enum.EnumFileType.MedicalInfo, person.Id);
                         await _unitOfWork.FileInfos.Insert(medicalInfo);
                         await _unitOfWork.SaveFileAsync();
                     }
@@ -83,11 +83,11 @@ namespace Kiddywee.Controllers
                     if (staffInfoResult.Succeeded)
                     {
                         person.StaffInfoId = staffInfo.Id;
-                        foreach(var item in model.ClassId)
+                        foreach (var item in model.ClassId)
                         {
                             var personToClass = PersonToClass.Create(person.Id, item, _userId);
                             await _unitOfWork.PersonToClasses.Insert(personToClass);
-                        }                        
+                        }
                         await _unitOfWork.SaveAsync();
                     }
                 }
@@ -117,7 +117,7 @@ namespace Kiddywee.Controllers
                 {
                     if (model.MedicalInfo != null)
                     {
-                        var medicalInfo = FileInfo.Create(model.MedicalInfo, _userId, DAL.Enum.EnumFileType.MedicalInfo,person.Id);
+                        var medicalInfo = FileInfo.Create(model.MedicalInfo, _userId, DAL.Enum.EnumFileType.MedicalInfo, person.Id);
                         await _unitOfWork.FileInfos.Insert(medicalInfo);
                         await _unitOfWork.SaveFileAsync();
                     }
@@ -129,11 +129,11 @@ namespace Kiddywee.Controllers
                     if (childResult.Succeeded)
                     {
                         person.ChildInfoId = childInfo.Id;
-                        foreach(var item in model.ClassId)
+                        foreach (var item in model.ClassId)
                         {
                             var personToClass = PersonToClass.Create(person.Id, item, _userId);
                             await _unitOfWork.PersonToClasses.Insert(personToClass);
-                        }                        
+                        }
 
                         await _unitOfWork.SaveAsync();
                     }
@@ -157,7 +157,8 @@ namespace Kiddywee.Controllers
             var classes = await _unitOfWork.Classes.GetAsync(x => x.OrganizationId == _organizationId);
 
             var model = StaffInfo.Init(person, classes);
-
+            var medicalInfo = await _unitOfWork.FileInfos.GetOneAsync(x => x.PersonId == model.PersonId && x.FileType == DAL.Enum.EnumFileType.MedicalInfo);
+            model.MedicalInfo = medicalInfo;
             return View(model);
         }
 
@@ -181,7 +182,7 @@ namespace Kiddywee.Controllers
 
                     personToClasses.ForEach(x => x.IsActive = false);
                     _unitOfWork.PersonToClasses.UpdateRange(personToClasses);
-                    foreach(var item in model.ClassId)
+                    foreach (var item in model.ClassId)
                     {
                         await _unitOfWork.PersonToClasses.Insert(PersonToClass.Create(person.Id, item, _userId));
                     }
@@ -201,7 +202,8 @@ namespace Kiddywee.Controllers
             var classes = await _unitOfWork.Classes.GetAsync(x => x.OrganizationId == _organizationId);
 
             var model = ChildInfo.Init(person, classes);
-
+            var medicalInfo = await _unitOfWork.FileInfos.GetOneAsync(x => x.PersonId == model.PersonId && x.FileType == DAL.Enum.EnumFileType.MedicalInfo);
+            model.MedicalInfo = medicalInfo;
             return View(model);
         }
 
@@ -212,7 +214,7 @@ namespace Kiddywee.Controllers
             {
                 var person = await _unitOfWork.People.GetOneAsync(x => x.Id == model.PersonId,
                                                                    include: p => p.Include(w => w.ChildInfo)
-                                                                                 
+
                                                                                   .Include(r => r.PersonToClasses));
 
                 person.Update(model);
@@ -225,7 +227,7 @@ namespace Kiddywee.Controllers
 
                     personToClasses.ForEach(x => x.IsActive = false);
                     _unitOfWork.PersonToClasses.UpdateRange(personToClasses);
-                    foreach(var item in model.ClassId)
+                    foreach (var item in model.ClassId)
                     {
                         await _unitOfWork.PersonToClasses.Insert(PersonToClass.Create(person.Id, item, _userId));
                     }

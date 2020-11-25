@@ -94,8 +94,13 @@
                 <text>&nbsp; &nbsp; &nbsp;</text>
             }
         </div>
-
-
+        @if (Model.MedicalInfo != null)
+        {
+            <div class="form-group">
+                <label for="example-email">Medical form</label><br />
+                @Html.ActionLink(Model.MedicalInfo.Name, "DownloadFile", "Download", new { fileId = Model.MedicalInfo.Id })
+            </div>
+        }
         <input type="hidden" asp-for="PersonId" />
 
     </form>

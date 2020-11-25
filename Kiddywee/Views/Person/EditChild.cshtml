@@ -73,6 +73,13 @@
             <label for="example-email">Pipeline Type<span class="help"></span></label>
             <select class="form-control " asp-for="PipeLineType" asp-items="Html.GetEnumSelectList<EnumPipeLineType>()"></select>
         </div>
+        @if (Model.MedicalInfo != null)
+        {
+            <div class="form-group">
+                <label for="example-email">Medical form</label><br />
+                @Html.ActionLink(Model.MedicalInfo.Name, "DownloadFile", "Download", new { fileId = Model.MedicalInfo.Id })
+            </div>
+        }
         <input type="hidden" asp-for="PersonId" />
 
     </form>

@@ -51,5 +51,8 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
 
         public DateTime? Scr { get; set; }
         public DateTime? FingerPrinting { get; set; }
+
+        public FileInfo MedicalInfo { get; set; }
+
     }
 }

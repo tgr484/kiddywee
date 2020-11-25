@@ -41,6 +41,7 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         public DateTime? DateOfBirth { get; set; }
 
         public Guid PersonId { get; set; }
-   
+        public FileInfo MedicalInfo { get; set; }
+
     }
 }
