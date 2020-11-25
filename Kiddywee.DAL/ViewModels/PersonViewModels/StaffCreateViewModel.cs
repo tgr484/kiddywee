@@ -9,7 +9,15 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
 {
     public class StaffCreateViewModel
     {
-        public Guid ClassId { get; set; }
+        public StaffCreateViewModel()
+        {
+            Classes = new List<Class>();
+            Organizations = new List<Organization>();
+            Schedule = new List<EnumWeeklyScheduleType>();
+            ClassId = new List<Guid>();
+        }
+
+        public List<Guid> ClassId { get; set; }
         public Guid OrganizationId { get; set; }
 
         public List<Class> Classes { get; set; }

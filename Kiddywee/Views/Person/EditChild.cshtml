@@ -1,6 +1,6 @@
 ﻿@model ChildEditViewModel
 @{ 
-    Layout = null;
+    Layout = "~/Views/Shared/_NullLayout.cshtml";
 }
 <div class="modal-header">
     <h4 class="modal-title" id="myLargeModalLabel">Edit Child</h4>
@@ -10,22 +10,24 @@
     <form class="form-material" id="SavePerson" asp-action="EditChild" asp-controller="Person"
           method="post" enctype="multipart/form-data">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label>Firstname <span class="help"></span></label>
                     <input type="text" asp-for="FirstName" class="form-control form-control-line" placeholder="Enter firstname...">
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label>Lastname<span class="help"></span></label>
                     <input type="text" asp-for="LastName" class="form-control form-control-line" placeholder="Enter lastname">
                 </div>
             </div>
-            <div class="col-md-4">
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <div class="form-group">
                     <label>Class<span class="help"></span></label>
-                    <select class="form-control" asp-for="ClassId" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
+                    <select class="select2 select2-multiple" data-style="form-control form-control-line" asp-for="ClassId" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
                 </div>
             </div>
         </div>
@@ -53,8 +55,8 @@
             <label>Weekly schedule<span class="help"></span></label> <br />
             @foreach (EnumWeeklyScheduleType item in Enum.GetValues(typeof(EnumWeeklyScheduleType)))
             {
-                <input name="WeaklySchedule" type="checkbox" value="@item" 
-                       checked="@Model.WeaklySchedule.Any(p=>p == item)" /> @item
+                <input name="WeaklySchedule" type="checkbox" value="@item"
+                       checked="@Model.WeaklySchedule?.Any(p=>p == item)" /> @item
                     <text>&nbsp; &nbsp; &nbsp;</text>
                 }
         </div>
@@ -62,17 +64,17 @@
             <label>Daily schedule<span class="help"></span></label> <br />
             @foreach (EnumDailyScheduleType item in Enum.GetValues(typeof(EnumDailyScheduleType)))
             {
-                <input name="DailySchedule" type="checkbox" value="@item" 
-                       checked="@Model.DailySchedule.Any(p=>p == item)" /> @item
-                <text>&nbsp; &nbsp;</text>
-            }
+                <input name="DailySchedule" type="checkbox" value="@item"
+                       checked="@Model.DailySchedule?.Any(p=>p == item)" /> @item
+                    <text>&nbsp; &nbsp;</text>
+                }
         </div>
         <div class="form-group">
             <label for="example-email">Pipeline Type<span class="help"></span></label>
             <select class="form-control " asp-for="PipeLineType" asp-items="Html.GetEnumSelectList<EnumPipeLineType>()"></select>
         </div>
         <input type="hidden" asp-for="PersonId" />
-        
+
     </form>
 </div>
 <div class="modal-footer">

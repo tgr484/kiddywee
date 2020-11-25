@@ -52,9 +52,8 @@ namespace Kiddywee.DAL.Models
         {
             var ci = person.ChildInfo != null ? person.ChildInfo : new ChildInfo();
 
-            var classId = person.PersonToClasses.FirstOrDefault(x => x.PersonId == person.Id && x.IsActive == true) 
-                != null ? person.PersonToClasses.FirstOrDefault(x => x.PersonId == person.Id && x.IsActive == true).ClassId 
-                        : new Guid();
+            var classId = person.PersonToClasses.Where(x => x.PersonId == person.Id && x.IsActive == true).Select(x => x.ClassId).ToList(); 
+                
             return new ChildEditViewModel()
             {
                 Classes = classes,

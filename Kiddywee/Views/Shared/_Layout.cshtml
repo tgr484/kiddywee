@@ -58,6 +58,8 @@
         <div class="page-wrapper">
             <div class="container-fluid">
                 <partial name="_PartialClasses" />
+
+             
                 @RenderBody()
             </div>
         </div>
@@ -74,6 +76,7 @@
     @await RenderSectionAsync("Script", false)
     <script>
         $(document).ready(function () {
+
             loadClass("person/",0);
             loadAttendance("");
             $('.owl-carousel').owlCarousel({

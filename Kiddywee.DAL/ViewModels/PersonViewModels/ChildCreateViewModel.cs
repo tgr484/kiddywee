@@ -16,7 +16,7 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         }
         public List<Class> Classes { get; set; }
 
-        public Guid ClassId { get; set; } 
+        public List<Guid> ClassId { get; set; } 
 
         public string Address { get; set; }
 

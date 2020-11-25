@@ -12,10 +12,12 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         {
             Classes = new List<Class>();
             Schedule = new List<EnumWeeklyScheduleType>();
+            Organizations = new List<Organization>();
+            ClassId = new List<Guid>();
         }
 
         public Guid PersonId { get; set; }
-        public Guid ClassId { get; set; }
+        public List<Guid> ClassId { get; set; }
         public Guid OrganizationId { get; set; }
 
         public List<Class> Classes { get; set; }

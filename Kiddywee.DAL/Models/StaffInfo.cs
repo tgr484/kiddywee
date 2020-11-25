@@ -71,9 +71,8 @@ namespace Kiddywee.DAL.Models
         {
             var si = person.StaffInfo != null ? person.StaffInfo : new StaffInfo();
 
-            var classId = person.PersonToClasses.FirstOrDefault(x => x.PersonId == person.Id && x.IsActive == true)
-                != null ? person.PersonToClasses.FirstOrDefault(x => x.PersonId == person.Id && x.IsActive == true).ClassId
-                        : new Guid();
+            var classId = person.PersonToClasses.Where(x => x.PersonId == person.Id && x.IsActive == true).Select(x => x.ClassId).ToList();
+               
             return new StaffEditViewModel()
             {
                 PersonId = person.Id,

@@ -1,6 +1,6 @@
 ﻿@model StaffCreateViewModel
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_NullLayout.cshtml";
 }
 
 <div class="modal-header">
@@ -10,22 +10,24 @@
 <div class="modal-body">
     <form class="form-material" id="SavePerson" asp-action="CreateStaff" asp-controller="Person" method="post">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label>Firstname <span class="help"></span></label>
                     <input type="text" asp-for="FirstName" class="form-control form-control-line" placeholder="Enter firstname...">
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label>Lastname<span class="help"></span></label>
                     <input type="text" asp-for="LastName" class="form-control form-control-line" placeholder="Enter lastname">
                 </div>
             </div>
-            <div class="col-md-4">
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <div class="form-group">
-                    <label>Class</label>
-                    <select class="form-control" asp-for="ClassId" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
+                    <label>Class<span class="help"></span></label>
+                    <select class="select2 select2-multiple" data-style="form-control form-control-line" asp-for="ClassId" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
                 </div>
             </div>
         </div>

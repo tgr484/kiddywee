@@ -13,11 +13,13 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         public ChildEditViewModel()
         {
             Classes = new List<Class>();
+            WeaklySchedule = new List<EnumWeeklyScheduleType>();
+            DailySchedule = new List<EnumDailyScheduleType>();
         }
 
         public List<Class> Classes { get; set; }
 
-        public Guid ClassId { get; set; }
+        public List<Guid> ClassId { get; set; }
 
         public string Address { get; set; }
 

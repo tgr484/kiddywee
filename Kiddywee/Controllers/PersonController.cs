@@ -61,7 +61,6 @@ namespace Kiddywee.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateStaff(StaffCreateViewModel model)
         {
-
             if (ModelState.IsValid)
             {
                 var person = Person.Create(model, _organizationId.Value);
@@ -84,9 +83,11 @@ namespace Kiddywee.Controllers
                     if (staffInfoResult.Succeeded)
                     {
                         person.StaffInfoId = staffInfo.Id;
-
-                        var personToClass = PersonToClass.Create(person.Id, model.ClassId, _userId);
-                        await _unitOfWork.PersonToClasses.Insert(personToClass);
+                        foreach(var item in model.ClassId)
+                        {
+                            var personToClass = PersonToClass.Create(person.Id, item, _userId);
+                            await _unitOfWork.PersonToClasses.Insert(personToClass);
+                        }                        
                         await _unitOfWork.SaveAsync();
                     }
                 }
@@ -128,8 +129,11 @@ namespace Kiddywee.Controllers
                     if (childResult.Succeeded)
                     {
                         person.ChildInfoId = childInfo.Id;
-                        var personToClass = PersonToClass.Create(person.Id, model.ClassId, _userId);
-                        await _unitOfWork.PersonToClasses.Insert(personToClass);
+                        foreach(var item in model.ClassId)
+                        {
+                            var personToClass = PersonToClass.Create(person.Id, item, _userId);
+                            await _unitOfWork.PersonToClasses.Insert(personToClass);
+                        }                        
 
                         await _unitOfWork.SaveAsync();
                     }
@@ -177,7 +181,10 @@ namespace Kiddywee.Controllers
 
                     personToClasses.ForEach(x => x.IsActive = false);
                     _unitOfWork.PersonToClasses.UpdateRange(personToClasses);
-                    await _unitOfWork.PersonToClasses.Insert(PersonToClass.Create(person.Id, model.ClassId, _userId));
+                    foreach(var item in model.ClassId)
+                    {
+                        await _unitOfWork.PersonToClasses.Insert(PersonToClass.Create(person.Id, item, _userId));
+                    }
                     var result2 = await _unitOfWork.SaveAsync();
                 }
                 return Redirect(Request.Headers["Referer"].ToString());
@@ -218,7 +225,10 @@ namespace Kiddywee.Controllers
 
                     personToClasses.ForEach(x => x.IsActive = false);
                     _unitOfWork.PersonToClasses.UpdateRange(personToClasses);
-                    await _unitOfWork.PersonToClasses.Insert(PersonToClass.Create(person.Id, model.ClassId, _userId));
+                    foreach(var item in model.ClassId)
+                    {
+                        await _unitOfWork.PersonToClasses.Insert(PersonToClass.Create(person.Id, item, _userId));
+                    }
                     var result2 = await _unitOfWork.SaveAsync();
                 }
                 return Redirect(Request.Headers["Referer"].ToString());
