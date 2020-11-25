@@ -12,21 +12,18 @@ namespace Kiddywee.DAL.Models
         public Guid PersonId { get; set; }
         public Person Person { get; set; }
 
-        //public DateTime Date { get; set; }
-
         public DateTime InDate { get; set; }
 
         public DateTime? OutDate { get; set; }
 
-        //public EnumAttendanceType AttendanceType { get; set; }
-
-        public Guid ClassId { get; set; }
+        //If null - checkout to school
+        public Guid? ClassId { get; set; }
 
         public Guid OrganizationId { get; set; }
 
         public static Attendance Create(
             Guid personId,
-            Guid classId,
+            Guid? classId,
             Guid? organizationId,
             string createdById
             )

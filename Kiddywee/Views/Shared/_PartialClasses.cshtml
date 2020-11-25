@@ -15,17 +15,17 @@
 <div class="owl-carousel owl-theme">
     @if (items.Any())
     {
-        <div class="item el-element-overlay" id="class-id-0">
+        @*<div class="item el-element-overlay" id="class-id-0">
             <div class="social-widget el-card-item">
                 <div class="el-overlay-1">
                     <div class="soc-header "   style="background:#c7edd0" title="All">All</div>
                     <div class="soc-content">
                         <div class="col-6 b-r">
-                            <h3 class="font-medium" id="kids-in-0"> @items.Sum(x => x.ChildrenIn)</h3>
+                            <h3 class="font-medium" id="kids-in-0"> @items.Sum(x => x.ChildrenIn)/@items.Sum(x => x.ChildrenTotal)</h3>
                             <h5 class="text-muted">kids in</h5>
                         </div>
                         <div class="col-6">
-                            <h3 class="font-medium" id="staff-in-0">@items.Sum(x => x.StaffIn)</h3>
+                            <h3 class="font-medium" id="staff-in-0">@items.Sum(x => x.StaffIn)/@items.Sum(x => x.StaffTotal)</h3>
                             <h5 class="text-muted">staff in</h5>
                         </div>
                     </div>
@@ -38,20 +38,20 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
         foreach (var item in items)
         {
             <div class="item el-element-overlay" id="class-id-@item.ClassId">
                 <div class="social-widget el-card-item">
                     <div class="el-overlay-1">
-                        <div class="soc-header "  style="background:#c7edfb" title="@item.ClassName">@item.ShortClassName</div>
+                        <div class="soc-header @item.BackgroundColorCss "   title="@item.ClassName">@item.ShortClassName</div>
                         <div class="soc-content">
                             <div class="col-6 b-r">
-                                <h3 class="font-medium kids-in" id="kids-in-@item.ClassId">@item.ChildrenIn</h3>
+                                <h3 class="font-medium kids-in" id="kids-in-@item.ClassId">@item.ChildrenIn/@item.ChildrenTotal</h3>
                                 <h5 class="text-muted">kids in</h5>
                             </div>
                             <div class="col-6">
-                                <h3 class="font-medium staff-in" id="staff-in-@item.ClassId">@item.StaffIn</h3>
+                                <h3 class="font-medium staff-in" id="staff-in-@item.ClassId">@item.StaffIn/@item.StaffTotal</h3>
                                 <h5 class="text-muted">staff in</h5>
                             </div>
                         </div>

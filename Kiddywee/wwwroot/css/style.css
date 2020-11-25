@@ -129,27 +129,27 @@ h6 {
 
 h1 {
     line-height: 40px;
-    font-size: 36px;
+    font-size: 34px;
 }
 
 h2 {
     line-height: 36px;
-    font-size: 24px;
+    font-size: 22px;
 }
 
 h3 {
     line-height: 30px;
-    font-size: 21px;
+    font-size: 19px;
 }
 
 h4 {
     line-height: 22px;
-    font-size: 18px;
+    font-size: 17px;
 }
 
 h5 {
     line-height: 18px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
 }
 
@@ -6523,4 +6523,12 @@ User card page
 
 .selected-class {
     border: 1px solid red;
+}
+
+.class-all {
+    background: #c7edd0;
+}
+
+.class-class {
+    background: #c7edfb;
 }

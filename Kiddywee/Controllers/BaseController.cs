@@ -1,6 +1,7 @@
 ﻿using Kiddywee.BLL.Core;
 using Kiddywee.DAL.Interfaces;
 using Kiddywee.DAL.Models;
+using Kiddywee.DAL.ViewModels.ClassesViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -50,7 +51,46 @@ namespace Kiddywee.Controllers
             var persons = _unitOfWork.People.Get(p => p.OrganizationId == _organizationId,
                 include: p => p.Include(x => x.StaffInfo).Include(x => x.ChildInfo).Include(p => p.PersonToClasses));
 
-            ViewBag.Classes = Class.Init(classes, attendancesForToday, persons);
+
+            var attendanceToSchool = attendancesForToday.Where(x => x.ClassId == null);
+            int childrenInsideSchool = 0;
+            int staffInsideSchool = 0;
+
+            foreach (var p in persons)
+            {
+                var attendanceForPerson = attendanceToSchool.FirstOrDefault(x => x.PersonId == p.Id);
+                if (attendanceForPerson != null)
+                {
+                    if (attendanceForPerson.OutDate.HasValue == false)
+                    {
+                        if (p.ChildInfo != null)
+                        {
+                            ++childrenInsideSchool;
+                        }
+                        if (p.StaffInfo != null)
+                        {
+                            ++staffInsideSchool;
+                        }
+                    }
+                }
+            }
+            var staffInOrganization = persons.Where(x => x.StaffInfo != null);
+            var childrenInOrganization = persons.Where(x => x.ChildInfo != null);
+            ViewBag.Classes = new List<ClassViewModel>();
+            var classesWithoutAll = Class.Init(classes, attendancesForToday, persons);
+            if(classesWithoutAll.Any())
+            {
+                ViewBag.Classes.Add(new ClassViewModel()
+                {
+                    ClassId = "0",
+                    StaffIn = staffInsideSchool,
+                    StaffTotal = staffInOrganization.Count(),
+                    ChildrenIn = childrenInsideSchool,
+                    ChildrenTotal = childrenInOrganization.Count(),
+                    ClassName = "All"
+                });
+                ViewBag.Classes.AddRange(classesWithoutAll);
+            }
         }
     }
 }

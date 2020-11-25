@@ -14,7 +14,7 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public Guid? ClassId { get; set; }
+        public string ClassId { get; set; }
         public DateTime? DateOfBirth { get; set; }
 
         public DateTime? CheckInTime { get; set; }

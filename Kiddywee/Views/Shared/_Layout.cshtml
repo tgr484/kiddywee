@@ -168,8 +168,8 @@
                         }).done(function (data) {
 
                             $.each(data, function (key, value) {
-                                $('#kids-in-' + value.classId).html(value.childrenIn);
-                                $('#staff-in-' + value.classId).html(value.staffIn);
+                                $('#kids-in-' + value.classId).html(value.childrenIn + "/" + value.childrenTotal);
+                                $('#staff-in-' + value.classId).html(value.staffIn + "/" + value.staffTotal);
                             });
                             loadAttendance(classId);
 

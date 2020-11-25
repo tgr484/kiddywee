@@ -45,6 +45,7 @@ namespace Kiddywee.Controllers
                 attendancesForDay = await _unitOfWork.Attendances.GetAsync(x => x.IsActive
                                                                         && x.InDate >= startDate
                                                                         && x.InDate <= endDate
+                                                                        && x.ClassId == null
                                                                         && x.OrganizationId == _organizationId.Value, include: x => x.Include(p => p.Person));
             }
                 
@@ -57,10 +58,11 @@ namespace Kiddywee.Controllers
             return PartialView("_PartialAttendance",model);
         }
 
-        public async Task<JsonResult> CheckInOut(Guid personId, Guid classId)
+        public async Task<JsonResult> CheckInOut(Guid personId, Guid? classId)
         {
             var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+
 
             var inAttendance = await _unitOfWork.Attendances.GetOneAsync(x => x.IsActive && x.PersonId == personId && x.ClassId == classId && x.InDate >= startDate && x.InDate <= endDate);
             //Checkout

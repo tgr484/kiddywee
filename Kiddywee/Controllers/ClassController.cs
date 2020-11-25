@@ -120,14 +120,37 @@ namespace Kiddywee.Controllers
                 ChildrenTotal = p.ChildrenTotal
             }).ToList();
 
+            var attendanceToSchool = attendancesForToday.Where(x => x.ClassId == null);
+            int childrenInsideSchool = 0;
+            int staffInsideSchool = 0;
+
+            foreach(var p in persons)
+            {
+                var attendanceForPerson = attendanceToSchool.FirstOrDefault(x => x.PersonId == p.Id);
+                if(attendanceForPerson != null)
+                {
+                    if(attendanceForPerson.OutDate.HasValue == false)
+                    {
+                        if(p.ChildInfo != null)
+                        {
+                            ++childrenInsideSchool;
+                        }
+                        if(p.StaffInfo != null)
+                        {
+                            ++staffInsideSchool;
+                        }
+                    }
+                }
+            }
+
             jsonresult.Add(new
             {
                 ClassId = "0",
-                StaffIn = result.Sum(p => p.StaffIn),
-                StaffTotal = result.Sum(p => p.StaffTotal),
-                ChildrenIn = result.Sum(p => p.ChildrenIn),
-                ChildrenTotal = result.Sum(p => p.ChildrenTotal)
-            }); ;
+                StaffIn = staffInsideSchool,
+                StaffTotal = staffInOrganization.Count(),
+                ChildrenIn = childrenInsideSchool,
+                ChildrenTotal = childrenInOrganization.Count()
+            }); 
             return Json(jsonresult.OrderBy(p => p.ClassId).ToList());
         }
     }

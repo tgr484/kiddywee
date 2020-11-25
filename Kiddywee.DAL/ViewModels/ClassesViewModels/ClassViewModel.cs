@@ -7,6 +7,14 @@ namespace Kiddywee.DAL.ViewModels.ClassesViewModels
 {
     public class ClassViewModel
     {
+        public string BackgroundColorCss
+        {
+            get
+            {
+                return ClassName == "All" ? "class-all" : "class-class";
+            }
+        }
+        
         public string ClassName { get; set; } 
         public string ShortClassName
         {
@@ -32,6 +40,6 @@ namespace Kiddywee.DAL.ViewModels.ClassesViewModels
         public int StaffIn { get; set; }
 
         public int StaffTotal { get; set; }
-        public Guid ClassId { get; set; }
+        public string ClassId { get; set; }
     }
 }

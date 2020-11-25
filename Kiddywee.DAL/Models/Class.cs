@@ -71,7 +71,7 @@ namespace Kiddywee.DAL.Models
                     new ClassViewModel()
                     {
                         ClassName = cls.Name,
-                        ClassId = cls.Id,
+                        ClassId = cls.Id.ToString(),
                         StaffIn = staffInCount,
                         ChildrenIn = childrenInCount,
                         StaffTotal = staffInClass.Count(),

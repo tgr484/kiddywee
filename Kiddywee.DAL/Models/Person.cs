@@ -86,7 +86,7 @@ namespace Kiddywee.DAL.Models
                 }
                 else
                 {
-                    attendance = item.Attendances.Where(x => x.IsActive && x.InDate >= startDate && x.InDate <= endDate).OrderBy(x => x.InDate).FirstOrDefault();
+                    attendance = item.Attendances.FirstOrDefault(x => x.IsActive && x.InDate >= startDate && x.InDate <= endDate && x.ClassId == null);
                 }
 
                 DateTime? checkInTime = null;
@@ -95,13 +95,7 @@ namespace Kiddywee.DAL.Models
                 {
                     checkInTime = attendance.InDate;
                     checkOutTime = attendance.OutDate;
-                }
-
-                ///Костыль для чекаута из школы
-                if (classId.HasValue == false)
-                {
-                    checkOutTime = null;
-                }
+                }               
 
 
                 var viewModel = new PersonViewModel()
@@ -112,7 +106,7 @@ namespace Kiddywee.DAL.Models
                     DateOfBirth = item.DateOfBirth,
                     StaffInfo = item.StaffInfo,
                     ChildInfo = item.ChildInfo,
-                    ClassId = classId,
+                    ClassId = classId.HasValue ? classId.Value.ToString() : "0",
                     CheckInTime = checkInTime,
                     CheckOutTime = checkOutTime
                 };
