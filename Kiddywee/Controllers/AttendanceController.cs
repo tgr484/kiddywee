@@ -31,11 +31,23 @@ namespace Kiddywee.Controllers
                 endDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, 23, 59, 59);
             }
 
-            var attendancesForDay =
-                await _unitOfWork.Attendances.GetAsync(x => x.IsActive
+            List<Attendance> attendancesForDay = new List<Attendance>();
+            if(classId.HasValue)
+            {
+                attendancesForDay = await _unitOfWork.Attendances.GetAsync(x => x.IsActive
+                                                                        && x.InDate >= startDate
+                                                                        && x.InDate <= endDate
+                                                                        && x.ClassId == classId.Value
+                                                                        && x.OrganizationId == _organizationId.Value, include: x => x.Include(p => p.Person));
+            }
+            else
+            {
+                attendancesForDay = await _unitOfWork.Attendances.GetAsync(x => x.IsActive
                                                                         && x.InDate >= startDate
                                                                         && x.InDate <= endDate
                                                                         && x.OrganizationId == _organizationId.Value, include: x => x.Include(p => p.Person));
+            }
+                
             var model = Attendance.Init(attendancesForDay);
 
 

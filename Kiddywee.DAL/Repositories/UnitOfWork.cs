@@ -63,6 +63,18 @@ namespace Kiddywee.DAL.Repositories
         {
             _context.SaveChanges();
         }
+        public async Task<IdentityResult> SaveFileAsync()
+        {
+            try
+            {
+                await _fileContext.SaveChangesAsync();
+                return IdentityResult.Success;
+            }
+            catch (Exception e)
+            {
+                return IdentityResult.Failed(new IdentityError() { Code = "Error", Description = e.Message });
+            }
+        }
 
         public async Task<IdentityResult> SaveAsync()
         {

@@ -73,6 +73,7 @@ namespace Kiddywee.Controllers
                     {
                         var medicalInfo = FileInfo.Create(model.MedicalInfo, _userId, DAL.Enum.EnumFileType.MedicalInfo,person.Id);
                         await _unitOfWork.FileInfos.Insert(medicalInfo);
+                        await _unitOfWork.SaveFileAsync();
                     }
 
 
@@ -117,6 +118,7 @@ namespace Kiddywee.Controllers
                     {
                         var medicalInfo = FileInfo.Create(model.MedicalInfo, _userId, DAL.Enum.EnumFileType.MedicalInfo,person.Id);
                         await _unitOfWork.FileInfos.Insert(medicalInfo);
+                        await _unitOfWork.SaveFileAsync();
                     }
 
                     var childInfo = ChildInfo.Create(model, _userId);

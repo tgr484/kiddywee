@@ -32,5 +32,6 @@ namespace Kiddywee.DAL.Interfaces
         IGenericRepository<PersonToClass> PersonToClasses { get; }
         void Save();
         Task<IdentityResult> SaveAsync();
+        Task<IdentityResult> SaveFileAsync();
     }
 }

@@ -6520,3 +6520,7 @@ User card page
     margin-top: 20px;
     margin-bottom: 20px !important;
 }
+
+.selected-class {
+    border: 1px solid red;
+}

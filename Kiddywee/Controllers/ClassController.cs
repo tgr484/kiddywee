@@ -20,6 +20,11 @@ namespace Kiddywee.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        public string SelectClass(Guid classId)
+        {
+            _classId = classId;
+            return _classId.ToString();
+        }
 
         public IActionResult Create(string id)
         {

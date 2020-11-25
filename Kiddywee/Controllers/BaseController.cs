@@ -17,6 +17,7 @@ namespace Kiddywee.Controllers
         public IUnitOfWork _unitOfWork;
         public string _userId = null;
         public Guid? _organizationId = null;
+        public Guid? _classId = null;
 
         public BaseController(IUnitOfWork unitOfWork)
         {

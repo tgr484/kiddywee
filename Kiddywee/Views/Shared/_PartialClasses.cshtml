@@ -1,5 +1,6 @@
 ﻿@{
     var items = (List<ClassViewModel>)ViewBag.Classes;
+    
 }
 
 <div class="row page-titles">
@@ -14,10 +15,10 @@
 <div class="owl-carousel owl-theme">
     @if (items.Any())
     {
-        <div class="item el-element-overlay">
+        <div class="item el-element-overlay" id="class-id-0">
             <div class="social-widget el-card-item">
                 <div class="el-overlay-1">
-                    <div class="soc-header " style="background:#c7edd0" title="All">All</div>
+                    <div class="soc-header "   style="background:#c7edd0" title="All">All</div>
                     <div class="soc-content">
                         <div class="col-6 b-r">
                             <h3 class="font-medium" id="kids-in-0"> @items.Sum(x => x.ChildrenIn)</h3>
@@ -30,9 +31,9 @@
                     </div>
                     <div class="el-overlay">
                         <ul class="el-info">
-                            <li><a class="btn default btn-outline class-select" href="javascript:void(0);" 
-                                   data-url="@Url.Action("Index", "Person", new {})"><i class="sl-icon-magnifier"></i></a></li>
-                            <li><a class="btn default btn-outline" href="javascript:void(0);"><i class="sl-icon-link"></i></a></li>
+                            <li><a class="btn default btn-outline class-select" 
+                                data-classId="0"   data-url="@Url.Action("Index", "Person", new {})"><i class="sl-icon-magnifier"></i></a></li>
+                            <li><a class="btn default btn-outline" ><i class="sl-icon-link"></i></a></li>
                         </ul>
                     </div>
                 </div>
@@ -40,10 +41,10 @@
         </div>
         foreach (var item in items)
         {
-            <div class="item el-element-overlay">
+            <div class="item el-element-overlay" id="class-id-@item.ClassId">
                 <div class="social-widget el-card-item">
                     <div class="el-overlay-1">
-                        <div class="soc-header " style="background:#c7edfb" title="@item.ClassName">@item.ShortClassName</div>
+                        <div class="soc-header "  style="background:#c7edfb" title="@item.ClassName">@item.ShortClassName</div>
                         <div class="soc-content">
                             <div class="col-6 b-r">
                                 <h3 class="font-medium kids-in" id="kids-in-@item.ClassId">@item.ChildrenIn</h3>
@@ -56,7 +57,7 @@
                         </div>
                         <div class="el-overlay">
                             <ul class="el-info">
-                                <li><a class="btn default btn-outline class-select" data-url="@Url.Action("Index", "Person", new {id = item.ClassId})" ><i class="sl-icon-magnifier" ></i></a></li>
+                                <li><a class="btn default btn-outline class-select" data-classId="@item.ClassId" data-url="@Url.Action("Index", "Person", new {id = item.ClassId})" ><i class="sl-icon-magnifier" ></i></a></li>
                                 <li><a class="btn default btn-outline class-edit" data-url="@Url.Action("Edit", "Class", new {id = item.ClassId})"><i class="sl-icon-pencil"></i></a></li>
                             </ul>
                         </div>
