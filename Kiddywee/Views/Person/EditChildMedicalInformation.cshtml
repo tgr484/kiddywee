@@ -3,7 +3,7 @@
     Layout = null;
 }
 <div class="card-body">
-    <div class="form-horizontal form-material" id="SaveChildMedical">
+    <div class="form-horizontal " id="SaveChildMedical">
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -16,7 +16,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Allergies<span class="help"></span></label>
-                    <input type="checkbox" asp-for="Allergies" class="form-control form-control-line">
+                    <input type="checkbox" asp-for="Allergies">
                 </div>
             </div>
         </div>
@@ -38,12 +38,16 @@
         console.log('ready');
         $(function () {
             $("#save-person-medical").click(function (e) {
-
+                if ($('[name="Allergies"]:checked').length > 0) {
+                    $('[name="Allergies"]:hidden').val(true);
+                } else {
+                    $('[name="Allergies"]:hidden').val(false);
+                }
                 var valdata = {};
-                $('#SaveChildMedical').find('input').each(function () {
-                    valdata[this.name] = $(this).val();
+                $('#SaveChildMedical').find('input').each(function () {  
+                    valdata[this.name] = $(this).val(); 
                 });
-
+                console.log(valdata);
                 $.ajax({
                     url: "/Person/EditChildMedicalInformation",
                     type: "POST",
