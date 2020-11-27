@@ -1,0 +1,66 @@
+﻿@model ChildEditMedicalViewModel
+@{
+    Layout = null;
+}
+<div class="card-body">
+    <div class="form-horizontal form-material" id="SaveChildMedical">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Next medical<span class="help"></span></label>
+                    <input type="date" asp-for="NextMedical" class="form-control form-control-line" placeholder="Enter date">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Allergies<span class="help"></span></label>
+                    <input type="checkbox" asp-for="Allergies" class="form-control form-control-line">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Allergies notes<span class="help"></span></label>
+                    <input type="text" asp-for="AllergiesNotes" class="form-control form-control-line">
+                </div>
+            </div>
+        </div>
+        <input type="hidden" asp-for="PersonId" />
+        <button id="save-person-medical" class="btn btn-info waves-effect">Save</button>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        console.log('ready');
+        $(function () {
+            $("#save-person-medical").click(function (e) {
+
+                var valdata = {};
+                $('#SaveChildMedical').find('input').each(function () {
+                    valdata[this.name] = $(this).val();
+                });
+
+                $.ajax({
+                    url: "/Person/EditChildMedicalInformation",
+                    type: "POST",
+                    dataType: 'json',
+                    data: valdata
+                }).done(function (response) {
+                    $.toast({
+                        heading: response.header,
+                        text: response.message,
+                        position: 'bottom-right',
+                        loaderBg: response.color,
+                        icon: response.icon,
+                        hideAfter: 10000
+                    });
+                });
+            });
+        })
+    });
+</script>
+

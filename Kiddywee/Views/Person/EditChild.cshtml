@@ -1,90 +1,214 @@
-﻿@model ChildEditViewModel
-@{ 
-    Layout = "~/Views/Shared/_NullLayout.cshtml";
+﻿@model ChildEditGeneralViewModel
+@{
+    Layout = null;
 }
 <div class="modal-header">
     <h4 class="modal-title" id="myLargeModalLabel">Edit Child</h4>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="javascipt: window.location.reload()">×</button>
 </div>
 <div class="modal-body">
-    <form class="form-material" id="SavePerson" asp-action="EditChild" asp-controller="Person"
-          method="post" enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Firstname <span class="help"></span></label>
-                    <input type="text" asp-for="FirstName" class="form-control form-control-line" placeholder="Enter firstname...">
+    @*<form class="form-material" id="SavePerson" asp-action="EditChild" asp-controller="Person"
+              method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Firstname <span class="help"></span></label>
+                        <input type="text" asp-for="FirstName" class="form-control form-control-line" placeholder="Enter firstname...">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Lastname<span class="help"></span></label>
+                        <input type="text" asp-for="LastName" class="form-control form-control-line" placeholder="Enter lastname">
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Lastname<span class="help"></span></label>
-                    <input type="text" asp-for="LastName" class="form-control form-control-line" placeholder="Enter lastname">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Class<span class="help"></span></label>
+                        <select class="select2 select2-multiple" data-style="form-control form-control-line" asp-for="ClassId" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label>Class<span class="help"></span></label>
-                    <select class="select2 select2-multiple" data-style="form-control form-control-line" asp-for="ClassId" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Address<span class="help"></span></label>
+                        <input type="text" asp-for="Address" class="form-control form-control-line" placeholder="Enter address">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Date Of Birth<span class="help"></span></label>
+                        <input type="date" asp-for="DateOfBirth" class="form-control form-control-line" placeholder="Enter date">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Next medical<span class="help"></span></label>
+                        <input type="date" asp-for="NextMedical" class="form-control form-control-line" placeholder="Enter date">
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label>Address<span class="help"></span></label>
-                    <input type="text" asp-for="Address" class="form-control form-control-line" placeholder="Enter address">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label>Date Of Birth<span class="help"></span></label>
-                    <input type="date" asp-for="DateOfBirth" class="form-control form-control-line" placeholder="Enter date">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label>Next medical<span class="help"></span></label>
-                    <input type="date" asp-for="NextMedical" class="form-control form-control-line" placeholder="Enter date">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>Weekly schedule<span class="help"></span></label> <br />
-            @foreach (EnumWeeklyScheduleType item in Enum.GetValues(typeof(EnumWeeklyScheduleType)))
-            {
-                <input name="WeaklySchedule" type="checkbox" value="@item"
-                       checked="@Model.WeaklySchedule?.Any(p=>p == item)" /> @item
-                    <text>&nbsp; &nbsp; &nbsp;</text>
-                }
-        </div>
-        <div class="form-group">
-            <label>Daily schedule<span class="help"></span></label> <br />
-            @foreach (EnumDailyScheduleType item in Enum.GetValues(typeof(EnumDailyScheduleType)))
-            {
-                <input name="DailySchedule" type="checkbox" value="@item"
-                       checked="@Model.DailySchedule?.Any(p=>p == item)" /> @item
-                    <text>&nbsp; &nbsp;</text>
-                }
-        </div>
-        <div class="form-group">
-            <label for="example-email">Pipeline Type<span class="help"></span></label>
-            <select class="form-control " asp-for="PipeLineType" asp-items="Html.GetEnumSelectList<EnumPipeLineType>()"></select>
-        </div>
-        @if (Model.MedicalInfo != null)
-        {
             <div class="form-group">
-                <label for="example-email">Medical form</label><br />
-                @Html.ActionLink(Model.MedicalInfo.Name, "DownloadFile", "Download", new { fileId = Model.MedicalInfo.Id })
+                <label>Weekly schedule<span class="help"></span></label> <br />
+                @foreach (EnumWeeklyScheduleType item in Enum.GetValues(typeof(EnumWeeklyScheduleType)))
+                {
+                    <input name="WeaklySchedule" type="checkbox" value="@item"
+                           checked="@Model.WeaklySchedule?.Any(p=>p == item)" /> @item
+                        <text>&nbsp; &nbsp; &nbsp;</text>
+                    }
             </div>
-        }
-        <input type="hidden" asp-for="PersonId" />
+            <div class="form-group">
+                <label>Daily schedule<span class="help"></span></label> <br />
+                @foreach (EnumDailyScheduleType item in Enum.GetValues(typeof(EnumDailyScheduleType)))
+                {
+                    <input name="DailySchedule" type="checkbox" value="@item"
+                           checked="@Model.DailySchedule?.Any(p=>p == item)" /> @item
+                        <text>&nbsp; &nbsp;</text>
+                    }
+            </div>
+            <div class="form-group">
+                <label for="example-email">Pipeline Type<span class="help"></span></label>
+                <select class="form-control " asp-for="PipeLineType" asp-items="Html.GetEnumSelectList<EnumPipeLineType>()"></select>
+            </div>
+            @if (Model.MedicalInfo != null)
+            {
+                <div class="form-group">
+                    <label for="example-email">Medical form</label><br />
+                    @Html.ActionLink(Model.MedicalInfo.Name, "DownloadFile", "Download", new { fileId = Model.MedicalInfo.Id })
+                </div>
+            }
+            <input type="hidden" asp-for="PersonId" />
 
-    </form>
+        </form>*@
+    <div class="row">
+        <div class="col-lg-4 col-xlg-3 col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <center class="m-t-30">
+                        <img src="../assets/images/users/5.jpg" class="img-circle" width="150" />
+                        <h4 class="card-title m-t-10" id="person-full-name">@Model.FullName</h4>
+                    </center>
+                </div>
+                <div>
+                    <hr>
+                </div>
+                <div class="card-body">
+                    <small class="text-muted">Address</small>
+                    <h5 id="person-address">@Model.Address</h5>
+                    <small class="text-muted p-t-30 db">Date Of Birth</small>
+                    <h5 id="person-date">@Model.NormalizedDateOfBirth</h5>
+                </div>
+            </div>
+        </div>       
+        <div class="col-lg-8 col-xlg-9 col-md-7">
+            <div class="card">
+                <ul class="nav nav-tabs profile-tab" role="tablist">
+                    <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#profile" role="tab">General</a> </li>
+                    <li class="nav-item"> <a class="nav-link child-education-info" data-url="@Url.Action("EditChildEductionInformation", "Person", new { personId = Model.PersonId})" data-toggle="tab" href="#educaion" role="tab">Education</a> </li>
+                    <li class="nav-item"> <a class="nav-link child-medical-info" data-url="@Url.Action("EditChildMedicalInformation", "Person", new { personId = Model.PersonId})" data-toggle="tab" href="#medical" role="tab">Medical</a> </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="profile" role="tabpanel">
+                        <div class="card-body">
+                            <div class="form-horizontal form-material" id="SavePerson">
+                                <div class="form-group">
+                                    <label class="col-md-12">Firstname</label>
+                                    <div class="col-md-12">
+                                        <input type="text" asp-for="FirstName" placeholder="Enter firstname..." class="form-control form-control-line">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">Lastname</label>
+                                    <div class="col-md-12">
+                                        <input type="text" asp-for="LastName" placeholder="Enter lastname..." class="form-control form-control-line">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">Date of Birth</label>
+                                    <div class="col-md-12">
+                                        <input type="date" asp-for="DateOfBirth" class="form-control form-control-line" placeholder="Enter date">
+                                    </div>
+                                </div>                                    <div class="form-group">
+                                    <label class="col-md-12">Address</label>
+                                    <div class="col-md-12">
+                                        <input type="text" asp-for="Address" class="form-control form-control-line" placeholder="Enter address">
+                                    </div>
+                                </div>
+                                <input type="hidden" asp-for="PersonId" />
+                                <button id="save-person-submit" class="btn btn-info waves-effect">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="educaion" role="tabpanel">
+                        <div class="card-body">
+                            <div id="eductionSpiner" class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="medical" role="tabpanel">
+                        <div class="card-body">
+                            <div id="eductionSpiner" class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal" onclick="javascipt: window.location.reload()">Close</button>
-    <button type="submit" class="btn btn-info waves-effect" form="SavePerson">Save</button>
 </div>
+<script>
+    $(document).ready(function () {
+
+        $(document).on("click", ".child-education-info", function () {
+            var url = $(this).data("url");
+            console.log(url);
+            $.get(url, function (data) {
+                $("#educaion").html(data);
+            })
+        });
+
+        $(document).on("click", ".child-medical-info", function () {
+            var url = $(this).data("url");
+            console.log(url);
+            $.get(url, function (data) {
+                $("#medical").html(data);
+            })
+        });
+
+        $(function () {
+            $("#save-person-submit").click(function (e) {
+                var valdata = $("#SavePerson :input").serialize();
+                $.ajax({
+                    url: "/Person/EditChildGeneralInformation",
+                    type: "POST",
+                    dataType: 'json',
+                    data: valdata
+                }).done(function (response) {
+                    $.toast({
+                        heading: response.header,
+                        text: response.message,
+                        position: 'bottom-right',
+                        loaderBg: response.color,
+                        icon: response.icon,
+                        hideAfter: 10000
+                    });
+                    $("#person-full-name").html(response.additionalData.fullName);
+                    $("#person-address").html(response.additionalData.address);
+                    $("#person-date").html(response.additionalData.normalizedDateOfBirth);
+                });
+            });
+        })
+    });
+</script>

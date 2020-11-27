@@ -202,7 +202,6 @@
             }
 
             $(document).on("click", ".class-select", function () {
-                console.log("click select class");
                 var url = $(this).data("url");
                 var classId = $(this).data("classid");
                 $(".selected-class ").removeClass("selected-class ");
@@ -222,6 +221,7 @@
                     'csv', 'pdf', 'print'
                 ]
             });
+            
         })
     </script>
 </body>

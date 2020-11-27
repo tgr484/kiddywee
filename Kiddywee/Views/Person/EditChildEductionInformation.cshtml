@@ -1,0 +1,72 @@
+﻿@model ChildEditEducationViewModel
+@{
+    Layout = "~/Views/Shared/_NullLayout.cshtml";
+}
+<div class="card-body">
+    <div class="form-horizontal form-material" id="SaveChildEducation">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Class<span class="help"></span></label>
+                    <select class="select2 select2-multiple" multiple="multiple"  data-style="form-control form-control-line" asp-for="InClasses" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="example-email">Pipeline Type<span class="help"></span></label>
+            <select class="form-control " asp-for="PipeLineType" asp-items="Html.GetEnumSelectList<EnumPipeLineType>()"></select>
+        </div>
+        <div class="form-group">
+            <label>Weekly schedule<span class="help"></span></label> <br />
+            @foreach (EnumWeeklyScheduleType item in Enum.GetValues(typeof(EnumWeeklyScheduleType)))
+            {
+                <input name="WeaklySchedule" type="checkbox" value="@item"
+                       checked="@Model.WeaklySchedule?.Any(p=>p == item)" /> @item
+                    <text>&nbsp; &nbsp; &nbsp;</text>
+                }
+        </div>
+        <div class="form-group">
+            <label>Daily schedule<span class="help"></span></label> <br />
+            @foreach (EnumDailyScheduleType item in Enum.GetValues(typeof(EnumDailyScheduleType)))
+            {
+                <input name="DailySchedule" type="checkbox" value="@item"
+                       checked="@Model.DailySchedule?.Any(p=>p == item)" /> @item
+                    <text>&nbsp; &nbsp;</text>
+                }
+        </div>
+        <input type="hidden" asp-for="PersonId" />
+        <button id="save-person-education" class="btn btn-info waves-effect">Save</button>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        console.log('ready');
+        $(function () {
+            $("#save-person-education").click(function (e) {
+
+                var valdata = {};
+                $('#SaveChildEducation').find('input, select').each(function () {                    
+                    valdata[this.name] = $(this).val();
+                });
+
+                //var valdata = $("#SaveChildEducation :input").serialize();
+                console.log(valdata);
+                $.ajax({
+                    url: "/Person/EditChildEductionInformation",
+                    type: "POST",
+                    dataType: 'json',
+                    data: valdata
+                }).done(function (response) {
+                    $.toast({
+                        heading: response.header,
+                        text: response.message,
+                        position: 'bottom-right',
+                        loaderBg: response.color,
+                        icon: response.icon,
+                        hideAfter: 10000
+                    });
+                });
+            });
+        })
+    });
+</script>

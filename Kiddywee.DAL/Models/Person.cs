@@ -115,19 +115,26 @@ namespace Kiddywee.DAL.Models
             return result;
         }
 
-        public void Update(ChildEditViewModel model)
+        public void Update(ChildEditGeneralViewModel model)
         {
             FirstName = model.FirstName;
             LastName = model.LastName;
             DateOfBirth = model.DateOfBirth;
             ChildInfo.Address = model.Address;
+        }
+        public void Update(ChildEditMedicalViewModel model)
+        {
             ChildInfo.Allergies = model.Allergies;
             ChildInfo.AllergiesNotes = model.AllergiesNotes;
+            ChildInfo.NextMedical = model.NextMedical;
+
+        }
+
+        public void Update(ChildEditEducationViewModel model)
+        {
             ChildInfo.DailySchedule = model.DailySchedule?.Select(x => Convert.ToInt32(x)).ToList();
             ChildInfo.WeaklySchedule = model.WeaklySchedule?.Select(x => Convert.ToInt32(x)).ToList();
             ChildInfo.PipeLineType = model.PipeLineType;
-            ChildInfo.NextMedical = model.NextMedical;
-            ChildInfo.Notes = model.Notes;
         }
 
         public void Update(StaffEditViewModel model)

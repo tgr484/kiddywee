@@ -47,28 +47,47 @@ namespace Kiddywee.DAL.Models
                 CreatedById = userId
             };
         }
-
-        public static ChildEditViewModel Init(Person person, List<Class> classes)
+        public static ChildEditEducationViewModel Init(Person person, List<Class> classes)
         {
             var ci = person.ChildInfo != null ? person.ChildInfo : new ChildInfo();
 
-            var classId = person.PersonToClasses.Where(x => x.PersonId == person.Id && x.IsActive == true).Select(x => x.ClassId).ToList(); 
-                
-            return new ChildEditViewModel()
+            var classId = person.PersonToClasses.Where(x => x.PersonId == person.Id && x.IsActive == true).Select(x => x.ClassId).ToList();
+
+            return new ChildEditEducationViewModel()
             {
                 Classes = classes,
-                Address = ci.Address,
-                Allergies = ci.Allergies,
-                AllergiesNotes = ci.AllergiesNotes,
-                ClassId = classId,
-                DailySchedule =  ci.DailySchedule?.Cast<EnumDailyScheduleType>().ToList(),
-                DateOfBirth = person.DateOfBirth,
-                FirstName = person.FirstName,
-                LastName = person.LastName,
-                NextMedical = ci.NextMedical,
-                Notes = ci.Notes,
+                InClasses = classId,                
+                DailySchedule = ci.DailySchedule?.Cast<EnumDailyScheduleType>().ToList(),               
                 PipeLineType = ci.PipeLineType,
                 WeaklySchedule = ci.WeaklySchedule?.Cast<EnumWeeklyScheduleType>().ToList(),
+                PersonId = person.Id
+            };
+        }
+
+
+        public static ChildEditMedicalViewModel ChildEditMedicalViewModel(Person person)
+        {
+            var ci = person.ChildInfo != null ? person.ChildInfo : new ChildInfo();
+
+            return new ChildEditMedicalViewModel()
+            {
+                Allergies = ci.Allergies,
+                AllergiesNotes = ci.AllergiesNotes,
+                NextMedical = ci.NextMedical,
+                PersonId = person.Id
+            };
+        }
+
+        public static ChildEditGeneralViewModel Init(Person person)
+        {
+            var ci = person.ChildInfo != null ? person.ChildInfo : new ChildInfo();
+                
+            return new ChildEditGeneralViewModel()
+            {
+                Address = ci.Address,                
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                DateOfBirth = person.DateOfBirth,
                 PersonId = person.Id
             };
         }
