@@ -13,6 +13,7 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         public ChildCreateViewModel()
         {
             Classes = new List<Class>();
+            Files = new List<IFormFile>();
         }
         public List<Class> Classes { get; set; }
 
@@ -37,6 +38,9 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
 
         public DateTime? DateOfBirth { get; set; }
 
-        public IFormFile MedicalInfo { get; set; }
+        //public IFormFile MedicalInfo { get; set; }
+        public List<IFormFile> Files { get; set; }
+        //public List<AddFileViewModel> Files { get; set; }
+
     }
 }

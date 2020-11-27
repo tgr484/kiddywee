@@ -16,6 +16,8 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
             Organizations = new List<Organization>();
             Schedule = new List<EnumWeeklyScheduleType>();
             ClassId = new List<Guid>();
+            Files = new List<IFormFile>();
+
         }
 
         public List<Guid> ClassId { get; set; }
@@ -53,7 +55,7 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         public DateTime? Scr { get; set; }
         public DateTime? FingerPrinting { get; set; }
 
-        public IFormFile MedicalInfo { get; set; }
+        public List<IFormFile> Files { get; set; }
 
     }
 }

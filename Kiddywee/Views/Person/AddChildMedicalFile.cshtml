@@ -1,0 +1,9 @@
+﻿@model ChildCreateViewModel
+@{
+    Layout = null;
+}
+
+@for(int i = 0 ; i < 1; i++)
+{
+    @Html.EditorFor(p=> Model.Files[i])
+}

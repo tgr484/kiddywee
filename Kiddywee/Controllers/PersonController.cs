@@ -19,9 +19,7 @@ namespace Kiddywee.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-
-
-
+         
         public async Task<IActionResult> Index(Guid? classId)
         {
             var people = new List<Person>();
@@ -48,6 +46,15 @@ namespace Kiddywee.Controllers
             var model = Person.Init(people, classId);
             return View(model);
         }
+
+
+        //public IActionResult AddChildMedicalFile()
+        //{
+        //    var model = new ChildCreateViewModel();
+        //    model.Files.Add(new AddFileViewModel());
+        //    return PartialView(model);
+        //}
+
         #region Create
         [HttpGet]
         public async Task<IActionResult> CreateStaff()
@@ -68,10 +75,13 @@ namespace Kiddywee.Controllers
                 var personResult = await _unitOfWork.SaveAsync();
                 if (personResult.Succeeded)
                 {
-                    if (model.MedicalInfo != null)
+                    if (model.Files.Any())
                     {
-                        var medicalInfo = FileInfo.Create(model.MedicalInfo, _userId, DAL.Enum.EnumFileType.MedicalInfo, person.Id);
-                        await _unitOfWork.FileInfos.Insert(medicalInfo);
+                        foreach(var f in model.Files)
+                        {
+                            var medicalInfo = FileInfo.Create(f, _userId, DAL.Enum.EnumFileType.MedicalInfo, person.Id);
+                            await _unitOfWork.FileInfos.Insert(medicalInfo);
+                        }                        
                         await _unitOfWork.SaveFileAsync();
                     }
 
@@ -115,10 +125,13 @@ namespace Kiddywee.Controllers
                 var personResult = await _unitOfWork.SaveAsync();
                 if (personResult.Succeeded)
                 {
-                    if (model.MedicalInfo != null)
+                    if (model.Files.Any())
                     {
-                        var medicalInfo = FileInfo.Create(model.MedicalInfo, _userId, DAL.Enum.EnumFileType.MedicalInfo, person.Id);
-                        await _unitOfWork.FileInfos.Insert(medicalInfo);
+                        foreach (var f in model.Files)
+                        {
+                            var medicalInfo = FileInfo.Create(f, _userId, DAL.Enum.EnumFileType.MedicalInfo, person.Id);
+                            await _unitOfWork.FileInfos.Insert(medicalInfo);
+                        }
                         await _unitOfWork.SaveFileAsync();
                     }
 

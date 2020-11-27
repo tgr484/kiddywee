@@ -12,6 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Person\AddChildMedicalFile.cshtml" />
+    <Content Remove="Views\Shared\EditorTemplates\AddFileViewModel.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\assets\node_modules\bootstrap-datepicker\bootstrap-datepicker.min.css" />
     <Content Include="wwwroot\assets\node_modules\bootstrap-material-datetimepicker\bower.json" />
     <Content Include="wwwroot\assets\node_modules\bootstrap-material-datetimepicker\css\bootstrap-material-datetimepicker.css" />
@@ -135,6 +140,21 @@
     <Content Include="wwwroot\assets\node_modules\daterangepicker\website.css" />
     <Content Include="wwwroot\assets\node_modules\daterangepicker\website\index.html" />
     <Content Include="wwwroot\assets\node_modules\daterangepicker\website\website.css" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\bower.json" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\dist\css\demo.css" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\dist\css\dropify-multiple.css" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\dist\css\dropify-multiple.min.css" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\dist\fonts\dropify.eot" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\dist\fonts\dropify.ttf" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\dist\fonts\dropify.woff" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\index.html" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\package.json" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\src\fonts\dropify.eot" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\src\fonts\dropify.ttf" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\src\fonts\dropify.woff" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\src\images\cover.jpg" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\src\images\test-image-1.jpg" />
+    <Content Include="wwwroot\assets\node_modules\dropify-mult\src\images\test-image-2.jpg" />
     <Content Include="wwwroot\assets\node_modules\dropify\dist\css\demo.css" />
     <Content Include="wwwroot\assets\node_modules\dropify\dist\css\dropify.css" />
     <Content Include="wwwroot\assets\node_modules\dropify\dist\css\dropify.min.css" />
@@ -1189,6 +1209,26 @@
     <None Include="wwwroot\assets\node_modules\daterangepicker\website.js" />
     <None Include="wwwroot\assets\node_modules\daterangepicker\website\website.js" />
     <None Include="wwwroot\assets\node_modules\dff\dff.js" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\.gitignore" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\dist\fonts\dropify.svg" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\dist\js\dropify-multiple.js" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\dist\js\dropify-multiple.min.js" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\gulpfile.js" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\LICENCE.md" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\README.md" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\src\fonts\dropify.svg" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\src\js\dropify-multiple.js" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\src\sass\demo.scss" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\src\sass\demo\helpers\_grid.scss" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\src\sass\demo\helpers\_mixins.scss" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\src\sass\demo\helpers\_shortcuts.scss" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\src\sass\demo\_grid.scss" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\src\sass\demo\_normalize.scss" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\src\sass\demo\_reset.scss" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\src\sass\demo\_typo.scss" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\src\sass\demo\_variables.scss" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\src\sass\dropify-multiple.scss" />
+    <None Include="wwwroot\assets\node_modules\dropify-mult\src\sass\_dropify-font.scss" />
     <None Include="wwwroot\assets\node_modules\dropify\.gitignore" />
     <None Include="wwwroot\assets\node_modules\dropify\dist\fonts\dropify.svg" />
     <None Include="wwwroot\assets\node_modules\dropify\dist\js\dropify.js" />
@@ -2320,6 +2360,10 @@
     <None Include="wwwroot\assets\node_modules\x-editable\dist\jquery-editable\js\jquery-editable-poshytip.min.js" />
     <None Include="wwwroot\assets\node_modules\x-editable\dist\jqueryui-editable\js\jqueryui-editable.js" />
     <None Include="wwwroot\assets\node_modules\x-editable\dist\jqueryui-editable\js\jqueryui-editable.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
 
 </Project>
