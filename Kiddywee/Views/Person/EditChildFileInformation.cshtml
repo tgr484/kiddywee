@@ -4,7 +4,7 @@
 }
 <div class="card-body">
 
-    <table class="table color-table info-table" >
+    <table class="table color-table info-table">
         <tbody id="files-table">
             @{
                 foreach (var file in Model)
@@ -39,36 +39,55 @@
                     icon: response.icon,
                     hideAfter: 10000
                 });
-                $("#files-table").append("<tr id='"+response.additionalData.id+"'><td>" + response.additionalData.name + "</td><td><a href='/file/downloadfile?fileId=" + response.additionalData.id + "'>Download</a></td><td><a href='/file/deletefile?fileId=" + response.additionalData.id +"'>Delete</a></td></tr>");
-                console.log(response);
+                $("#files-table").append("<tr id='"+response.additionalData.id+"'><td>" + response.additionalData.name + "</td><td><a href='/file/downloadfile?fileId=" + response.additionalData.id + "'>Download</a></td><td><a href='#' class='delete-file' data-url='/file/deletefile?fileId="+response.additionalData.id+"'>Delete</a></td></tr>");
+                //Extract to func
+                $(".delete-file").click(function (e) {
+                    console.log("click");
+                    var url = $(this).data("url");
+                    $.ajax({
+                        url: url,
+                        type: "GET",
+                        dataType: 'json',
+                    }).done(function (response) {
+                        $.toast({
+                            heading: response.header,
+                            text: response.message,
+                            position: 'bottom-right',
+                            loaderBg: response.color,
+                            icon: response.icon,
+                            hideAfter: 10000
+                        });
+                        $("#" + response.additionalData.id).remove();
+                    });
+                });
                 this.removeFile(file);
             },
             error: function (file, response) {
             },
             addedfile: function (file, response) {
-                console.log(file);
             }
         });
-        $(function () {
-            $(".delete-file").click(function (e) {
-                var url = $(this).data("url");
-                $.ajax({
-                    url: url,
-                    type: "GET",
-                    dataType: 'json',
-                }).done(function (response) {
-                    $.toast({
-                        heading: response.header,
-                        text: response.message,
-                        position: 'bottom-right',
-                        loaderBg: response.color,
-                        icon: response.icon,
-                        hideAfter: 10000
-                    });
-                    $("#" + response.additionalData.id).remove();
+
+
+        $(".delete-file").click(function (e) {
+            console.log("click");
+            var url = $(this).data("url");
+            $.ajax({
+                url: url,
+                type: "GET",
+                dataType: 'json',
+            }).done(function (response) {
+                $.toast({
+                    heading: response.header,
+                    text: response.message,
+                    position: 'bottom-right',
+                    loaderBg: response.color,
+                    icon: response.icon,
+                    hideAfter: 10000
                 });
+                $("#" + response.additionalData.id).remove();
             });
-        })
+        });
 
     });
 
