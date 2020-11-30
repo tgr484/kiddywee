@@ -28,9 +28,10 @@ namespace Kiddywee.Controllers
         public ActionResult GetProfileImage(Guid personId)
         {
             byte[] profileImageData = _unitOfWork.People.GetOne(x => x.Id == personId).ProfileImage;
+            //Костыль для дефолтной картинки
             if(profileImageData == null)
             {
-                string path = @"C:\Users\Fluffy\source\repos\Kiddywee\Kiddywee\wwwroot\assets\images\users\1.jpg";
+                string path = @"C:\Users\Fluffy\source\repos\Kiddywee\Kiddywee\wwwroot\assets\images\users\1.png";
                 profileImageData = System.IO.File.ReadAllBytes(path);
             }
             return File(profileImageData, "image/png");
