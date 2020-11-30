@@ -133,7 +133,6 @@
                 if (classId.length != 0) {
                     url += "?classId=" + classId;
                 }
-                console.log("attendance url: " + url);
 
                 $.ajax({
                     url: url,
@@ -226,30 +225,3 @@
     </script>
 </body>
 </html>
-
-            @*$(document).on("click", "#add-child-medical-info", function () {
-                $.ajax({
-                    url: "/person/addchildmedicalfile"
-                }).done(function (responce) {
-                    $("#medical-info").append(responce);
-                    recountChildMediclaFile();
-                })
-            });
-
-            function recountChildMediclaFile() {
-                $(".file").each(function (index) {
-                    var block = $(this)
-                    var templateName = "Files"
-                    block.find("[name^='" + templateName + "']").each(function () {
-                        var cValue = $(this).attr("name");
-                        var nValue = cValue.replace(/Files\[.\]/g, templateName + "[" + index + "]");
-                        $(this).attr("name", nValue)
-                    })
-
-                    block.find("[id^='" + templateName + "']").each(function () {
-                        var cValue = $(this).attr("id");
-                        var nValue = cValue.replace(/Files\[.\]/g, templateName + "[" + index + "]");
-                        $(this).attr("id", nValue)
-                    })
-                })
-            }*@

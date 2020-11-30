@@ -35,7 +35,6 @@
 
 <script>
     $(document).ready(function () {
-        console.log('ready');
         $(function () {
             $("#save-person-medical").click(function (e) {
                 if ($('[name="Allergies"]:checked').length > 0) {
@@ -47,7 +46,6 @@
                 $('#SaveChildMedical').find('input').each(function () {  
                     valdata[this.name] = $(this).val(); 
                 });
-                console.log(valdata);
                 $.ajax({
                     url: "/Person/EditChildMedicalInformation",
                     type: "POST",

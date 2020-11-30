@@ -28,7 +28,7 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         {
             get
             {
-                return DateOfBirth.HasValue ? DateOfBirth?.ToString("dd MMMM yyyy") : "<br/>";
+                return DateOfBirth.HasValue ? DateOfBirth?.ToString("dd MMMM yyyy") : "";
             }
         }
 

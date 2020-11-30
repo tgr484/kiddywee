@@ -244,6 +244,14 @@ namespace Kiddywee.Controllers
         }
 
 
+        public async Task<IActionResult> EditChildFileInformation(Guid personId)
+        {
+            var files = await _unitOfWork.FileInfos.GetAsync(x =>x.IsActive && x.PersonId == personId && x.FileType == DAL.Enum.EnumFileType.MedicalInfo);
+            var model = FileInfo.Init(files);
+            ViewBag.PersonId = personId;
+            return View(model);
+        }
+
         [HttpGet]
         public async Task<IActionResult> EditChild(Guid personId)
         {

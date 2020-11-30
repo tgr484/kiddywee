@@ -1,0 +1,76 @@
+﻿@model List<ChildEditFileViewModel>
+@{
+    Layout = "~/Views/Shared/_NullLayout.cshtml";
+}
+<div class="card-body">
+
+    <table class="table color-table info-table" >
+        <tbody id="files-table">
+            @{
+                foreach (var file in Model)
+                {
+                    <tr id="@file.FileId">
+                        <td>@file.Name</td>
+                        <td> @Html.ActionLink("Download", "DownloadFile", "File", new { fileId = file.FileId })</td>
+                        <td><a href="#" class="delete-file" data-url="/file/deletefile?fileId=@file.FileId">Delete</a></td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+    <div id="dZUpload" class="dropzone">
+        <div class="dz-default dz-message">Drop files here to upload</div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var url = "/File/UploadChildMedicalFile?personId=@ViewBag.PersonId";
+        Dropzone.autoDiscover = false;
+        $("#dZUpload").dropzone({
+            url: url,
+            addRemoveLinks: true,
+            success: function (file, response) {
+                $.toast({
+                    heading: response.header,
+                    text: response.message,
+                    position: 'bottom-right',
+                    loaderBg: response.color,
+                    icon: response.icon,
+                    hideAfter: 10000
+                });
+                $("#files-table").append("<tr><td>" + response.additionalData.name + "</td><td><a href='/file/downloadfile?fileId=" + response.additionalData.id + "'>Download</a></td><td><a href='/file/deletefile?fileId=" + response.additionalData.id +"'>Delete</a></td></tr>");
+                console.log(response);
+                this.removeFile(file);
+            },
+            error: function (file, response) {
+                this.removeFile(file);
+            },
+            addedfile: function (file, response) {
+                console.log(file);
+            }
+        });
+        $(function () {
+            $(".delete-file").click(function (e) {
+                var url = $(this).data("url");
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    dataType: 'json',
+                }).done(function (response) {
+                    $.toast({
+                        heading: response.header,
+                        text: response.message,
+                        position: 'bottom-right',
+                        loaderBg: response.color,
+                        icon: response.icon,
+                        hideAfter: 10000
+                    });
+                    $("#" + response.additionalData.id).remove();
+                });
+            });
+        })
+
+    });
+
+</script>

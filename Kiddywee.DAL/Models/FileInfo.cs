@@ -1,5 +1,6 @@
 ﻿using Kiddywee.DAL.Enum;
 using Kiddywee.DAL.Extensions;
+using Kiddywee.DAL.ViewModels.PersonViewModels;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,16 @@ namespace Kiddywee.DAL.Models
                 Data = file.GetBytes(),
                 FileType = fileType
             };
+            return result;
+        }
+
+        public static List<ChildEditFileViewModel> Init(List<FileInfo> files)
+        {
+            var result = new List<ChildEditFileViewModel>();
+            foreach(var file in files)
+            {
+                result.Add(new ChildEditFileViewModel() { FileId = file.Id, Name = file.Name});
+            }
             return result;
         }
     }

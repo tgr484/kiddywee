@@ -98,7 +98,7 @@
         {
             <div class="form-group">
                 <label for="example-email">Medical form</label><br />
-                @Html.ActionLink(Model.MedicalInfo.Name, "DownloadFile", "Download", new { fileId = Model.MedicalInfo.Id })
+                @Html.ActionLink(Model.MedicalInfo.Name, "DownloadFile", "File", new { fileId = Model.MedicalInfo.Id })
             </div>
         }
         <input type="hidden" asp-for="PersonId" />
