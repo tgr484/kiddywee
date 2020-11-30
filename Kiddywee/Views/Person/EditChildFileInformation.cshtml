@@ -39,12 +39,11 @@
                     icon: response.icon,
                     hideAfter: 10000
                 });
-                $("#files-table").append("<tr><td>" + response.additionalData.name + "</td><td><a href='/file/downloadfile?fileId=" + response.additionalData.id + "'>Download</a></td><td><a href='/file/deletefile?fileId=" + response.additionalData.id +"'>Delete</a></td></tr>");
+                $("#files-table").append("<tr id='"+response.additionalData.id+"'><td>" + response.additionalData.name + "</td><td><a href='/file/downloadfile?fileId=" + response.additionalData.id + "'>Download</a></td><td><a href='/file/deletefile?fileId=" + response.additionalData.id +"'>Delete</a></td></tr>");
                 console.log(response);
                 this.removeFile(file);
             },
             error: function (file, response) {
-                this.removeFile(file);
             },
             addedfile: function (file, response) {
                 console.log(file);
