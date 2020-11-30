@@ -44,6 +44,7 @@ namespace Kiddywee.DAL.Models
 
         public string FullName { get { return $"{FirstName} {LastName}"; } }
 
+        public byte[] ProfileImage { get; set; }
 
         public static Person Create(string firstName, string lastName)
         {

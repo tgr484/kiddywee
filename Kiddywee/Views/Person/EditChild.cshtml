@@ -7,89 +7,27 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="javascipt: window.location.reload()">×</button>
 </div>
 <div class="modal-body">
-    @*<form class="form-material" id="SavePerson" asp-action="EditChild" asp-controller="Person"
-              method="post" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Firstname <span class="help"></span></label>
-                        <input type="text" asp-for="FirstName" class="form-control form-control-line" placeholder="Enter firstname...">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Lastname<span class="help"></span></label>
-                        <input type="text" asp-for="LastName" class="form-control form-control-line" placeholder="Enter lastname">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Class<span class="help"></span></label>
-                        <select class="select2 select2-multiple" data-style="form-control form-control-line" asp-for="ClassId" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Address<span class="help"></span></label>
-                        <input type="text" asp-for="Address" class="form-control form-control-line" placeholder="Enter address">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Date Of Birth<span class="help"></span></label>
-                        <input type="date" asp-for="DateOfBirth" class="form-control form-control-line" placeholder="Enter date">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Next medical<span class="help"></span></label>
-                        <input type="date" asp-for="NextMedical" class="form-control form-control-line" placeholder="Enter date">
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Weekly schedule<span class="help"></span></label> <br />
-                @foreach (EnumWeeklyScheduleType item in Enum.GetValues(typeof(EnumWeeklyScheduleType)))
-                {
-                    <input name="WeaklySchedule" type="checkbox" value="@item"
-                           checked="@Model.WeaklySchedule?.Any(p=>p == item)" /> @item
-                        <text>&nbsp; &nbsp; &nbsp;</text>
-                    }
-            </div>
-            <div class="form-group">
-                <label>Daily schedule<span class="help"></span></label> <br />
-                @foreach (EnumDailyScheduleType item in Enum.GetValues(typeof(EnumDailyScheduleType)))
-                {
-                    <input name="DailySchedule" type="checkbox" value="@item"
-                           checked="@Model.DailySchedule?.Any(p=>p == item)" /> @item
-                        <text>&nbsp; &nbsp;</text>
-                    }
-            </div>
-            <div class="form-group">
-                <label for="example-email">Pipeline Type<span class="help"></span></label>
-                <select class="form-control " asp-for="PipeLineType" asp-items="Html.GetEnumSelectList<EnumPipeLineType>()"></select>
-            </div>
-            @if (Model.MedicalInfo != null)
-            {
-                <div class="form-group">
-                    <label for="example-email">Medical form</label><br />
-                    @Html.ActionLink(Model.MedicalInfo.Name, "DownloadFile", "Download", new { fileId = Model.MedicalInfo.Id })
-                </div>
-            }
-            <input type="hidden" asp-for="PersonId" />
-
-        </form>*@
     <div class="row">
         <div class="col-lg-4 col-xlg-3 col-md-5">
             <div class="card">
                 <div class="card-body">
+
+
                     <center class="m-t-30">
-                        <img src="../assets/images/users/5.jpg" class="img-circle" width="150" />
+                        <div class="el-element-overlay">
+                            <div class="el-card-item">
+                                <div class="el-overlay-1 img-circle " style="width:150px; height:150px">
+                                    <img id="image-profile" src="@Url.Action("GetProfileImage", "File", new { personId = Model.PersonId})" />
+                                    <div class="el-overlay">
+                                        <ul class="el-info">
+                                            <li><a class="btn default btn-outline" id="upload-logo"><i class="sl-icon-magnifier"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <h4 class="card-title m-t-10" id="person-full-name">@Model.FullName</h4>
+                        <input id="file-input" type="file" name="profileLogo" accept="image/*" style="display:none"/>
                     </center>
                 </div>
                 <div>
@@ -202,6 +140,32 @@
                 $("#file").html(data);
             })
         });
+
+        $(function () {
+            $('#upload-logo').click(function (e) {
+                $('#file-input').click();
+            });
+            $('#file-input').change(sendFile);
+        });
+
+        
+        function sendFile() {
+            var formData = new FormData();
+            formData.append('file', $('#file-input')[0].files[0]);
+            $.ajax({
+                type: 'post',
+                url: 'File/UploadProfileImage?personId=@Model.PersonId',
+                data: formData,
+                success: function (response) {
+                    $("#image-profile").attr("src", response.additionalData.src);
+                },
+                processData: false,
+                contentType: false,
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        }
 
         $(function () {
             $("#save-person-submit").click(function (e) {

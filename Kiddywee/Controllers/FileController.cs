@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Kiddywee.Controllers
@@ -12,19 +13,42 @@ namespace Kiddywee.Controllers
     [Authorize]
     public class FileController : BaseController
     {
+        [HttpPost]
+        public async Task<JsonResult>  UploadProfileImage(Guid personId, IFormFile file)
+        {
+            var person = await _unitOfWork.People.GetOneAsync(x => x.Id == personId);
+            person.ProfileImage = await file.GetBytes();
+            _unitOfWork.People.Update(person);
+            await _unitOfWork.SaveAsync();
+            var base64String = Convert.ToBase64String(person.ProfileImage);
+            string resultString = $"data:{file.ContentType};base64,{base64String}";
+            return Json(new JsonMessage { Color = "#ff6849", Message = "Logo uploaded", Header = "Success", Icon = "success", AdditionalData = new {src=resultString } });
+
+        }
+        public ActionResult GetProfileImage(Guid personId)
+        {
+            byte[] profileImageData = _unitOfWork.People.GetOne(x => x.Id == personId).ProfileImage;
+            if(profileImageData == null)
+            {
+                string path = @"C:\Users\Fluffy\source\repos\Kiddywee\Kiddywee\wwwroot\assets\images\users\1.jpg";
+                profileImageData = System.IO.File.ReadAllBytes(path);
+            }
+            return File(profileImageData, "image/png");
+        }
+
         public FileController(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
         public async Task<IActionResult> DownloadFile(Guid fileId)
         {
-            FileInfo file = await _unitOfWork.FileInfos.GetOneAsync(x => x.Id == fileId);
+            DAL.Models.FileInfo file = await _unitOfWork.FileInfos.GetOneAsync(x => x.Id == fileId);
             return File(file.Data, file.Extention, file.Name);
         }
 
         public async Task<JsonResult> DeleteFile(Guid fileId)
         {
-            FileInfo file = await _unitOfWork.FileInfos.GetOneAsync(x => x.Id == fileId);
+            DAL.Models.FileInfo file = await _unitOfWork.FileInfos.GetOneAsync(x => x.Id == fileId);
             file.IsActive = false;
             _unitOfWork.FileInfos.Update(file);
             var result = await _unitOfWork.SaveFileAsync();
@@ -35,7 +59,7 @@ namespace Kiddywee.Controllers
 
         public async Task<JsonResult> UploadChildMedicalFile(Guid personId, IFormFile file)
         {
-            var medicalInfo = FileInfo.Create(file, _userId, DAL.Enum.EnumFileType.MedicalInfo, personId);
+            var medicalInfo = DAL.Models.FileInfo.Create(file, _userId, DAL.Enum.EnumFileType.MedicalInfo, personId);
             await _unitOfWork.FileInfos.Insert(medicalInfo);
             var result = await _unitOfWork.SaveFileAsync();
             if(result.Succeeded)
