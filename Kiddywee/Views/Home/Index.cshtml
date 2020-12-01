@@ -4,10 +4,10 @@
 }
 <hr />
 <div class="card m-b-0 attendance-accordeon">
-    <div class="card-header p-l-0">
+    <div class="card-header class-class p-l-0">
         <h5 class="mb-0">
             <a href="#" class="link p-10" data-toggle="collapse" data-target="#attendanceCollapse" aria-expanded="false" aria-controls="attendanceCollapse">
-                <i class="sl-icon-people"></i>&nbsp; Attendance
+                <i class="sl-icon-people"></i>&nbsp; Attendance (click to expand)
             </a>
         </h5>
     </div>
@@ -70,6 +70,13 @@
         <div class="row m-l-10">
             <div class="align-self-center"><input class="typeahead form-control" id="search-person" type="text" placeholder="Search person" /></div>
             <div class="align-self-center m-l-10 "><i class="fa-1x fas fa-ban " id="search-person-reset" style="color:red;"></i></div>
+            <div class="align-self-center m-l-10"> 
+                <select id="person-type-select" class="form-control custom-select">
+                    <option value="all">All</option>
+                    <option value="students">Students</option>
+                    <option value="staff">Staff</option>
+                </select>
+            </div>
         </div>
     </div>
     <div class="col-md-7 align-self-center text-right d-inline d-md-block">

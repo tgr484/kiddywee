@@ -6,7 +6,7 @@
     @foreach (PersonViewModel item in Model)
     {
 
-        <div class="col-md-3 el-element-overlay">
+        <div class="col-md-3 el-element-overlay person-card @item.PersonRoleCssClassNoStyles" data-name="@item.FullName">
             <div class="el-card-item">
                 <div class="card card-body el-overlay-1 @item.AttendanceCssClass @item.PersonRoleCssClass">
                     <div class="row">

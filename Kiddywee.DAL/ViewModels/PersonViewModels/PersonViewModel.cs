@@ -19,6 +19,21 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
 
         public DateTime? CheckInTime { get; set; }
         public DateTime? CheckOutTime { get; set; }
+
+        public string PersonRoleCssClassNoStyles
+        {
+            get
+            {
+                if (this.StaffInfo != null)
+                {
+                    return "person-staff-ns";
+                }
+                else
+                {
+                    return "person-child-ns";
+                }
+            }
+        }
         public string AttendanceCssClass
         {
             get
@@ -38,7 +53,8 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
             }
         }
         //public bool IsIn { get; set; }
-        
+
+        public string FullName => this.FirstName + " " + this.LastName;
 
         public string EditAction
         {

@@ -126,6 +126,108 @@
 
             });
 
+            $("#search-person-reset").on('click', function () {
+                $('#search-person').val('');
+                var type = $('#person-type-select').val();
+
+                if (type == 'all') {
+                    $('.person-card').each(function () {
+                        $(this).show();
+                    });
+                }
+                if (type == 'students') {
+                    $('.person-card.person-staff-ns').each(function () {
+                        $(this).hide();
+                    });
+                    $('.person-card.person-child-ns').each(function () {
+                        $(this).show();
+                    });
+                }
+                if (type == 'staff') {
+                    $('.person-card.person-staff-ns').each(function () {
+                        $(this).show();
+                    });
+                    $('.person-card.person-child-ns').each(function () {
+                        $(this).hide();
+                    });
+                }
+            });
+
+            $('#person-type-select').on('change', function () {
+                var type = this.value;
+                if (type == 'all') {
+                    $('.person-card').each(function () {
+                        $(this).show();
+                    });
+                }
+                if (type == 'students') {
+                    $('.person-card.person-staff-ns').each(function () {
+                        $(this).hide();
+                    });
+                    $('.person-card.person-child-ns').each(function () {
+                        $(this).show();
+                    });
+                }
+                if (type == 'staff') {
+                    $('.person-card.person-staff-ns').each(function () {
+                        $(this).show();
+                    });
+                    $('.person-card.person-child-ns').each(function () {
+                        $(this).hide();
+                    });
+                }
+            });
+
+            $('#search-person').on('input', function () {
+                var searchString = this.value.toLowerCase();
+                var substrRegex = new RegExp(searchString, 'i');                
+                var type = $('#person-type-select').val();
+
+                if (type == 'all') {
+                    $('.person-card').each(function () {
+                        var name = $(this).data('name').toLowerCase();
+                        if (substrRegex.test(name)) {
+                            $(this).show();
+                        }
+                        else {
+                            $(this).hide();
+                        }
+                    });
+                }
+                if (type == 'students') {
+                    $('.person-card.person-staff-ns').each(function () {
+                        $(this).hide();
+                    });
+                    $('.person-card.person-child-ns').each(function () {
+                        var name = $(this).data('name').toLowerCase();
+                        if (substrRegex.test(name)) {
+                            $(this).show();
+                        }
+                        else {
+                            $(this).hide();
+                        }
+                    });
+                }
+                if (type == 'staff') {
+                    $('.person-card.person-staff-ns').each(function () {
+                        var name = $(this).data('name').toLowerCase();
+                        if (substrRegex.test(name)) {
+                            $(this).show();
+                        }
+                        else {
+                            $(this).hide();
+                        }
+                    });
+                    $('.person-card.person-child-ns').each(function () {
+                        $(this).hide();
+                    });
+                }
+
+
+
+            });
+
+
 
             $("#search-class-reset").on('click', function () {
                 $('#search-class').val('');
@@ -218,14 +320,10 @@
                         });
 
                         if (that.find('.sl-icon-logout').length !== 0) {
-
                             //that.append($("<i class='sl-icon-login'></i>"));
-
                             that.parent().parent().parent().parent().parent().removeClass('person-in');
                             that.parent().parent().parent().parent().parent().addClass('person-was');
                             that.find('.sl-icon-logout').parent().parent().remove();
-
-
                         } else {
                             that.parent().parent().parent().parent().parent().removeClass('person-out');
                             that.parent().parent().parent().parent().parent().addClass('person-in');
@@ -266,7 +364,7 @@
         });
 
 
-        
+
 
         function loadClass(url, classId) {
             $.get(url, function (data) {
