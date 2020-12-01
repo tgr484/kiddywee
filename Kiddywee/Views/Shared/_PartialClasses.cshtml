@@ -1,26 +1,33 @@
 ﻿@{
     var items = (List<ClassViewModel>)ViewBag.Classes;
-    
 }
+
+
 
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
+        <div class="row m-l-10">
+            <div class="align-self-center"><input class="typeahead form-control" id="search-class" type="text" placeholder="Search class" /></div>
+            <div class="align-self-center m-l-10 "><i class="fa-1x fas fa-ban " id="search-class-reset" style="color:red;"></i></div> 
+        </div>        
     </div>
-    <div class="col-md-7 align-self-center text-right d-none d-md-block">
+    <div class="col-md-7 align-self-center text-right d-inline d-md-block">
         <button type="button" class="btn btn-info add-class" data-url="@Url.Action("Create", "Class")">
             <i class="fa fa-plus-circle"></i> Add class
         </button>
     </div>
 </div>
+
+
 <div class="owl-carousel owl-theme">
     @if (items.Any())
     {
         foreach (var item in items)
         {
-            <div class="item el-element-overlay" id="class-id-@item.ClassId">
+            <div class="item el-element-overlay class-box" data-name="@item.ClassName" data-classId="@item.ClassId" id="class-id-@item.ClassId">
                 <div class="social-widget el-card-item">
                     <div class="el-overlay-1">
-                        <div class="soc-header @item.BackgroundColorCss "   title="@item.ClassName">@item.ShortClassName</div>
+                        <div class="soc-header @item.BackgroundColorCss " title="@item.ClassName">@item.ShortClassName</div>
                         <div class="soc-content">
                             <div class="col-6 b-r">
                                 <h3 class="font-medium kids-in" id="kids-in-@item.ClassId">@item.ChildrenIn/@item.ChildrenTotal</h3>
@@ -33,7 +40,7 @@
                         </div>
                         <div class="el-overlay">
                             <ul class="el-info">
-                                <li><a class="btn default btn-outline class-select" data-classId="@item.ClassId" data-url="@Url.Action("Index", "Person", new {classId = item.ClassId})" ><i class="sl-icon-magnifier" ></i></a></li>
+                                <li><a class="btn default btn-outline class-select" data-classId="@item.ClassId" data-url="@Url.Action("Index", "Person", new {classId = item.ClassId})"><i class="sl-icon-magnifier"></i></a></li>
                                 <li><a class="btn default btn-outline class-edit" data-url="@Url.Action("Edit", "Class", new {id = item.ClassId})"><i class="sl-icon-pencil"></i></a></li>
                             </ul>
                         </div>

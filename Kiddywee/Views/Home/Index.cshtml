@@ -2,28 +2,41 @@
 @{
 
 }
-<div class="card m-b-0 border-0 attendance-accordeon">
+<hr />
+<div class="card m-b-0 attendance-accordeon">
     <div class="card-header p-l-0">
         <h5 class="mb-0">
-            <a href="#" class="link p-10"  data-toggle="collapse" data-target="#attendanceCollapse" aria-expanded="false" aria-controls="attendanceCollapse">
-                <i class="sl-icon-people"></i>&nbsp; Attendance 
+            <a href="#" class="link p-10" data-toggle="collapse" data-target="#attendanceCollapse" aria-expanded="false" aria-controls="attendanceCollapse">
+                <i class="sl-icon-people"></i>&nbsp; Attendance
             </a>
         </h5>
     </div>
-    <div id="attendanceCollapse" class="collapse" aria-labelledby="headingOne" style="">
-        <div class="card-body p-l-0">
-            <div class="row page-titles">
-                <div class="col-md-12 align-self-center text-left d-none d-md-block">
-                    <button type="button" class="btn btn-danger" data-url="">
-                        <i class="fa fa-plus-circle"></i> Report
-                    </button>
-                    <button type="button" class="btn btn-info" data-url="">
-                        <i class="fa fa-plus-circle"></i> View attendance
-                    </button>
+    <div id="attendanceCollapse" class="collapse" aria-labelledby="headingOne">
+        <div class="p-l-0">
+            <div class="row">
+                <div class="col-md-4 align-self-center text-left ">
+                    <div class="row m-l-10">
+                        <div class="input-group align-self-center">
+                            <input type="text" class="form-control" id="datepicker-autoclose" placeholder="mm/dd/yyyy">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="ti-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 m-t-10 align-self-center ">
+                    <div class="m-r-10 text-right">
+                        <button type="button" class="btn btn-danger" data-url="">
+                            <i class="fa fa-plus-circle"></i> Report
+                        </button>
+                        <button type="button" class="btn btn-info" data-url="">
+                            <i class="fa fa-plus-circle"></i> View attendance
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
-      
 
         <div class="table-responsive m-t-5">
             <table id="attendance"
@@ -46,23 +59,28 @@
                     </tr>
                 </tfoot>
                 <tbody id="attendanceTableBody">
-                    
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
-<div class="row ">
-    <div class="col-md-12 align-self-center text-left d-none d-md-block">
+<hr />
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <div class="row m-l-10">
+            <div class="align-self-center"><input class="typeahead form-control" id="search-person" type="text" placeholder="Search person" /></div>
+            <div class="align-self-center m-l-10 "><i class="fa-1x fas fa-ban " id="search-person-reset" style="color:red;"></i></div>
+        </div>
+    </div>
+    <div class="col-md-7 align-self-center text-right d-inline d-md-block">
         <button type="button" class="btn btn-info add-child" data-url="@Url.Action("CreateChild", "Person")">
             <i class="fa fa-plus-circle"></i> Add Child
         </button>
-
         <button type="button" class="btn btn-info add-staff" data-url="@Url.Action("CreateStaff", "Person")">
             <i class="fa fa-plus-circle"></i> Add Staff
         </button>
     </div>
 </div>
+
 <div class="people m-t-15">
 </div>
