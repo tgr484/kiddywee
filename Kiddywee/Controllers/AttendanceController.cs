@@ -21,7 +21,44 @@ namespace Kiddywee.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<IActionResult> Index(Guid? classId, DateTime? date)
+        //public async Task<IActionResult> Index(Guid? classId, DateTime? date)
+        //{
+        //    DateTime startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day); ;
+        //    DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59); ;
+        //    if (date.HasValue)
+        //    {
+        //        startDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day);
+        //        endDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, 23, 59, 59);
+        //    }
+
+        //    List<Attendance> attendancesForDay = new List<Attendance>();
+        //    if(classId.HasValue)
+        //    {
+        //        attendancesForDay = await _unitOfWork.Attendances.GetAsync(x => x.IsActive
+        //                                                                && x.InDate >= startDate
+        //                                                                && x.InDate <= endDate
+        //                                                                && x.ClassId == classId.Value
+        //                                                                && x.OrganizationId == _organizationId.Value, include: x => x.Include(p => p.Person));
+        //    }
+        //    else
+        //    {
+        //        attendancesForDay = await _unitOfWork.Attendances.GetAsync(x => x.IsActive
+        //                                                                && x.InDate >= startDate
+        //                                                                && x.InDate <= endDate
+        //                                                                && x.ClassId == null
+        //                                                                && x.OrganizationId == _organizationId.Value, include: x => x.Include(p => p.Person));
+        //    }
+                
+        //    var model = Attendance.Init(attendancesForDay);
+
+
+
+
+
+        //    return PartialView("_PartialAttendance",model);
+        //}
+
+        public async Task<JsonResult> GetAttendanceAjax(Guid? classId, DateTime? date)
         {
             DateTime startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day); ;
             DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59); ;
@@ -32,7 +69,7 @@ namespace Kiddywee.Controllers
             }
 
             List<Attendance> attendancesForDay = new List<Attendance>();
-            if(classId.HasValue)
+            if (classId.HasValue)
             {
                 attendancesForDay = await _unitOfWork.Attendances.GetAsync(x => x.IsActive
                                                                         && x.InDate >= startDate
@@ -48,14 +85,15 @@ namespace Kiddywee.Controllers
                                                                         && x.ClassId == null
                                                                         && x.OrganizationId == _organizationId.Value, include: x => x.Include(p => p.Person));
             }
-                
+
             var model = Attendance.Init(attendancesForDay);
 
-
-
-
-
-            return PartialView("_PartialAttendance",model);
+            var result = new List<object>();
+            foreach (var a in model)
+            {
+                result.Add(new { a.Name, InDate = a.InDate.ToString("H:mm:ss"), OutDate = a.OutDate?.ToString("H:mm:ss"), a.Hours, attendanceId = a.AttendanceId.ToString() });
+            }
+            return Json(result);
         }
 
         public async Task<JsonResult> CheckInOut(Guid personId, Guid? classId)

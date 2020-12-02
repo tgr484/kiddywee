@@ -47,7 +47,7 @@ namespace Kiddywee.DAL.Models
             {
                 var attendance = new AttendanceViewModel()
                 {
-                    AttendanceId = item.Id,
+                    AttendanceId = item.Id.ToString(),
                     Name = item.Person.FullName,
                     InDate = item.InDate,
                     OutDate = item.OutDate

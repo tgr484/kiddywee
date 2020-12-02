@@ -79,10 +79,9 @@
             //Init
             loadClass("person/", 0);
             initAttendanceDatepicker();
-
-            loadAttendance("");
             initCarousel();
-            attendanceDataTable();
+            //loadAttendance();
+            //attendanceDataTable();
 
             //Events
             $(document).on("click", ".class-select", function () {
@@ -90,7 +89,7 @@
                 var classId = $(this).data("classid");
                 $(".selected-class ").removeClass("selected-class ");
                 loadClass(url, classId);
-                loadAttendance(classId);
+                //loadAttendance();
             });
 
             $(document).on("click", ".add-class", function () {
@@ -181,7 +180,7 @@
 
             $('#search-person').on('input', function () {
                 var searchString = this.value.toLowerCase();
-                var substrRegex = new RegExp(searchString, 'i');                
+                var substrRegex = new RegExp(searchString, 'i');
                 var type = $('#person-type-select').val();
 
                 if (type == 'all') {
@@ -256,7 +255,7 @@
                 var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
                 $('#datepicker-autoclose').datepicker({
                     autoclose: true,
-                    todayHighlight: true,                    
+                    todayHighlight: true,
                     endDate: today
                 });
 
@@ -264,7 +263,7 @@
                 $('#datepicker-autoclose').datepicker()
                     .on('changeDate', function (e) {
                         var clsId = $('.class-box.selected-class').data("classid");
-                        loadAttendance(clsId);
+                        loadAttendance();
                     });
             }
 
@@ -310,7 +309,7 @@
                                 $('#kids-in-' + value.classId).html(value.childrenIn + "/" + value.childrenTotal);
                                 $('#staff-in-' + value.classId).html(value.staffIn + "/" + value.staffTotal);
                             });
-                            loadAttendance(classId);
+                            loadAttendance();
 
                         });
 
@@ -334,9 +333,17 @@
                     }
                 });
             }
-
-            function loadAttendance(classId) {
-                var url = "attendance/index";
+            function loadClass(url, classId) {
+                $.get(url, function (data) {
+                    $(".people").html(data);
+                    $("#class-id-" + classId).addClass("selected-class");
+                    loadAttendance();
+                })
+            }
+            function loadAttendance() {
+                var classId = $('.class-box.selected-class').data("classid");
+                console.log(classId);
+                var url = "attendance/GetAttendanceAjax";
                 var date = $('#datepicker-autoclose').data('datepicker').getFormattedDate('yyyy-mm-dd');
                 if (classId.length != 0) {
                     url += "?classId=" + classId + "&date=" + date;
@@ -344,35 +351,27 @@
                 else {
                     url += "?classId=null&date=" + date;
                 }
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    dataType: 'text',
-                    success: function (data) {
-                        $("#attendanceTableBody").html(data);
-                        attendanceDataTable(data);
-                    }
-                });
+                attendanceDataTable(url);
             };
         });
 
-
-
-
-        function loadClass(url, classId) {
-            $.get(url, function (data) {
-                $(".people").html(data);
-                $("#class-id-" + classId).addClass("selected-class");
-            })
-        }
-
-
-        function attendanceDataTable(data) {
-            console.log(data);
+        function attendanceDataTable(url) {
             $('#attendance').DataTable({
                 dom: 'Bfrtip',
-                retrieve: true,
-                //data: data,
+                destroy: true,
+                paging: false,
+                ajax: {
+                    url: url,
+                    dataSrc: ''
+                },
+                rowId: 'attendanceId',
+                columns: [
+                    { data: 'name' },
+                    { data: 'inDate' },
+                    { data: 'outDate' },
+                    { data: 'hours' }
+                ],
+                
                 buttons: [
                     'csv', 'pdf', 'print'
                 ]

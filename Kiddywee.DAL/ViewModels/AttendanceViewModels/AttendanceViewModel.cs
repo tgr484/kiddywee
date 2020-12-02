@@ -7,7 +7,7 @@ namespace Kiddywee.DAL.ViewModels.AttendanceViewModels
 {
     public class AttendanceViewModel
     {
-        public Guid AttendanceId { get; set; }
+        public string AttendanceId { get; set; }
         public string Name { get; set; }
         public DateTime InDate { get; set; }
         public DateTime? OutDate { get; set; }
