@@ -27,7 +27,7 @@ namespace Kiddywee.Controllers
         }
         public ActionResult GetProfileImage(Guid personId)
         {
-            byte[] profileImageData = _unitOfWork.People.GetOne(x => x.Id == personId).ProfileImage;
+            byte[] profileImageData = _unitOfWork.People.GetOne(x => x.Id == personId)?.ProfileImage;
             //Костыль для дефолтной картинки
             if(profileImageData == null)
             {

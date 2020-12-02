@@ -1,6 +1,7 @@
 ﻿using Kiddywee.BLL.Core;
 using Kiddywee.DAL.Interfaces;
 using Kiddywee.DAL.Models;
+using Kiddywee.DAL.ViewModels.AccountViewModels;
 using Kiddywee.DAL.ViewModels.ClassesViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -32,7 +33,7 @@ namespace Kiddywee.Controllers
             {
                 _organizationId = context.HttpContext.User.Identity.GetOrganizationId();
             }
-
+            ViewBag.User = new UserViewModel(context.HttpContext.User);
             SetClasses();
             base.OnActionExecuting(context);
         }
