@@ -29,7 +29,9 @@
             </div>
         </div>
         <input type="hidden" asp-for="PersonId" />
-        <button id="save-person-medical" class="btn btn-info waves-effect">Save</button>
+        <div class="text-right">
+            <button id="save-person-medical" class="btn btn-info waves-effect">Save</button>
+        </div>
     </div>
 </div>
 
@@ -43,8 +45,8 @@
                     $('[name="Allergies"]:hidden').val(false);
                 }
                 var valdata = {};
-                $('#SaveChildMedical').find('input').each(function () {  
-                    valdata[this.name] = $(this).val(); 
+                $('#SaveChildMedical').find('input').each(function () {
+                    valdata[this.name] = $(this).val();
                 });
                 $.ajax({
                     url: "/Person/EditChildMedicalInformation",

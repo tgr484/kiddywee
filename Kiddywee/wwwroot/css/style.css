@@ -6519,7 +6519,7 @@ User card page
 .attendance-accordeon {
     margin-top: 20px;
     margin-bottom: 20px !important;
-    border: 1px solid #67757C !important;
+    border: 1px solid #c7edfb !important;
 }
 
 .selected-class {
@@ -6532,4 +6532,8 @@ User card page
 
 .class-class {
     background: #c7edfb;
+}
+
+.delete-file {
+    color: #ff5c6c;
 }

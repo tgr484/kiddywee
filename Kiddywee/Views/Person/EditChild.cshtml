@@ -20,7 +20,7 @@
                                     <img id="image-profile" src="@Url.Action("GetProfileImage", "File", new { personId = Model.PersonId})" />
                                     <div class="el-overlay">
                                         <ul class="el-info">
-                                            <li><a class="btn default btn-outline" id="upload-logo"><i class="sl-icon-magnifier"></i></a></li>
+                                            <li><a class="btn default btn-outline" id="upload-logo"><i class="sl-icon-cloud-upload"></i></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -78,7 +78,9 @@
                                     </div>
                                 </div>
                                 <input type="hidden" asp-for="PersonId" />
-                                <button id="save-person-submit" class="btn btn-info waves-effect">Save</button>
+                                <div class="text-right">
+                                    <button id="save-person-submit" class="btn btn-info waves-effect">Save</button>
+                                </div>
                             </div>
                         </div>
                     </div>

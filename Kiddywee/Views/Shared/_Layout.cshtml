@@ -82,6 +82,7 @@
 
             loadAttendance("");
             initCarousel();
+            attendanceDataTable();
 
             //Events
             $(document).on("click", ".class-select", function () {
@@ -222,11 +223,7 @@
                         $(this).hide();
                     });
                 }
-
-
-
             });
-
 
 
             $("#search-class-reset").on('click', function () {
@@ -259,8 +256,7 @@
                 var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
                 $('#datepicker-autoclose').datepicker({
                     autoclose: true,
-                    todayHighlight: true,
-                    todayBtn: true,
+                    todayHighlight: true,                    
                     endDate: today
                 });
 
@@ -268,7 +264,6 @@
                 $('#datepicker-autoclose').datepicker()
                     .on('changeDate', function (e) {
                         var clsId = $('.class-box.selected-class').data("classid");
-                        console.log(clsId);
                         loadAttendance(clsId);
                     });
             }
@@ -336,7 +331,6 @@
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         alert(thrownError);
-                        alert("Error");
                     }
                 });
             }
@@ -350,14 +344,13 @@
                 else {
                     url += "?classId=null&date=" + date;
                 }
-                console.log(url);
                 $.ajax({
                     url: url,
                     type: 'GET',
                     dataType: 'text',
                     success: function (data) {
                         $("#attendanceTableBody").html(data);
-                        //attendanceDataTable();
+                        attendanceDataTable(data);
                     }
                 });
             };
@@ -374,9 +367,12 @@
         }
 
 
-        function attendanceDataTable() {
+        function attendanceDataTable(data) {
+            console.log(data);
             $('#attendance').DataTable({
                 dom: 'Bfrtip',
+                retrieve: true,
+                //data: data,
                 buttons: [
                     'csv', 'pdf', 'print'
                 ]

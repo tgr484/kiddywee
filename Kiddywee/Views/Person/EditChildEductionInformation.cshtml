@@ -8,7 +8,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Class<span class="help"></span></label>
-                    <select class="select2 select2-multiple" multiple="multiple"  data-style="form-control form-control-line" asp-for="InClasses" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
+                    <select class="select2 select2-multiple" multiple="multiple" data-style="form-control form-control-line" asp-for="InClasses" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
                 </div>
             </div>
         </div>
@@ -35,7 +35,9 @@
                 }
         </div>
         <input type="hidden" asp-for="PersonId" />
-        <button id="save-person-education" class="btn btn-info waves-effect">Save</button>
+        <div class="text-right">
+            <button id="save-person-education" class="btn btn-info waves-effect">Save</button>
+        </div>
     </div>
 </div>
 <script>
@@ -45,7 +47,7 @@
             $("#save-person-education").click(function (e) {
 
                 var valdata = {};
-                $('#SaveChildEducation').find('input, select').each(function () {                    
+                $('#SaveChildEducation').find('input, select').each(function () {
                     valdata[this.name] = $(this).val();
                 });
 
