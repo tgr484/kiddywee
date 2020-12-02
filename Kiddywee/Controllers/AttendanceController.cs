@@ -91,7 +91,7 @@ namespace Kiddywee.Controllers
             var result = new List<object>();
             foreach (var a in model)
             {
-                result.Add(new { a.Name, InDate = a.InDate.ToString("H:mm:ss"), OutDate = a.OutDate?.ToString("H:mm:ss"), a.Hours, attendanceId = a.AttendanceId.ToString() });
+                result.Add(new { a.Name, InDate = a.InDate.ToString("H:mm:ss"), OutDate = a.OutDate?.ToString("H:mm:ss"), a.Hours, attendanceId = a.AttendanceId.ToString()});
             }
             return Json(result);
         }
