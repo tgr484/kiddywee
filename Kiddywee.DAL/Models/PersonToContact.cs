@@ -10,5 +10,15 @@ namespace Kiddywee.DAL.Models
         public Person Person { get; set; }
         public Guid ContactId { get; set; }
         public Contact Contact { get; set; }
+
+        public static PersonToContact Create(Guid childId, Guid contactId, string _userId)
+        {
+            return new PersonToContact()
+            {
+                ContactId = contactId,
+                CreatedById = _userId,
+                PersonId = childId
+            };
+        }
     }
 }

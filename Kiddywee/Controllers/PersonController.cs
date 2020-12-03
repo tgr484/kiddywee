@@ -4,6 +4,9 @@ using Kiddywee.DAL.Models;
 using Kiddywee.DAL.ViewModels.PersonViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,11 +19,14 @@ namespace Kiddywee.Controllers
 
     public class PersonController : BaseController
     {
-        public PersonController(IUnitOfWork unitOfWork) : base(unitOfWork)
+        private ICompositeViewEngine _viewEngine;
+
+        public PersonController(IUnitOfWork unitOfWork, ICompositeViewEngine viewEngine) : base(unitOfWork)
         {
             _unitOfWork = unitOfWork;
+            _viewEngine = viewEngine;
         }
-         
+
         public async Task<IActionResult> Index(Guid? classId)
         {
             var people = new List<Person>();
@@ -71,11 +77,11 @@ namespace Kiddywee.Controllers
                 {
                     if (model.Files.Any())
                     {
-                        foreach(var f in model.Files)
+                        foreach (var f in model.Files)
                         {
                             var medicalInfo = FileInfo.Create(f, _userId, DAL.Enum.EnumFileType.MedicalInfo, person.Id);
                             await _unitOfWork.FileInfos.Insert(medicalInfo);
-                        }                        
+                        }
                         await _unitOfWork.SaveFileAsync();
                     }
 
@@ -199,12 +205,12 @@ namespace Kiddywee.Controllers
             }
             return View();
         }
-       
+
         [HttpGet]
         public async Task<IActionResult> EditChildEductionInformation(Guid personId)
         {
             var person = await _unitOfWork.People.GetOneAsync(x => x.Id == personId,
-                                                                   include: p => p.Include(w => w.ChildInfo).Include(x =>x.PersonToClasses));
+                                                                   include: p => p.Include(w => w.ChildInfo).Include(x => x.PersonToClasses));
             var classes = await _unitOfWork.Classes.GetAsync(x => x.OrganizationId == _organizationId && x.IsActive);
 
             var model = ChildInfo.Init(person, classes);
@@ -246,7 +252,7 @@ namespace Kiddywee.Controllers
 
         public async Task<IActionResult> EditChildFileInformation(Guid personId)
         {
-            var files = await _unitOfWork.FileInfos.GetAsync(x =>x.IsActive && x.PersonId == personId && x.FileType == DAL.Enum.EnumFileType.MedicalInfo);
+            var files = await _unitOfWork.FileInfos.GetAsync(x => x.IsActive && x.PersonId == personId && x.FileType == DAL.Enum.EnumFileType.MedicalInfo);
             var model = FileInfo.Init(files);
             ViewBag.PersonId = personId;
             return View(model);
@@ -317,7 +323,85 @@ namespace Kiddywee.Controllers
             return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error", AdditionalData = model });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditChildContactInformation(Guid personId)
+        {
+            var contacts = await _unitOfWork.Contacts.GetAsync(x => x.IsActive && x.ChildId == personId);
+            var model = Contact.Init(contacts, personId);
+            
+            return View(model);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> CreateContact(Guid childId)
+        {
+            ChildCreateContactViewModel model = new ChildCreateContactViewModel() { ChildId = childId };
+            return View(model);
+        }
+
         
+
+        [HttpPost]
+        public async Task<string> CreateContact(ChildCreateContactViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Contact contact = Contact.Create(model, _userId);
+                await _unitOfWork.Contacts.Insert(contact);
+                var contactResult = await _unitOfWork.SaveAsync();
+                if (contactResult.Succeeded)
+                {
+                    PersonToContact personToContact = PersonToContact.Create(model.ChildId, contact.Id, _userId);
+                    await _unitOfWork.PersonToContacts.Insert(personToContact);
+                    var personToContactResult = await _unitOfWork.SaveAsync();
+                    if (personToContactResult.Succeeded)
+                    {
+                        try
+                        {
+                            var contacts = await _unitOfWork.Contacts.GetAsync(x => x.IsActive && x.ChildId == model.ChildId);
+                            var modelToView = Contact.Init(contacts, model.ChildId);
+                            var htmlPage = await RenderPartialViewToString("EditChildContactInformation", modelToView);
+
+                            return htmlPage;
+                        }
+                        catch(Exception ex)
+                        {
+
+                        }
+                        
+                    }
+                }
+            }
+            return "";
+        }
         #endregion
+
+        private async Task<string> RenderPartialViewToString(string viewName, object model)
+        {
+            if (string.IsNullOrEmpty(viewName))
+                viewName = ControllerContext.ActionDescriptor.ActionName;
+
+            ViewData.Model = model;
+
+            using (var writer = new System.IO.StringWriter())
+            {
+                ViewEngineResult viewResult =
+                    _viewEngine.FindView(ControllerContext, viewName, true);
+
+                ViewContext viewContext = new ViewContext(
+                    ControllerContext,
+                    viewResult.View,
+                    ViewData,
+                    TempData,
+                    writer,
+                    new HtmlHelperOptions()
+                );
+
+                await viewResult.View.RenderAsync(viewContext);
+
+                return writer.GetStringBuilder().ToString();
+            }
+        }
     }
 }

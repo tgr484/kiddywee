@@ -1,0 +1,104 @@
+﻿@model Kiddywee.DAL.ViewModels.PersonViewModels.ChildCreateContactViewModel
+
+@{
+    Layout = null;
+}
+<div class="row m-t-15">
+    <div id="CreateContact" class=" form-material">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">First Name</label>
+                    <input asp-for="FirstName" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Last Name</label>
+                    <input asp-for="LastName" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label  class="control-label">Email</label>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label  class="control-label">Address</label>
+                    <input asp-for="Address" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Phone Mobile</label>
+                    <input asp-for="PhoneMobile" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Phone Home</label>
+                    <input asp-for="PhoneHome" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Phone Work</label>
+                    <input asp-for="PhoneWork" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Notes</label>
+            <input asp-for="Notes" class="form-control" />
+        </div>
+        <input type="hidden" asp-for="ChildId" class="form-control" />
+
+        <div class="form-group">
+            <button id="cancel-create-contact" data-url="@Url.Action("EditChildContactInformation", "Person", new { personId = Model.ChildId})" class="btn btn-danger waves-effect">Cancel</button>
+            <button id="create-contact" value="Create" class="btn btn-info">Create</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(document).on("click", "#create-contact", function () {
+            var valdata = $("#CreateContact :input").serialize();            
+            $.ajax({
+                type: 'post',
+                url: "/Person/CreateContact",
+                data: valdata,
+                
+                success: function (data) {
+                    console.log(data);
+                    $("#contact").html(data);
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+
+        $(document).on("click", "#cancel-create-contact", function () {
+            var url = $(this).data("url");
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function (data) {
+                    $("#contact").html(data);
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+    });
+</script>
+

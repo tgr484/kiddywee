@@ -48,6 +48,7 @@
                     <li class="nav-item"> <a class="nav-link child-education-info" data-url="@Url.Action("EditChildEductionInformation", "Person", new { personId = Model.PersonId})" data-toggle="tab" href="#educaion" role="tab">Education</a> </li>
                     <li class="nav-item"> <a class="nav-link child-medical-info" data-url="@Url.Action("EditChildMedicalInformation", "Person", new { personId = Model.PersonId})" data-toggle="tab" href="#medical" role="tab">Medical</a> </li>
                     <li class="nav-item"> <a class="nav-link child-file-info" data-url="@Url.Action("EditChildFileInformation", "Person", new { personId = Model.PersonId})" data-toggle="tab" href="#file" role="tab">Files</a> </li>
+                    <li class="nav-item"> <a class="nav-link child-contact-info" data-url="@Url.Action("EditChildContactInformation", "Person", new { personId = Model.PersonId})" data-toggle="tab" href="#contact" role="tab">Contacts</a> </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="profile" role="tabpanel">
@@ -111,6 +112,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane" id="contact" role="tabpanel">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -140,6 +150,13 @@
             var url = $(this).data("url");
             $.get(url, function (data) {
                 $("#file").html(data);
+            })
+        });
+
+        $(document).on("click", ".child-contact-info", function () {
+            var url = $(this).data("url");
+            $.get(url, function (data) {
+                $("#contact").html(data);
             })
         });
 
