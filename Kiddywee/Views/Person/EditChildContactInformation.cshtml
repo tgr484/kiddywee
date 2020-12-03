@@ -7,7 +7,7 @@
     {
         foreach (var item in Model.Contacts)
         {
-            <div class="col-md-3 el-element-overlay" data-name="@item.FullName">
+            <div class="col-md-3 el-element-overlay" data-name="@item.FullName" id="contact-@item.ContactId">
                 <div class="el-card-item">
                     <div class="card card-body el-overlay-1">
                         <div class="row">

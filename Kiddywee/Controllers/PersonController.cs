@@ -328,7 +328,7 @@ namespace Kiddywee.Controllers
         {
             var contacts = await _unitOfWork.Contacts.GetAsync(x => x.IsActive && x.ChildId == personId);
             var model = Contact.Init(contacts, personId);
-            
+
             return View(model);
         }
 
@@ -340,7 +340,7 @@ namespace Kiddywee.Controllers
             return View(model);
         }
 
-        
+
 
         [HttpPost]
         public async Task<string> CreateContact(ChildCreateContactViewModel model)
@@ -357,27 +357,18 @@ namespace Kiddywee.Controllers
                     var personToContactResult = await _unitOfWork.SaveAsync();
                     if (personToContactResult.Succeeded)
                     {
-                        try
-                        {
-                            var contacts = await _unitOfWork.Contacts.GetAsync(x => x.IsActive && x.ChildId == model.ChildId);
-                            var modelToView = Contact.Init(contacts, model.ChildId);
-                            var htmlPage = await RenderPartialViewToString("EditChildContactInformation", modelToView);
-
-                            return htmlPage;
-                        }
-                        catch(Exception ex)
-                        {
-
-                        }
-                        
+                        var contacts = await _unitOfWork.Contacts.GetAsync(x => x.IsActive && x.ChildId == model.ChildId);
+                        var modelToView = Contact.Init(contacts, model.ChildId);
+                        var htmlPage = await RenderViewToString("EditChildContactInformation", modelToView);
+                        return htmlPage;
                     }
                 }
             }
-            return "";
+            return await RenderViewToString("CreateContact", model); 
         }
         #endregion
 
-        private async Task<string> RenderPartialViewToString(string viewName, object model)
+        private async Task<string> RenderViewToString(string viewName, object model)
         {
             if (string.IsNullOrEmpty(viewName))
                 viewName = ControllerContext.ActionDescriptor.ActionName;
