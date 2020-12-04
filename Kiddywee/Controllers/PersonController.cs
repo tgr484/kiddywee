@@ -331,7 +331,33 @@ namespace Kiddywee.Controllers
 
             return View(model);
         }
+               
+        public async Task<IActionResult> EditContact(Guid contactId)
+        {
+            ChildEditContactViewModel model = Contact.Edit(await _unitOfWork.Contacts.GetOneAsync(x => x.IsActive && x.Id == contactId));
+            return View(model);
+        }
 
+        [HttpPost]
+        public async Task<string> EditContact(ChildEditContactViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Contact contact = await _unitOfWork.Contacts.GetOneAsync(x => x.IsActive && x.Id == model.ContactId);
+                contact.Update(model);
+                _unitOfWork.Contacts.Update(contact);
+                var result = await _unitOfWork.SaveAsync();
+                if(result.Succeeded)
+                {
+                    var contacts = await _unitOfWork.Contacts.GetAsync(x => x.IsActive && x.ChildId == model.ChildId);
+                    var modelToView = Contact.Init(contacts, model.ChildId.Value);
+                    var htmlPage = await RenderViewToString("EditChildContactInformation", modelToView);
+                    return htmlPage;
+                }
+            }
+            return await RenderViewToString("EditContact", model);
+
+        }
 
         [HttpGet]
         public async Task<IActionResult> CreateContact(Guid childId)
@@ -367,6 +393,23 @@ namespace Kiddywee.Controllers
             return await RenderViewToString("CreateContact", model); 
         }
         #endregion
+
+        [HttpDelete]
+        public async Task<JsonResult> DeleteContact(Guid contactId)
+        {
+            var contact = await _unitOfWork.Contacts.GetOneAsync(x => x.IsActive && x.Id == contactId);
+            var personToContacts = await _unitOfWork.PersonToContacts.GetAsync(x => x.IsActive && x.ContactId == contactId);
+            contact.IsActive = false;
+            personToContacts.ForEach(x => x.IsActive = false);
+            _unitOfWork.Contacts.Update(contact);
+            _unitOfWork.PersonToContacts.UpdateRange(personToContacts);
+            var result = await _unitOfWork.SaveAsync();
+            if(result.Succeeded)
+            {
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Contact deleted", Header = "Success", Icon = "success" });
+            }
+            return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error" });
+        }
 
         private async Task<string> RenderViewToString(string viewName, object model)
         {

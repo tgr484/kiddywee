@@ -65,5 +65,34 @@ namespace Kiddywee.DAL.Models
                 PhoneWork = model.PhoneWork
             };
         }
+
+        public static ChildEditContactViewModel Edit(Contact contact)
+        {
+            return new ChildEditContactViewModel()
+            {
+                Address = contact.Address,
+                ChildId = contact.ChildId,
+                Email = contact.Email,
+                FirstName = contact.FirstName,
+                LastName = contact.LastName,
+                ContactId = contact.Id,
+                Notes = contact.Notes,
+                PhoneHome = contact.PhoneHome,
+                PhoneMobile = contact.PhoneMobile,
+                PhoneWork = contact.PhoneWork,
+            };
+        }
+
+        public void Update(ChildEditContactViewModel model)
+        {
+            this.Address = model.Address;
+            this.Email = model.Email;
+            this.FirstName = model.FirstName;
+            this.LastName = model.LastName;
+            this.Notes = model.Notes;
+            this.PhoneHome = model.PhoneHome;
+            this.PhoneMobile = model.PhoneMobile;
+            this.PhoneWork = model.PhoneWork;
+        }
     }
 }

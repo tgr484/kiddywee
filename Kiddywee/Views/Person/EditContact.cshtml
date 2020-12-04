@@ -1,10 +1,10 @@
-﻿@model Kiddywee.DAL.ViewModels.PersonViewModels.ChildCreateContactViewModel
+﻿@model Kiddywee.DAL.ViewModels.PersonViewModels.ChildEditContactViewModel
 
 @{
     Layout = null;
 }
 <div class="row m-t-15 m-l-10 m-r-10">
-    <div id="CreateContact" class=" form-material">
+    <div id="EditContact" class=" form-material">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -23,13 +23,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label  class="control-label">Email</label>
+                    <label class="control-label">Email</label>
                     <input asp-for="Email" class="form-control" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label  class="control-label">Address</label>
+                    <label class="control-label">Address</label>
                     <input asp-for="Address" class="form-control" />
                 </div>
             </div>
@@ -60,24 +60,24 @@
             <input asp-for="Notes" class="form-control" />
         </div>
         <input type="hidden" asp-for="ChildId" class="form-control" />
-
+        <input type="hidden" asp-for="ContactId" class="form-control" />
         <div class="form-group text-right">
-            <button id="cancel-create-contact" data-url="@Url.Action("EditChildContactInformation", "Person", new { personId = Model.ChildId})" class="btn btn-danger waves-effect">Cancel</button>
-            <button id="create-contact" value="Create" class="btn btn-info">Create</button>
+            <button id="cancel-edit-contact" data-url="@Url.Action("EditChildContactInformation", "Person", new { personId = Model.ChildId})" class="btn btn-danger waves-effect">Cancel</button>
+            <button id="edit-contact" value="Save" class="btn btn-info">Save</button>
         </div>
     </div>
 </div>
 <script>
     $(document).ready(function () {
-        $(document).on("click", "#create-contact", function () {
-            var valdata = $("#CreateContact :input").serialize();            
+        $(document).on("click", "#edit-contact", function () {
+            var valdata = $("#EditContact :input").serialize();
             $.ajax({
                 type: 'post',
-                url: "/Person/CreateContact",
+                url: "/Person/EditContact",
                 data: valdata,
-                
+
                 success: function (data) {
-                    console.log(data);
+                    //console.log(data);
                     $("#contact").html(data);
                 },
                 error: function () {
@@ -86,7 +86,7 @@
             });
         });
 
-        $(document).on("click", "#cancel-create-contact", function () {
+        $(document).on("click", "#cancel-edit-contact", function () {
             var url = $(this).data("url");
             $.ajax({
                 type: 'get',
