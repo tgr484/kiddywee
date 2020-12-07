@@ -6537,3 +6537,7 @@ User card page
 .delete-file {
     color: #ff5c6c;
 }
+
+.contact-card {
+    border: 1px solid #c7edfb !important;
+}

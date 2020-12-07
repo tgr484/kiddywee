@@ -10,6 +10,5 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Guid ContactId { get; set; }
-        public Guid? GuardianId { get; set; }
     }
 }

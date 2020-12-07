@@ -10,12 +10,12 @@
     {
         foreach (var item in Model.Contacts)
         {
-            <div class="col-md-3 el-element-overlay" data-name="@item.FullName" id="contact-@item.ContactId">
+            <div class="col-md-4 el-element-overlay " data-name="@item.FullName" id="contact-@item.ContactId">
                 <div class="el-card-item">
-                    <div class="card card-body el-overlay-1">
+                    <div class="card card-body el-overlay-1 contact-card">
                         <div class="row">
                             <div class="col-md-5 text-center">
-                                <a href="app-contact-detail.html"><img src="@Url.Action("GetProfileImage", "File", new { personId = item.GuardianId })" style="width:85px;height:85px;" alt="user" class="img-circle img-responsive"></a>
+                                <img src="~/assets/images/users/2.jpg" style="width:65px;height:65px;" alt="user" class="img-circle img-responsive">
                             </div>
                             <div class="col-md-7">
                                 <h3 class="box-title m-b-0">@item.FirstName<br />@item.LastName</h3>
