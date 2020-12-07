@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kiddywee.DAL.ViewModels.PersonViewModels
 {
-    public class ChildEditFileViewModel
+    public class PersonEditFileViewModel
     {
         public Guid FileId { get; set; }
         public string Name { get; set; }

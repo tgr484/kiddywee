@@ -67,35 +67,45 @@ namespace Kiddywee.DAL.Models
             };
         }
 
-        public static StaffEditViewModel Init(Person person, List<Class> classes)
+        public static StaffEditOtherViewModel Init(Person person, List<Class> classes)
         {
             var si = person.StaffInfo != null ? person.StaffInfo : new StaffInfo();
 
             var classId = person.PersonToClasses.Where(x => x.PersonId == person.Id && x.IsActive == true).Select(x => x.ClassId).ToList();
-               
-            return new StaffEditViewModel()
+
+            return new StaffEditOtherViewModel()
             {
                 PersonId = person.Id,
-                Classes = classes,               
-                ClassId = classId,
+                Classes = classes,     
+                InClasses = classId,
                 Schedule = si.Schedule?.Cast<EnumWeeklyScheduleType>().ToList(),
-                DateOfBirth = person.DateOfBirth,
-                FirstName = person.FirstName,
-                LastName = person.LastName,
                 CheckInTime = si.CheckInTime,
                 CheckOutTime = si.CheckOutTime,
                 ChildAbuseCert = si.ChildAbuseCert,
                 EmploymentType = si.EmploymentType,
                 FingerPrinting = si.FingerPrinting,
                 FirstAidTraining = si.FirstAidTraining,
-                PhoneNumber = si.PhoneNumber,
-                PhoneNumberDigitPin = si.PhoneNumberDigitPin,
                 PromedicalFormDueDate = si.PromedicalFormDueDate,
                 Salary = si.Salary,
                 SalaryType = si.SalaryType,
                 Scr = si.Scr,
                 StaffRole = si.StaffRole
-                
+
+            };
+        }
+
+        public static StaffEditGeneralViewModel Init(Person person)
+        {
+            var si = person.StaffInfo != null ? person.StaffInfo : new StaffInfo();
+
+            return new StaffEditGeneralViewModel()
+            {
+                PersonId = person.Id,               
+                DateOfBirth = person.DateOfBirth,
+                FirstName = person.FirstName,
+                LastName = person.LastName,               
+                PhoneNumber = si.PhoneNumber,
+                PhoneNumberDigitPin = si.PhoneNumberDigitPin,
             };
         }
     }

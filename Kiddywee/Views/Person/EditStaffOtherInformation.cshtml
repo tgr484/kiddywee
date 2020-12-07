@@ -1,0 +1,109 @@
+﻿@model StaffEditOtherViewModel
+@{
+    Layout = "~/Views/Shared/_NullLayout.cshtml";
+}
+<div class="card-body">
+    <div class="form-horizontal form-material" id="SaveStaffEducation">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Class<span class="help"></span></label>
+                    <select class="select2 select2-multiple" multiple="multiple" data-style="form-control form-control-line" asp-for="InClasses" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Schedule<span class="help"></span></label> <br />
+            @foreach (EnumWeeklyScheduleType item in Enum.GetValues(typeof(EnumWeeklyScheduleType)))
+            {
+                <input name="WeaklySchedule" type="checkbox" value="@item"
+                       checked="@Model.Schedule?.Any(p=>p == item)" /> @item
+                    <text>&nbsp; &nbsp; &nbsp;</text>
+                }
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>
+                        Scr<span class="help"></span>
+                    </label>
+                    <input type="date" asp-for="Scr" class="form-control form-control-line" placeholder="Enter date">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>
+                        Finger Printing<span class="help"></span>
+                    </label>
+                    <input type="date" asp-for="FingerPrinting" class="form-control form-control-line" placeholder="Enter date">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>
+                        First aid training<span class="help"></span>
+                    </label>
+                    <input type="date" asp-for="FirstAidTraining" class="form-control form-control-line" placeholder="Enter date">
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Salary<span class="help"></span></label>
+                    <input type="number" asp-for="Salary" class="form-control form-control-line" placeholder="Enter date">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="example-email">Salary type<span class="help"></span></label>
+                    <select class="form-control " asp-for="SalaryType" asp-items="Html.GetEnumSelectList<EnumSalaryType>()"></select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="example-email">Employment Type<span class="help"></span></label>
+                    <select class="form-control " asp-for="EmploymentType" asp-items="Html.GetEnumSelectList<EnumEmploymentType>()"></select>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" asp-for="PersonId" />
+        <div class="text-right">
+            <button id="save-person-other" class="btn btn-info waves-effect">Save</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        console.log('ready');
+        $(function () {
+            $("#save-person-other").click(function (e) {
+
+                var valdata = {};
+                $('#SaveStaffEducation').find('input, select').each(function () {
+                    valdata[this.name] = $(this).val();
+                });
+
+                //var valdata = $("#SaveChildEducation :input").serialize();
+                console.log(valdata);
+                $.ajax({
+                    url: "/Person/EditStaffOtherInformation",
+                    type: "POST",
+                    dataType: 'json',
+                    data: valdata
+                }).done(function (response) {
+                    $.toast({
+                        heading: response.header,
+                        text: response.message,
+                        position: 'bottom-right',
+                        loaderBg: response.color,
+                        icon: response.icon,
+                        hideAfter: 10000
+                    });
+                });
+            });
+        })
+    });
+</script>

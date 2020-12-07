@@ -58,7 +58,7 @@ namespace Kiddywee.Controllers
         }
 
 
-        public async Task<JsonResult> UploadChildMedicalFile(Guid personId, IFormFile file)
+        public async Task<JsonResult> UploadMedicalFile(Guid personId, IFormFile file)
         {
             var medicalInfo = DAL.Models.FileInfo.Create(file, _userId, DAL.Enum.EnumFileType.MedicalInfo, personId);
             await _unitOfWork.FileInfos.Insert(medicalInfo);

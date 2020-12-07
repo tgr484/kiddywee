@@ -45,12 +45,12 @@ namespace Kiddywee.DAL.Models
             return result;
         }
 
-        public static List<ChildEditFileViewModel> Init(List<FileInfo> files)
+        public static List<PersonEditFileViewModel> Init(List<FileInfo> files)
         {
-            var result = new List<ChildEditFileViewModel>();
+            var result = new List<PersonEditFileViewModel>();
             foreach(var file in files)
             {
-                result.Add(new ChildEditFileViewModel() { FileId = file.Id, Name = file.Name});
+                result.Add(new PersonEditFileViewModel() { FileId = file.Id, Name = file.Name});
             }
             return result;
         }

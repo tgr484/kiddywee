@@ -141,23 +141,22 @@ namespace Kiddywee.DAL.Models
             ChildInfo.PipeLineType = model.PipeLineType;
         }
 
-        public void Update(StaffEditViewModel model)
+        public void Update(StaffEditGeneralViewModel model)
         {
             FirstName = model.FirstName;
             LastName = model.LastName;
-            DateOfBirth = model.DateOfBirth;
-            StaffInfo.CheckInTime = model.CheckInTime;
-            StaffInfo.CheckOutTime = model.CheckOutTime;
-            StaffInfo.ChildAbuseCert = model.ChildAbuseCert;
-            StaffInfo.EmploymentType = model.EmploymentType;
-            StaffInfo.FingerPrinting = model.FingerPrinting;
-            StaffInfo.FirstAidTraining = model.FirstAidTraining;
+            DateOfBirth = model.DateOfBirth;            
             StaffInfo.PhoneNumber = model.PhoneNumber;
             StaffInfo.PhoneNumberDigitPin = model.PhoneNumberDigitPin;
-            StaffInfo.PromedicalFormDueDate = model.PromedicalFormDueDate;
+        }
+
+        public void Update(StaffEditOtherViewModel model)
+        {
             StaffInfo.Salary = model.Salary;
             StaffInfo.SalaryType = model.SalaryType;
-            StaffInfo.Schedule = model.Schedule?.Select(x => Convert.ToInt32(x)).ToList();
+            StaffInfo.FingerPrinting = model.FingerPrinting;
+            StaffInfo.FirstAidTraining = model.FirstAidTraining;
+            StaffInfo.ChildAbuseCert = model.ChildAbuseCert;
             StaffInfo.Scr = model.Scr;
             StaffInfo.StaffRole = model.StaffRole;
         }

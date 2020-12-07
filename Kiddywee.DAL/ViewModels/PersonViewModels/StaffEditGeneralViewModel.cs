@@ -1,27 +1,27 @@
 ﻿using Kiddywee.DAL.Enum;
 using Kiddywee.DAL.Models;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Kiddywee.DAL.ViewModels.PersonViewModels
 {
-    public class ChildEditGeneralViewModel
+    public class StaffEditGeneralViewModel
     {
-        public ChildEditGeneralViewModel()
-        {
-           
+        public StaffEditGeneralViewModel()
+        {            
+            
         }
-        public Guid PersonId { get; set; }
 
-        public string Address { get; set; }
+        public Guid PersonId { get; set; }   
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
+
+        public string PhoneNumber { get; set; }
+        public int PhoneNumberDigitPin { get; set; }
 
         public string FullName => FirstName + " " + LastName;
 

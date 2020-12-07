@@ -163,27 +163,52 @@ namespace Kiddywee.Controllers
         public async Task<IActionResult> EditStaff(Guid personId)
         {
             var person = await _unitOfWork.People.GetOneAsync(x => x.Id == personId,
-                                                                   include: p => p.Include(w => w.StaffInfo)
-                                                                                  //.Include(e => e.MedicalInfos)
-                                                                                  .Include(r => r.PersonToClasses));
+                                                                   include: p => p.Include(w => w.StaffInfo));
 
-            var classes = await _unitOfWork.Classes.GetAsync(x => x.OrganizationId == _organizationId);
-
-            var model = StaffInfo.Init(person, classes);
-            var medicalInfo = await _unitOfWork.FileInfos.GetOneAsync(x => x.PersonId == model.PersonId && x.FileType == DAL.Enum.EnumFileType.MedicalInfo);
-            model.MedicalInfo = medicalInfo;
+            var model = StaffInfo.Init(person);
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditStaff(StaffEditViewModel model)
+        public async Task<JsonResult> EditStaffGeneralInformation(StaffEditGeneralViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var person = await _unitOfWork.People.GetOneAsync(x => x.Id == model.PersonId,
-                                                                      include: p => p.Include(w => w.StaffInfo)
-                                                                                     //.Include(e => e.MedicalInfos)
-                                                                                     .Include(r => r.PersonToClasses));
+                                                                   include: p => p.Include(w => w.StaffInfo));
+
+                person.Update(model);
+
+                _unitOfWork.People.Update(person);
+                var result = await _unitOfWork.SaveAsync();
+
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Person saved", Header = "Success", Icon = "success", AdditionalData = model });
+
+            }
+            return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error", AdditionalData = model });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditStaffOtherInformation(Guid personId)
+        {
+            var person = await _unitOfWork.People.GetOneAsync(x => x.Id == personId,
+                                                                   include: p => p.Include(w => w.StaffInfo).Include(x => x.PersonToClasses));
+            var classes = await _unitOfWork.Classes.GetAsync(x => x.OrganizationId == _organizationId && x.IsActive);
+
+            var model = StaffInfo.Init(person, classes);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditStaffOtherInformation(StaffEditOtherViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var person = await _unitOfWork.People.GetOneAsync(x => x.Id == model.PersonId,
+                                                                   include: p => p.Include(w => w.StaffInfo).Include(x => x.PersonToClasses));
+                var classes = await _unitOfWork.Classes.GetAsync(x => x.OrganizationId == _organizationId && x.IsActive);
+
 
                 person.Update(model);
 
@@ -195,15 +220,23 @@ namespace Kiddywee.Controllers
 
                     personToClasses.ForEach(x => x.IsActive = false);
                     _unitOfWork.PersonToClasses.UpdateRange(personToClasses);
-                    foreach (var item in model.ClassId)
+                    foreach (var item in model.InClasses)
                     {
                         await _unitOfWork.PersonToClasses.Insert(PersonToClass.Create(person.Id, item, _userId));
                     }
                     var result2 = await _unitOfWork.SaveAsync();
+                    return Json(new JsonMessage { Color = "#ff6849", Message = "Person saved", Header = "Success", Icon = "success", AdditionalData = model });
                 }
-                return Redirect(Request.Headers["Referer"].ToString());
             }
-            return View();
+            return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error", AdditionalData = model });
+        }
+
+        public async Task<IActionResult> EditStaffFileInformation(Guid personId)
+        {
+            var files = await _unitOfWork.FileInfos.GetAsync(x => x.IsActive && x.PersonId == personId && x.FileType == DAL.Enum.EnumFileType.MedicalInfo);
+            var model = FileInfo.Init(files);
+            ViewBag.PersonId = personId;
+            return View(model);
         }
 
         [HttpGet]
@@ -308,9 +341,7 @@ namespace Kiddywee.Controllers
             if (ModelState.IsValid)
             {
                 var person = await _unitOfWork.People.GetOneAsync(x => x.Id == model.PersonId,
-                                                                   include: p => p.Include(w => w.ChildInfo)
-
-                                                                                  .Include(r => r.PersonToClasses));
+                                                                   include: p => p.Include(w => w.ChildInfo));
 
                 person.Update(model);
 
@@ -362,7 +393,7 @@ namespace Kiddywee.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateContact(Guid childId)
+        public IActionResult CreateContact(Guid childId)
         {
             ChildCreateContactViewModel model = new ChildCreateContactViewModel() { ChildId = childId };
             return View(model);
