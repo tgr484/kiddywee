@@ -33,6 +33,7 @@ namespace Kiddywee.DAL.Repositories
         private IGenericRepository<LessonPlan> _lessonPlansRepository;
         private IGenericRepository<LessonPlanWeakly> _lessonPlanWeakliesRepository;
         private IGenericRepository<PersonToClass> _personToClassesRepository;
+        private IGenericRepository<PersonToChild> _personToChildrenRepository;
 
 
         
@@ -42,6 +43,7 @@ namespace Kiddywee.DAL.Repositories
             _fileContext = fileContext;
         }
         public IGenericRepository<PersonToClass> PersonToClasses => _personToClassesRepository ??= new GenericRepository<PersonToClass>(_context);
+        public IGenericRepository<PersonToChild> PersonToChildren => _personToChildrenRepository ??= new GenericRepository<PersonToChild>(_context);
         public IGenericRepository<Person> People => _peopleRepository ??= new GenericRepository<Person>(_context);
         public IGenericRepository<Attendance> Attendances => _attendancesRepository ??= new GenericRepository<Attendance>(_context);
         public IGenericRepository<ChildInfo> ChildInfos => _childInfoRepository ??= new GenericRepository<ChildInfo>(_context);

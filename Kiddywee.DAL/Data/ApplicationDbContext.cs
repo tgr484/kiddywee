@@ -23,7 +23,7 @@ namespace Kiddywee.DAL.Data
         public DbSet<Person> People { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<ChildInfo> ChildInfos { get; set; }
-        public DbSet<StaffInfo> StaffInfos { get; set; } 
+        public DbSet<StaffInfo> StaffInfos { get; set; }
 
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<PersonToContact> PersonToContacts { get; set; }
@@ -39,12 +39,17 @@ namespace Kiddywee.DAL.Data
         public DbSet<LessonPlanWeakly> LessonPlanWeaklies { get; set; }
 
         public DbSet<PersonToClass> PersonToClasses { get; set; }
+        public DbSet<PersonToChild> PersonToChildren { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<AppError>().ToTable("AppErrors", "log");
             builder.Entity<AppUserAction>().ToTable("AppUserActions", "log");
-            //builder.Entity<File>().ToTable("Files", "Files");
+
+            builder.Entity<Person>(entity =>
+                                   entity.HasMany(p => p.PersonToChildren)
+                                          .WithOne(d => d.Person)
+                                          .HasForeignKey(d => d.PersonId));
             base.OnModelCreating(builder);
         }
         //protected override void OnModelCreating(ModelBuilder builder)

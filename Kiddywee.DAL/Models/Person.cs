@@ -15,6 +15,7 @@ namespace Kiddywee.DAL.Models
         {
             Contacts = new List<PersonToContact>();
             PersonToClasses = new List<PersonToClass>();
+            PersonToChildren = new List<PersonToChild>();
             Attendances = new List<Attendance>();
         }
 
@@ -26,6 +27,7 @@ namespace Kiddywee.DAL.Models
         public string LastName { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
+        public string CreatedById { get; set; }
 
         public Guid? ChildInfoId { get; set; }
 
@@ -41,6 +43,7 @@ namespace Kiddywee.DAL.Models
 
         public List<Attendance> Attendances { get; set; }
         public List<PersonToClass> PersonToClasses { get; set; }
+        public List<PersonToChild> PersonToChildren { get; set; }
 
         public string FullName { get { return $"{FirstName} {LastName}"; } }
 

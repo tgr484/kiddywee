@@ -2,7 +2,10 @@
 @{
     Layout = null;
 }
-<div class="row m-t-15">
+<div class="text-right m-t-15">
+    <button id="add-contact" data-url="@Url.Action("CreateContact", "Person", new { childId = Model.ChildId })" class="btn btn-info waves-effect"><i class="sl-icon-plus"></i> Add contact</button>
+</div>
+<div class="row m-t-10">
     @if (Model.Contacts.Any())
     {
         foreach (var item in Model.Contacts)
@@ -36,9 +39,6 @@
         </div>
     }
 
-</div>
-<div class="text-right m-t-15">
-    <button id="add-contact" data-url="@Url.Action("CreateContact", "Person", new { childId = Model.ChildId })" class="btn btn-info waves-effect"><i class="sl-icon-plus"></i> Add contact</button>
 </div>
 <script>
     $(document).ready(function () {

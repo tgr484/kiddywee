@@ -326,8 +326,9 @@ namespace Kiddywee.Controllers
         [HttpGet]
         public async Task<IActionResult> EditChildContactInformation(Guid personId)
         {
-            var contacts = await _unitOfWork.Contacts.GetAsync(x => x.IsActive && x.ChildId == personId);
-            var model = Contact.Init(contacts, personId);
+            var personToContacts = await _unitOfWork.PersonToContacts.GetAsync(x => x.IsActive && x.PersonId == personId, 
+                                                                               include: x => x.Include(p => p.Contact));
+            var model = Contact.Init(personToContacts.Select(x=> x.Contact).ToList(), personId);
 
             return View(model);
         }
@@ -348,9 +349,10 @@ namespace Kiddywee.Controllers
                 _unitOfWork.Contacts.Update(contact);
                 var result = await _unitOfWork.SaveAsync();
                 if(result.Succeeded)
-                {
-                    var contacts = await _unitOfWork.Contacts.GetAsync(x => x.IsActive && x.ChildId == model.ChildId);
-                    var modelToView = Contact.Init(contacts, model.ChildId.Value);
+                {                    
+                    var personToContacts = await _unitOfWork.PersonToContacts.GetAsync(x => x.IsActive && x.PersonId == model.ChildId, 
+                                                                                            include: x => x.Include(p => p.Contact));
+                    var modelToView = Contact.Init(personToContacts.Select(x => x.Contact).ToList(), model.ChildId.Value);
                     var htmlPage = await RenderViewToString("EditChildContactInformation", modelToView);
                     return htmlPage;
                 }
@@ -383,8 +385,9 @@ namespace Kiddywee.Controllers
                     var personToContactResult = await _unitOfWork.SaveAsync();
                     if (personToContactResult.Succeeded)
                     {
-                        var contacts = await _unitOfWork.Contacts.GetAsync(x => x.IsActive && x.ChildId == model.ChildId);
-                        var modelToView = Contact.Init(contacts, model.ChildId);
+                        var personToContacts = await _unitOfWork.PersonToContacts.GetAsync(x => x.IsActive && x.PersonId == model.ChildId,
+                                                                                            include: x => x.Include(p => p.Contact));
+                        var modelToView = Contact.Init(personToContacts.Select(x => x.Contact).ToList(), model.ChildId);
                         var htmlPage = await RenderViewToString("EditChildContactInformation", modelToView);
                         return htmlPage;
                     }

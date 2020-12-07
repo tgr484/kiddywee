@@ -18,7 +18,9 @@ namespace Kiddywee.DAL.Interfaces
         IGenericRepository<StaffInfo> StaffInfos { get; }
         IGenericRepository<FileInfo> FileInfos { get; }
         IGenericRepository<Contact> Contacts { get; }       
-        IGenericRepository<PersonToContact> PersonToContacts { get; }       
+        IGenericRepository<PersonToContact> PersonToContacts { get; }
+        IGenericRepository<PersonToChild> PersonToChildren { get; }
+
         IGenericRepository<Organization> Organizations { get;  }
         
         IGenericRepository<Class> Classes { get;  }

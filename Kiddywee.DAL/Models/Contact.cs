@@ -20,15 +20,7 @@ namespace Kiddywee.DAL.Models
         public string PhoneMobile { get; set; }
         public string PhoneHome { get; set; }
         public string PhoneWork { get; set; }
-
         public string Notes { get; set; }
-
-        public Guid? ChildId { get; set; }
-
-        public Person Child { get; set; }
-        public Guid? GuardianId { get; set; }
-
-        public Person Guardian { get; set; }
 
         public static ChildEditContactInformationViewModel Init(List<Contact> contacts, Guid childId)
         {
@@ -40,7 +32,6 @@ namespace Kiddywee.DAL.Models
                 {
                     FullName = item.FullName,
                     ContactId = item.Id,
-                    GuardianId = item.GuardianId,
                     FirstName = item.FirstName,
                     LastName = item.LastName
                 });
@@ -57,7 +48,6 @@ namespace Kiddywee.DAL.Models
                 CreatedById = _userId,
                 Email = model.Email,
                 FirstName = model.FirstName,
-                ChildId = model.ChildId,
                 LastName = model.LastName,
                 Notes = model.Notes,
                 PhoneHome = model.PhoneHome,
@@ -71,7 +61,6 @@ namespace Kiddywee.DAL.Models
             return new ChildEditContactViewModel()
             {
                 Address = contact.Address,
-                ChildId = contact.ChildId,
                 Email = contact.Email,
                 FirstName = contact.FirstName,
                 LastName = contact.LastName,
