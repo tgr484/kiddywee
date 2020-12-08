@@ -22,19 +22,14 @@ namespace Kiddywee.Controllers
         public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork) : base(unitOfWork)
         {
             _logger = logger;
-            _unitOfWork = unitOfWork;
-            
+            _unitOfWork = unitOfWork;            
         }
 
         public async Task<IActionResult> Index()
         {
             return View();
         }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
