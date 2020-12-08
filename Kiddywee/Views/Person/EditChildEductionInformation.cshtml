@@ -42,17 +42,22 @@
 </div>
 <script>
     $(document).ready(function () {
-        console.log('ready');
         $(function () {
             $("#save-person-education").click(function (e) {
-
                 var valdata = {};
                 $('#SaveChildEducation').find('input, select').each(function () {
                     valdata[this.name] = $(this).val();
                 });
+                valdata["WeaklySchedule"] = [];
+                $('#SaveChildEducation').find('input:checkbox[name="WeaklySchedule"]:checked').each(function () {
+                    console.log($(this).val());
+                    valdata["WeaklySchedule"].push($(this).val());
+                })
 
-                //var valdata = $("#SaveChildEducation :input").serialize();
-                console.log(valdata);
+                valdata["DailySchedule"] = [];
+                $('#SaveChildEducation').find('input:checkbox[name="DailySchedule"]:checked').each(function () {
+                    valdata["DailySchedule"].push($(this).val());
+                })
                 $.ajax({
                     url: "/Person/EditChildEductionInformation",
                     type: "POST",

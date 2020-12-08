@@ -17,7 +17,7 @@
             <label>Schedule<span class="help"></span></label> <br />
             @foreach (EnumWeeklyScheduleType item in Enum.GetValues(typeof(EnumWeeklyScheduleType)))
             {
-                <input name="WeaklySchedule" type="checkbox" value="@item"
+                <input name="Schedule" type="checkbox" value="@item"
                        checked="@Model.Schedule?.Any(p=>p == item)" /> @item
                     <text>&nbsp; &nbsp; &nbsp;</text>
                 }
@@ -77,17 +77,20 @@
 </div>
 <script>
     $(document).ready(function () {
-        console.log('ready');
         $(function () {
             $("#save-person-other").click(function (e) {
 
-                var valdata = {};
+                var valdata = {};                
+
                 $('#SaveStaffEducation').find('input, select').each(function () {
                     valdata[this.name] = $(this).val();
                 });
 
-                //var valdata = $("#SaveChildEducation :input").serialize();
-                console.log(valdata);
+                valdata["Schedule"] = [];
+                $('#SaveStaffEducation').find('input:checkbox[name="Schedule"]:checked').each(function () {
+                    valdata["Schedule"].push($(this).val());
+                })
+               
                 $.ajax({
                     url: "/Person/EditStaffOtherInformation",
                     type: "POST",

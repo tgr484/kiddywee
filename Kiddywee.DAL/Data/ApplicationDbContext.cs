@@ -14,6 +14,7 @@ namespace Kiddywee.DAL.Data
         {
 
         }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         #region Debug Information
         public DbSet<AppUserAction> AppUserActions { get; set; }

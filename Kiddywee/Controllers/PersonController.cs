@@ -416,6 +416,15 @@ namespace Kiddywee.Controllers
                     var personToContactResult = await _unitOfWork.SaveAsync();
                     if (personToContactResult.Succeeded)
                     {
+                        var guardian = await _unitOfWork.Users.GetOneAsync(x => x.Email == model.Email, include: x => x.Include(p => p.Person));
+
+                        if(guardian != null)
+                        {
+                            PersonToChild personToChild = PersonToChild.Create(guardian.PersonId, model.ChildId, _userId);
+                            await _unitOfWork.PersonToChildren.Insert(personToChild);
+                            await _unitOfWork.SaveAsync();
+                        }
+                        
                         var personToContacts = await _unitOfWork.PersonToContacts.GetAsync(x => x.IsActive && x.PersonId == model.ChildId,
                                                                                             include: x => x.Include(p => p.Contact));
                         var modelToView = Contact.Init(personToContacts.Select(x => x.Contact).ToList(), model.ChildId);

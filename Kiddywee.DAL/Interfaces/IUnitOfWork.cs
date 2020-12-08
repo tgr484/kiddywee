@@ -12,6 +12,7 @@ namespace Kiddywee.DAL.Interfaces
         
         
         IGenericRepository<Person> People { get; }
+        IGenericRepository<ApplicationUser> Users { get; }
         IGenericRepository<Attendance> Attendances { get; }
 
         IGenericRepository<ChildInfo> ChildInfos { get; }

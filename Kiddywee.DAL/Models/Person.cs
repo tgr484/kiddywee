@@ -159,6 +159,7 @@ namespace Kiddywee.DAL.Models
             StaffInfo.ChildAbuseCert = model.ChildAbuseCert;
             StaffInfo.Scr = model.Scr;
             StaffInfo.StaffRole = model.StaffRole;
+            StaffInfo.Schedule = model.Schedule?.Select(x => Convert.ToInt32(x)).ToList();
         }
     }
 }

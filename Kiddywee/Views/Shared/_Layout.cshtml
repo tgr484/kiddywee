@@ -277,10 +277,12 @@
             }
 
             function loadModal(url) {
+                $(".loader").fadeIn();
                 $.get(url, function (data) {
                     $(".modal-content").html(data)
                     $("body").addClass("modal-open");
                     $(".modal").show();
+                    $(".loader").fadeOut();
                 })
             }
 
@@ -334,15 +336,16 @@
                 });
             }
             function loadClass(url, classId) {
+                $(".loader").fadeIn();
                 $.get(url, function (data) {
                     $(".people").html(data);
                     $("#class-id-" + classId).addClass("selected-class");
                     loadAttendance();
+                    $(".loader").fadeOut();
                 })
             }
             function loadAttendance() {
                 var classId = $('.class-box.selected-class').data("classid");
-                console.log(classId);
                 var url = "attendance/GetAttendanceAjax";
                 var date = $('#datepicker-autoclose').data('datepicker').getFormattedDate('yyyy-mm-dd');
                 if (classId.length != 0) {

@@ -8,6 +8,13 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
 {
     public class StaffEditOtherViewModel
     {
+        public StaffEditOtherViewModel()
+        {
+            InClasses = new List<Guid>();
+            Classes = new List<Class>();
+            Schedule = new List<EnumWeeklyScheduleType>();
+        }
+
         public Guid PersonId { get; set; }
         public List<Class> Classes { get; set; }
         public List<Guid> InClasses { get; set; }

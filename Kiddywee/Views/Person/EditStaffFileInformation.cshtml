@@ -42,7 +42,6 @@
                 $("#files-table").append("<tr id='"+response.additionalData.id+"'><td>" + response.additionalData.name + "</td><td><a href='/file/downloadfile?fileId=" + response.additionalData.id + "'>Download</a></td><td><a href='#' class='delete-file' data-url='/file/deletefile?fileId="+response.additionalData.id+"'>Delete</a></td></tr>");
                 //Extract to func
                 $(".delete-file").click(function (e) {
-                    console.log("click");
                     var url = $(this).data("url");
                     $.ajax({
                         url: url,
@@ -68,7 +67,6 @@
             }
         });
 
-
         $(".delete-file").click(function (e) {
             console.log("click");
             var url = $(this).data("url");
@@ -88,7 +86,5 @@
                 $("#" + response.additionalData.id).remove();
             });
         });
-
     });
-
 </script>

@@ -16,6 +16,7 @@ namespace Kiddywee.DAL.Repositories
         private readonly FileDbContext _fileContext;
 
         private IGenericRepository<Person> _peopleRepository;
+        private IGenericRepository<ApplicationUser> _usersRepository;
         private IGenericRepository<Attendance> _attendancesRepository;
         private IGenericRepository<ChildInfo> _childInfoRepository;
         private IGenericRepository<StaffInfo> _staffInfoRepository;
@@ -61,6 +62,8 @@ namespace Kiddywee.DAL.Repositories
         public IGenericRepository<CurriculumToSubject> CurriculumToSubjects => _curriculumToSubjectsRepository ??= new GenericRepository<CurriculumToSubject>(_context);
         public IGenericRepository<LessonPlan> LessonPlans => _lessonPlansRepository ??= new GenericRepository<LessonPlan>(_context);
         public IGenericRepository<LessonPlanWeakly> LessonPlanWeaklies => _lessonPlanWeakliesRepository ??= new GenericRepository<LessonPlanWeakly>(_context);
+        public IGenericRepository<ApplicationUser> Users => _usersRepository ??= new GenericRepository<ApplicationUser>(_context);
+
         public void Save()
         {
             _context.SaveChanges();
