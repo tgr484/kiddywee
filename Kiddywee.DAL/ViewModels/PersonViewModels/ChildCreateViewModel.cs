@@ -14,6 +14,7 @@ namespace Kiddywee.DAL.ViewModels.PersonViewModels
         {
             Classes = new List<Class>();
             Files = new List<IFormFile>();
+            ClassId = new List<Guid>();
         }
         public List<Class> Classes { get; set; }
 

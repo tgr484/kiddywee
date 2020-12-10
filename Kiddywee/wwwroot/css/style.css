@@ -1132,7 +1132,7 @@ sidebar navigation
 
     .sidebar-nav > ul > li > a {
         line-height: 35px;
-        border-radius: 4px 4px 0 0;
+        /*border-radius: 4px 4px 0 0;*/
     }
 
         .sidebar-nav > ul > li > a i {
@@ -1150,17 +1150,18 @@ sidebar navigation
 
         .sidebar-nav > ul > li > a.active {
             font-weight: 400;
-            background: #242933;
+            background: #f6f9fa;
             color: #26c6da;
         }
 
     .sidebar-nav > ul > li {
-        margin-bottom: 5px;
+        margin-bottom: 0px;
     }
 
         .sidebar-nav > ul > li.active > a {
             color: #20aee3;
             font-weight: 500;
+            height: 55px;
         }
 
             .sidebar-nav > ul > li.active > a i {
@@ -1299,7 +1300,7 @@ When click on sidebar toggler and also for tablet
         .mini-sidebar .sidebar-nav > ul > li {
             margin-bottom: 0px;
             float: left;
-            margin-right: 10px;
+            /*margin-right: 10px;*/
         }
 
             .mini-sidebar .sidebar-nav > ul > li ul li a {

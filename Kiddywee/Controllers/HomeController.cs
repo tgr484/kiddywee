@@ -27,6 +27,7 @@ namespace Kiddywee.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewBag.Page = "Attendance";
             return View();
         }
         
