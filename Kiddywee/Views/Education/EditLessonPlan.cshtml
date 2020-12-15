@@ -1,0 +1,29 @@
+﻿@model LessonPlanViewModel
+@{
+    Layout = null;
+}
+<div class="modal-header">
+    <h4 class="modal-title" id="myLargeModalLabel">Lesson plan</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="javascipt: window.location.reload()">×</button>
+</div>
+<div class="modal-body">
+    <form class="form-material" id="Save" asp-action="EditLessonPlan" asp-controller="Education" method="post">
+        <div class="form-group">
+            <label>Weekly theme<span class="help"></span></label>
+            <input type="text" asp-for="WeeklyTheme" class="form-control form-control-line" placeholder="Enter weekly theme...">
+        </div>
+        <div class="form-group">
+            <label for="example-email">Daily theme<span class="help"></span></label>
+            <input type="text" asp-for="Theme" class="form-control form-control-line" placeholder="Enter daily theme...">
+        </div>
+        <div class="form-group">
+            <label for="example-email">Notes<span class="help"></span></label>
+            <input type="text" asp-for="Notes" class="form-control form-control-line" placeholder="Enter notes...">
+        </div>
+        <input type="hidden" asp-for="LessonPlanId" />
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal" onclick="javascipt: window.location.reload()">Close</button>
+    <button type="submit" class="btn btn-info waves-effect" form="Save">Save</button>
+</div>

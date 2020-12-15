@@ -74,7 +74,7 @@
     </div>
     <partial name="_PartialJavaScript" />
     @await RenderSectionAsync("Script", false)
-<script>
+    <script>
     $(document).ready(function () {
             //Init logic
             initClassPartialViewLogic();
@@ -131,6 +131,7 @@
             function initEducationPage() {
                 initCarousel();
                 loadLessonPlan(0);
+                initLessonPlanCalendar();
                 $("#class-id-0").addClass("selected-class");
                 $(document).on("click", ".class-select", function () {
                     var url = $(this).data("url");
@@ -139,12 +140,12 @@
                     loadLessonPlan(classId)
                     $("#class-id-" + classId).addClass("selected-class");
                 });
-            }            
+            }
 
             function initIndexPage() {
                 //Init
-                loadPeopleAndAttendance("person/", 0);
                 initAttendanceDatepicker();
+                loadPeopleAndAttendance("person/", 0);                
                 initCarousel();
 
                 $(document).on("click", ".class-select", function () {
@@ -283,7 +284,7 @@
                 $(".loader").fadeIn();
                 $.get("Education/LessonPlan?ClassId=" + classId, function (data) {
                     $(".lesson-calendar").html(data);
-                    $("#class-id-" + classId).addClass("selected-class");                    
+                    $("#class-id-" + classId).addClass("selected-class");
                     $(".loader").fadeOut();
                 })
             }
@@ -294,15 +295,16 @@
                 $('#datepicker-autoclose').datepicker({
                     autoclose: true,
                     todayHighlight: true,
-                    endDate: today
+                    endDate: today,
                 });
 
                 $('#datepicker-autoclose').datepicker('setDate', today);
                 $('#datepicker-autoclose').datepicker()
                     .on('changeDate', function (e) {
-                        var clsId = $('.class-box.selected-class').data("classid");
                         loadAttendance();
                     });
+                //console.log($('#datepicker-autoclose').data('datepicker').getFormattedDate('yyyy-mm-dd'));
+
             }
 
             function initCarousel() {
@@ -312,7 +314,37 @@
                     nav: true,
                     items: 5,
                 })
+        }
+
+            function initLessonPlanCalendar() {
+                var calendarEl = $('.lesson-plan-calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    weekends: false,
+                    weekNumbers: true,
+                    weekNumberTitle: "Week",
+                    handleWindowResize: true,
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: ''
+                    },
+                    dayClick: function (date, jsEvent, view) {
+                        console.log('Clicked on: ' + new Date(date));
+                        var classId = $('.class-box.selected-class').data("classid");
+                        var dateFormated = new Date(date).toJSON();
+                        var url = "Education/EditLessonPlan?classId=" + classId + "&date=" + dateFormated;
+                        loadModal(url);
+                    }                    
+                });
+                calendar.render();
+                $('.fc-week-number').click(function () {
+                    var mondayDayOfWeek = new Date($(this).parent().find(".fc-mon").data("date"));
+                    var sundayDayOfWeek = new Date(mondayDayOfWeek.getFullYear(), mondayDayOfWeek.getMonth(), mondayDayOfWeek.getDate() + 6);
+                    console.log(sundayDayOfWeek);
+                });
             }
+
 
             function loadModal(url) {
                 $(".loader").fadeIn();
@@ -420,6 +452,6 @@
                 });
             }
         });
-</script>
+    </script>
 </body>
 </html>
