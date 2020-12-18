@@ -22,31 +22,16 @@ namespace Kiddywee.Controllers
             return View();
         }
 
-        public async Task<JsonResult> LessonPlanCollection(Guid? classId)
+        public async Task<JsonResult> LessonPlansJson(Guid? classId)
         {
-            ViewBag.Cls = classId;
-            return Json(new JsonMessage());
+            var lessonPlansForClass = await _unitOfWork.LessonPlans.GetAsync(x => x.IsActive && x.ClassId == classId);
+            var result = LessonPlan.ToJson(lessonPlansForClass);
+            var weeklyLessonPlan = await _unitOfWork.LessonPlanWeaklies.GetAsync(x => x.IsActive && x.ClassId == classId);
+            result.AddRange(LessonPlanWeakly.ToJson(weeklyLessonPlan));
+            return Json(result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EditLessonPlan (LessonPlanViewModel model)
-        {
-            if(model.LessonPlanId == null)
-            {
-                var lessonPlan = LessonPlan.Create(model, _userId);
-                await _unitOfWork.LessonPlans.Insert(lessonPlan);
-                await _unitOfWork.SaveAsync();
-            }
-            else
-            {
-                var lessonPlan = await _unitOfWork.LessonPlans.GetOneAsync(x => x.IsActive && x.Id == model.LessonPlanId);
-                lessonPlan.Update(model);
-                _unitOfWork.LessonPlans.Update(lessonPlan);
-                await _unitOfWork.SaveAsync();
-            }
-            return View(model);
-        }
-
+        [HttpGet]
         public async Task<IActionResult> EditLessonPlan(Guid? classId, DateTime? date)
         {
             var lessonPlan = await _unitOfWork.LessonPlans.GetOneAsync(x => x.IsActive && x.ClassId == classId && x.Date == date);
@@ -55,8 +40,55 @@ namespace Kiddywee.Controllers
             {
                 model = LessonPlan.Init(lessonPlan);
             }
-            model.Date = date.Value;
+            else
+            {
+                model.Date = date.Value;
+            }
+            var sundayDateOfWeek = model.Date.AddDays(7 - (int)model.Date.DayOfWeek);
+            LessonPlanWeakly weeklyLessonPlan = await _unitOfWork.LessonPlanWeaklies.GetOneAsync(x => x.IsActive
+                                                                                        && x.ClassId == model.ClassId
+                                                                                        && x.WeekDateSunday == sundayDateOfWeek);
+            if(weeklyLessonPlan != null)
+            {
+                model.WeeklyTheme = weeklyLessonPlan.Theme;
+                model.LessonPlanWeeklyId = weeklyLessonPlan.Id;
+            }
+
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EditLessonPlan (LessonPlanViewModel model)
+        {
+            //Update weekly theme
+            var sundayDateOfWeek = model.Date.AddDays(7 - (int)model.Date.DayOfWeek);
+            LessonPlanWeakly weeklyLessonPlan = await _unitOfWork.LessonPlanWeaklies.GetOneAsync(x => x.IsActive && x.Id == model.LessonPlanWeeklyId);
+            if(weeklyLessonPlan != null)
+            {
+                weeklyLessonPlan.Theme = model.WeeklyTheme;
+                _unitOfWork.LessonPlanWeaklies.Update(weeklyLessonPlan);
+            }
+            else
+            {
+                weeklyLessonPlan = LessonPlanWeakly.Create(model, sundayDateOfWeek, _userId);
+                await _unitOfWork.LessonPlanWeaklies.Insert(weeklyLessonPlan);
+            }
+            //Update daily theme
+            if(model.LessonPlanId == null)
+            {
+                var lessonPlan = LessonPlan.Create(model, _userId);
+                await _unitOfWork.LessonPlans.Insert(lessonPlan);
+                await _unitOfWork.SaveAsync();
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
+            else
+            {
+                var lessonPlan = await _unitOfWork.LessonPlans.GetOneAsync(x => x.IsActive && x.Id == model.LessonPlanId);
+                lessonPlan.Update(model);
+                _unitOfWork.LessonPlans.Update(lessonPlan);
+                await _unitOfWork.SaveAsync();
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
+        }        
     }
 }

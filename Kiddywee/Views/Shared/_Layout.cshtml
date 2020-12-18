@@ -130,8 +130,7 @@
 
             function initEducationPage() {
                 initCarousel();
-                loadLessonPlan(0);
-                initLessonPlanCalendar();
+                loadLessonPlan(0);                
                 $("#class-id-0").addClass("selected-class");
                 $(document).on("click", ".class-select", function () {
                     var url = $(this).data("url");
@@ -280,13 +279,14 @@
 
 
             //Other functions
-            function loadLessonPlan(classId) {
-                $(".loader").fadeIn();
-                $.get("Education/LessonPlan?ClassId=" + classId, function (data) {
-                    $(".lesson-calendar").html(data);
-                    $("#class-id-" + classId).addClass("selected-class");
-                    $(".loader").fadeOut();
-                })
+        function loadLessonPlan(classId) {
+            initLessonPlanCalendar(classId);
+                //$(".loader").fadeIn();
+                //$.get("Education/LessonPlan?ClassId=" + classId, function (data) {
+                //    $(".lesson-calendar").html(data);
+                //    $("#class-id-" + classId).addClass("selected-class");
+                //    $(".loader").fadeOut();
+                //})
             }
 
             function initAttendanceDatepicker() {
@@ -316,7 +316,7 @@
                 })
         }
 
-            function initLessonPlanCalendar() {
+            function initLessonPlanCalendar(classId) {
                 var calendarEl = $('.lesson-plan-calendar');
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'dayGridMonth',
@@ -324,6 +324,8 @@
                     weekNumbers: true,
                     weekNumberTitle: "Week",
                     handleWindowResize: true,
+                    displayEventTime: false,
+                    events: 'Education/LessonPlansJson?classId=' + classId,
                     header: {
                         left: 'prev,next today',
                         center: 'title',

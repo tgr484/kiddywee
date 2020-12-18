@@ -28,12 +28,25 @@ namespace Kiddywee.DAL.Models
 
         public static LessonPlanViewModel Init(LessonPlan lessonPlan)
         {
-            return new LessonPlanViewModel() 
-            { 
-                LessonPlanId = lessonPlan.Id, 
-                Notes = lessonPlan.Notes, 
-                Theme = lessonPlan.Theme
+            return new LessonPlanViewModel()
+            {
+                LessonPlanId = lessonPlan.Id,
+                Notes = lessonPlan.Notes,
+                Theme = lessonPlan.Theme,
+                ClassId = lessonPlan.ClassId,
+                Date = lessonPlan.Date,
+                
             };
+        }
+
+        public static List<LessonPlanJson> ToJson(List<LessonPlan> lessonPlansForClass)
+        {
+            List<LessonPlanJson> result = new List<LessonPlanJson>();
+            foreach(var p in lessonPlansForClass)
+            {
+                result.Add(new LessonPlanJson() { start = p.Date, title = p.Theme});
+            }
+            return result;
         }
 
         public static LessonPlan Create(LessonPlanViewModel model, string userId)
@@ -44,6 +57,7 @@ namespace Kiddywee.DAL.Models
                 Theme = model.Theme,
                 Notes = model.Notes,
                 CreatedById = userId,
+                ClassId = model.ClassId,
                 OrganizationId = new Guid("2675d289-f8cd-4596-ad75-dfa58ee817af"),
             };
         }
@@ -53,5 +67,15 @@ namespace Kiddywee.DAL.Models
             Theme = model.Theme;
             Notes = model.Notes;
         }
+    }
+
+    public class LessonPlanJson
+    {
+        public string title { get; set; }
+        public DateTime start { get; set; }
+
+        public DateTime? end { get; set; }
+
+        public string backgroundColor { get; set; }
     }
 }
