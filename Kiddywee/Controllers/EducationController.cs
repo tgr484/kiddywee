@@ -70,15 +70,21 @@ namespace Kiddywee.Controllers
             }
             else
             {
-                weeklyLessonPlan = LessonPlanWeakly.Create(model, sundayDateOfWeek, _userId);
-                await _unitOfWork.LessonPlanWeaklies.Insert(weeklyLessonPlan);
+                if(String.IsNullOrEmpty(model.WeeklyTheme) == false)
+                {
+                    weeklyLessonPlan = LessonPlanWeakly.Create(model, sundayDateOfWeek, _userId);
+                    await _unitOfWork.LessonPlanWeaklies.Insert(weeklyLessonPlan);
+                }                
             }
             //Update daily theme
             if(model.LessonPlanId == null)
             {
-                var lessonPlan = LessonPlan.Create(model, _userId);
-                await _unitOfWork.LessonPlans.Insert(lessonPlan);
-                await _unitOfWork.SaveAsync();
+                if(String.IsNullOrEmpty(model.Theme) == false)
+                {
+                    var lessonPlan = LessonPlan.Create(model, _userId);
+                    await _unitOfWork.LessonPlans.Insert(lessonPlan);
+                    await _unitOfWork.SaveAsync();
+                }                
                 return Redirect(Request.Headers["Referer"].ToString());
             }
             else

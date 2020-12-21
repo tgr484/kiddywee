@@ -76,16 +76,21 @@
     @await RenderSectionAsync("Script", false)
     <script>
     $(document).ready(function () {
-            //Init logic
-            initClassPartialViewLogic();
-            switch ("@ViewBag.Page") {
-                case "Attendance": initIndexPage(); break;
-                case "Education": initEducationPage(); break;
-                default: console.log("case defult");
-            }
+        //Init logic
+        $(document).on("click", ".close-modal", function () {
+            $("body").removeClass("modal-open");
+            $(".modal").hide();
+        });
 
-            //Init functions
-            function initClassPartialViewLogic() {
+        initClassPartialViewLogic();
+        switch ("@ViewBag.Page") {
+            case "Attendance": initIndexPage(); break;
+            case "Education": initEducationPage(); break;
+            default: console.log("case defult");
+        }
+
+        //Init functions
+        function initClassPartialViewLogic() {
                 $(document).on("click", ".class-select", function () {
                     var url = $(this).data("url");
                     var classId = $(this).data("classid");
@@ -128,237 +133,232 @@
                 });
             }
 
-            function initEducationPage() {
-                initCarousel();
-                loadLessonPlan(0);                
-                $("#class-id-0").addClass("selected-class");
-                $(document).on("click", ".class-select", function () {
-                    var url = $(this).data("url");
-                    var classId = $(this).data("classid");
-                    $(".selected-class").removeClass("selected-class");
-                    loadLessonPlan(classId)
-                    $("#class-id-" + classId).addClass("selected-class");
-                });
-            }
-
-            function initIndexPage() {
-                //Init
-                initAttendanceDatepicker();
-                loadPeopleAndAttendance("person/", 0);                
-                initCarousel();
-
-                $(document).on("click", ".class-select", function () {
-                    var url = $(this).data("url");
-                    var classId = $(this).data("classid");
-                    $(".selected-class").removeClass("selected-class");
-                    loadPeopleAndAttendance(url, classId);
-                });
-
-                $(document).on("click", ".add-child", function () {
-                    var url = $(this).data("url");
-                    loadModal(url);
-                });
-
-                $(document).on("click", ".add-staff", function () {
-                    var url = $(this).data("url");
-                    loadModal(url);
-                });
-
-                $(document).on("click", ".edit-person", function () {
-                    var url = $(this).data("url");
-                    loadModal(url);
-                });
-
-                $(document).on("click", ".checkInOut-person", function () {
-                    var that = $(this);
-                    var url = that.data("url");
-                    var classId = that.data("classid");
-                    checkInOutAjax(url, classId, that);
-
-                });
-
-                $("#search-person-reset").on('click', function () {
-                    $('#search-person').val('');
-                    var type = $('#person-type-select').val();
-
-                    if (type == 'all') {
-                        $('.person-card').each(function () {
-                            $(this).show();
-                        });
-                    }
-                    if (type == 'students') {
-                        $('.person-card.person-staff-ns').each(function () {
-                            $(this).hide();
-                        });
-                        $('.person-card.person-child-ns').each(function () {
-                            $(this).show();
-                        });
-                    }
-                    if (type == 'staff') {
-                        $('.person-card.person-staff-ns').each(function () {
-                            $(this).show();
-                        });
-                        $('.person-card.person-child-ns').each(function () {
-                            $(this).hide();
-                        });
-                    }
-                });
-
-                $('#person-type-select').on('change', function () {
-                    var type = this.value;
-                    if (type == 'all') {
-                        $('.person-card').each(function () {
-                            $(this).show();
-                        });
-                    }
-                    if (type == 'students') {
-                        $('.person-card.person-staff-ns').each(function () {
-                            $(this).hide();
-                        });
-                        $('.person-card.person-child-ns').each(function () {
-                            $(this).show();
-                        });
-                    }
-                    if (type == 'staff') {
-                        $('.person-card.person-staff-ns').each(function () {
-                            $(this).show();
-                        });
-                        $('.person-card.person-child-ns').each(function () {
-                            $(this).hide();
-                        });
-                    }
-                });
-
-                $('#search-person').on('input', function () {
-                    var searchString = this.value.toLowerCase();
-                    var substrRegex = new RegExp(searchString, 'i');
-                    var type = $('#person-type-select').val();
-
-                    if (type == 'all') {
-                        $('.person-card').each(function () {
-                            var name = $(this).data('name').toLowerCase();
-                            if (substrRegex.test(name)) {
-                                $(this).show();
-                            }
-                            else {
-                                $(this).hide();
-                            }
-                        });
-                    }
-                    if (type == 'students') {
-                        $('.person-card.person-staff-ns').each(function () {
-                            $(this).hide();
-                        });
-                        $('.person-card.person-child-ns').each(function () {
-                            var name = $(this).data('name').toLowerCase();
-                            if (substrRegex.test(name)) {
-                                $(this).show();
-                            }
-                            else {
-                                $(this).hide();
-                            }
-                        });
-                    }
-                    if (type == 'staff') {
-                        $('.person-card.person-staff-ns').each(function () {
-                            var name = $(this).data('name').toLowerCase();
-                            if (substrRegex.test(name)) {
-                                $(this).show();
-                            }
-                            else {
-                                $(this).hide();
-                            }
-                        });
-                        $('.person-card.person-child-ns').each(function () {
-                            $(this).hide();
-                        });
-                    }
-                });
-            }
-
-
-
-            //Other functions
-        function loadLessonPlan(classId) {
-            initLessonPlanCalendar(classId);
-                //$(".loader").fadeIn();
-                //$.get("Education/LessonPlan?ClassId=" + classId, function (data) {
-                //    $(".lesson-calendar").html(data);
-                //    $("#class-id-" + classId).addClass("selected-class");
-                //    $(".loader").fadeOut();
-                //})
-            }
-
-            function initAttendanceDatepicker() {
-                var date = new Date();
-                var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-                $('#datepicker-autoclose').datepicker({
-                    autoclose: true,
-                    todayHighlight: true,
-                    endDate: today,
-                });
-
-                $('#datepicker-autoclose').datepicker('setDate', today);
-                $('#datepicker-autoclose').datepicker()
-                    .on('changeDate', function (e) {
-                        loadAttendance();
-                    });
-                //console.log($('#datepicker-autoclose').data('datepicker').getFormattedDate('yyyy-mm-dd'));
-
-            }
-
-            function initCarousel() {
-                $('.owl-carousel').owlCarousel({
-                    loop: false,
-                    margin: 10,
-                    nav: true,
-                    items: 5,
-                })
+        function initEducationPage() {
+            initCarousel();
+            loadLessonPlan(0);
+            $("#class-id-0").addClass("selected-class");
+            $(document).on("click", ".class-select", function () {
+                var url = $(this).data("url");
+                var classId = $(this).data("classid");
+                $(".selected-class").removeClass("selected-class");
+                loadLessonPlan(classId)
+                $("#class-id-" + classId).addClass("selected-class");
+            });
         }
 
-            function initLessonPlanCalendar(classId) {
-                var calendarEl = $('.lesson-plan-calendar');
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    weekends: false,
-                    weekNumbers: true,
-                    weekNumberTitle: "Week",
-                    handleWindowResize: true,
-                    displayEventTime: false,
-                    events: 'Education/LessonPlansJson?classId=' + classId,
-                    header: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: ''
-                    },
-                    dayClick: function (date, jsEvent, view) {
-                        console.log('Clicked on: ' + new Date(date));
-                        var classId = $('.class-box.selected-class').data("classid");
-                        var dateFormated = new Date(date).toJSON();
-                        var url = "Education/EditLessonPlan?classId=" + classId + "&date=" + dateFormated;
-                        loadModal(url);
-                    }                    
+        function initIndexPage() {
+            //Init
+            initAttendanceDatepicker();
+            loadPeopleAndAttendance("person/", 0);
+            initCarousel();
+
+            $(document).on("click", ".class-select", function () {
+                var url = $(this).data("url");
+                var classId = $(this).data("classid");
+                $(".selected-class").removeClass("selected-class");
+                loadPeopleAndAttendance(url, classId);
+            });
+
+            $(document).on("click", ".add-child", function () {
+                var url = $(this).data("url");
+                loadModal(url);
+            });
+
+            $(document).on("click", ".add-staff", function () {
+                var url = $(this).data("url");
+                loadModal(url);
+            });
+
+            $(document).on("click", ".edit-person", function () {
+                var url = $(this).data("url");
+                loadModal(url);
+            });
+
+            $(document).on("click", ".checkInOut-person", function () {
+                var that = $(this);
+                var url = that.data("url");
+                var classId = that.data("classid");
+                checkInOutAjax(url, classId, that);
+
+            });
+
+            $("#search-person-reset").on('click', function () {
+                $('#search-person').val('');
+                var type = $('#person-type-select').val();
+
+                if (type == 'all') {
+                    $('.person-card').each(function () {
+                        $(this).show();
+                    });
+                }
+                if (type == 'students') {
+                    $('.person-card.person-staff-ns').each(function () {
+                        $(this).hide();
+                    });
+                    $('.person-card.person-child-ns').each(function () {
+                        $(this).show();
+                    });
+                }
+                if (type == 'staff') {
+                    $('.person-card.person-staff-ns').each(function () {
+                        $(this).show();
+                    });
+                    $('.person-card.person-child-ns').each(function () {
+                        $(this).hide();
+                    });
+                }
+            });
+
+            $('#person-type-select').on('change', function () {
+                var type = this.value;
+                if (type == 'all') {
+                    $('.person-card').each(function () {
+                        $(this).show();
+                    });
+                }
+                if (type == 'students') {
+                    $('.person-card.person-staff-ns').each(function () {
+                        $(this).hide();
+                    });
+                    $('.person-card.person-child-ns').each(function () {
+                        $(this).show();
+                    });
+                }
+                if (type == 'staff') {
+                    $('.person-card.person-staff-ns').each(function () {
+                        $(this).show();
+                    });
+                    $('.person-card.person-child-ns').each(function () {
+                        $(this).hide();
+                    });
+                }
+            });
+
+            $('#search-person').on('input', function () {
+                var searchString = this.value.toLowerCase();
+                var substrRegex = new RegExp(searchString, 'i');
+                var type = $('#person-type-select').val();
+
+                if (type == 'all') {
+                    $('.person-card').each(function () {
+                        var name = $(this).data('name').toLowerCase();
+                        if (substrRegex.test(name)) {
+                            $(this).show();
+                        }
+                        else {
+                            $(this).hide();
+                        }
+                    });
+                }
+                if (type == 'students') {
+                    $('.person-card.person-staff-ns').each(function () {
+                        $(this).hide();
+                    });
+                    $('.person-card.person-child-ns').each(function () {
+                        var name = $(this).data('name').toLowerCase();
+                        if (substrRegex.test(name)) {
+                            $(this).show();
+                        }
+                        else {
+                            $(this).hide();
+                        }
+                    });
+                }
+                if (type == 'staff') {
+                    $('.person-card.person-staff-ns').each(function () {
+                        var name = $(this).data('name').toLowerCase();
+                        if (substrRegex.test(name)) {
+                            $(this).show();
+                        }
+                        else {
+                            $(this).hide();
+                        }
+                    });
+                    $('.person-card.person-child-ns').each(function () {
+                        $(this).hide();
+                    });
+                }
+            });
+        }
+
+
+
+        //Other functions
+        function loadLessonPlan(classId) {
+            initLessonPlanCalendar(classId);
+        }
+
+        function initAttendanceDatepicker() {
+            var date = new Date();
+            var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            $('#datepicker-autoclose').datepicker({
+                autoclose: true,
+                todayHighlight: true,
+                endDate: today,
+            });
+
+            $('#datepicker-autoclose').datepicker('setDate', today);
+            $('#datepicker-autoclose').datepicker()
+                .on('changeDate', function (e) {
+                    loadAttendance();
                 });
-                calendar.render();
-                $('.fc-week-number').click(function () {
-                    var mondayDayOfWeek = new Date($(this).parent().find(".fc-mon").data("date"));
-                    var sundayDayOfWeek = new Date(mondayDayOfWeek.getFullYear(), mondayDayOfWeek.getMonth(), mondayDayOfWeek.getDate() + 6);
-                    console.log(sundayDayOfWeek);
-                });
-            }
+        }
+
+        function initCarousel() {
+            $('.owl-carousel').owlCarousel({
+                loop: false,
+                margin: 10,
+                nav: true,
+                items: 5,
+            })
+        }
+
+        function initLessonPlanCalendar(classId) {
+            var calendarEl = $('.lesson-plan-calendar');
+            calendarEl.fullCalendar('destroy');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                weekends: false,
+                weekNumbers: true,
+                weekNumberTitle: "Week",
+                handleWindowResize: true,
+                displayEventTime: false,
+                events: 'Education/LessonPlansJson?classId=' + classId,
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: ''
+                },
+                dayClick: function (date, jsEvent, view) {
+                    console.log('Clicked on: ' + new Date(date));
+                    var classId = $('.class-box.selected-class').data("classid");
+                    var dateFormated = new Date(date).toJSON();
+                    var url = "Education/EditLessonPlan?classId=" + classId + "&date=" + dateFormated;
+                    loadModal(url);
+                }
+            });
+            calendar.render();
+            $('.fc-week-number').click(function () {
+                var mondayDayOfWeek = new Date($(this).parent().find(".fc-mon").data("date"));
+                var sundayDayOfWeek = new Date(mondayDayOfWeek.getFullYear(), mondayDayOfWeek.getMonth(), mondayDayOfWeek.getDate() + 6);
+            });
+        }
 
 
-            function loadModal(url) {
-                $(".loader").fadeIn();
-                $.get(url, function (data) {
-                    $(".modal-content").html(data)
-                    $("body").addClass("modal-open");
-                    $(".modal").show();
-                    $(".loader").fadeOut();
-                })
-            }
+        function loadModal(url) {
+            $(".loader").fadeIn();
+            $.get(url, function (data) {
+                $(".modal-content").html(data)
+                $("body").addClass("modal-open");
+                $(".modal").show();
+                $(".loader").fadeOut();
+            })
+        }
 
-            function checkInOutAjax(url, classId, that) {
+        
+
+
+        function checkInOutAjax(url, classId, that) {
                 $.ajax({
                     type: "GET",
                     url: url,
@@ -408,30 +408,30 @@
                 });
             }
 
-            function loadPeopleAndAttendance(url, classId) {
-                $(".loader").fadeIn();
-                $.get(url, function (data) {
-                    $(".people").html(data);
-                    $("#class-id-" + classId).addClass("selected-class");
-                    loadAttendance();
-                    $(".loader").fadeOut();
-                })
+        function loadPeopleAndAttendance(url, classId) {
+            $(".loader").fadeIn();
+            $.get(url, function (data) {
+                $(".people").html(data);
+                $("#class-id-" + classId).addClass("selected-class");
+                loadAttendance();
+                $(".loader").fadeOut();
+            })
+        }
+
+        function loadAttendance() {
+            var classId = $('.class-box.selected-class').data("classid");
+            var url = "attendance/GetAttendanceAjax";
+            var date = $('#datepicker-autoclose').data('datepicker').getFormattedDate('yyyy-mm-dd');
+            if (classId.length != 0) {
+                url += "?classId=" + classId + "&date=" + date;
             }
+            else {
+                url += "?classId=null&date=" + date;
+            }
+            attendanceDataTable(url);
+        };
 
-            function loadAttendance() {
-                var classId = $('.class-box.selected-class').data("classid");
-                var url = "attendance/GetAttendanceAjax";
-                var date = $('#datepicker-autoclose').data('datepicker').getFormattedDate('yyyy-mm-dd');
-                if (classId.length != 0) {
-                    url += "?classId=" + classId + "&date=" + date;
-                }
-                else {
-                    url += "?classId=null&date=" + date;
-                }
-                attendanceDataTable(url);
-            };
-
-            function attendanceDataTable(url) {
+        function attendanceDataTable(url) {
                 $('#attendance').DataTable({
                     dom: 'Bfrtip',
                     destroy: true,
@@ -453,7 +453,7 @@
                     ]
                 });
             }
-        });
+    });
     </script>
 </body>
 </html>
