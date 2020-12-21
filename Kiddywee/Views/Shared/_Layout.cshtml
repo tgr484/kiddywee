@@ -283,9 +283,9 @@
 
         //Other functions
         function loadLessonPlan(classId) {
-            //$('#lesson-plan-calendar').fullCalendar('destroy');            
+            $('#lesson-plan-calendar').fullCalendar('destroy');            
             initLessonPlanCalendar(classId);
-            //$('#lesson-plan-calendar').fullCalendar('render');
+            $('#lesson-plan-calendar').fullCalendar('render');
         }
 
         function initAttendanceDatepicker() {
@@ -314,7 +314,6 @@
         }
 
         function initLessonPlanCalendar(classId) { 
-            $('#lesson-plan-calendar').fullCalendar('destroy'); 
             $('#lesson-plan-calendar').fullCalendar({
                 initialView: 'dayGridMonth',
                 weekends: false,
@@ -328,38 +327,19 @@
                     center: 'title',
                     right: ''
                 },
-                //dayClick: function (date, jsEvent, view) {
-                //    console.log('Clicked on: ' + new Date(date));
-                //    var classId = $('.class-box.selected-class').data("classid");
-                //    var dateFormated = new Date(date).toJSON();
-                //    var url = "Education/EditLessonPlan?classId=" + classId + "&date=" + dateFormated;
-                //    loadModal(url);
-                //}
             });
             $('.fc-day').click(function () {
                 var date = $(this).data('date');
-                console.log(date);
                 var classId = $('.class-box.selected-class').data("classid");
                 var dateFormated = new Date(date).toJSON();
                 var url = "Education/EditLessonPlan?classId=" + classId + "&date=" + dateFormated;
                 loadModal(url);
-            });
-            $('.fc-week-number').click(function () {
-                var mondayDayOfWeek = new Date($(this).parent().find(".fc-mon").data("date"));
-                var sundayDayOfWeek = new Date(mondayDayOfWeek.getFullYear(), mondayDayOfWeek.getMonth(), mondayDayOfWeek.getDate() + 6);
-            });
-            $('#lesson-plan-calendar').fullCalendar('render');
+            });            
         }
 
 
         function loadModal(url) {
-            $(".loader").fadeIn();
-            //$.get(url, function (data) {
-            //    $(".modal-content").html(data)
-            //    $("body").addClass("modal-open");
-            //    $(".modal").show();
-            //    $(".loader").fadeOut();
-            //});
+            $(".loader").fadeIn();           
             $.ajax({
                 type: "GET",
                 url: url,
@@ -368,16 +348,12 @@
                     $("body").addClass("modal-open");
                     $(".modal").show();
                     $(".loader").fadeOut();
-
-
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert(thrownError);
                 }
             });        
-        }
-
-        
+        }        
 
 
         function checkInOutAjax(url, classId, that) {

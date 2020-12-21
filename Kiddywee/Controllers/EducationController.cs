@@ -48,7 +48,7 @@ namespace Kiddywee.Controllers
             LessonPlanWeakly weeklyLessonPlan = await _unitOfWork.LessonPlanWeaklies.GetOneAsync(x => x.IsActive
                                                                                         && x.ClassId == classId
                                                                                         && x.WeekDateSunday == sundayDateOfWeek);
-            if(weeklyLessonPlan != null)
+            if (weeklyLessonPlan != null)
             {
                 model.WeeklyTheme = weeklyLessonPlan.Theme;
                 model.LessonPlanWeeklyId = weeklyLessonPlan.Id;
@@ -58,34 +58,32 @@ namespace Kiddywee.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> EditLessonPlan (LessonPlanViewModel model)
+        public async Task<JsonResult> EditLessonPlan(LessonPlanViewModel model)
         {
             //Update weekly theme
             var sundayDateOfWeek = model.Date.AddDays(7 - (int)model.Date.DayOfWeek);
             LessonPlanWeakly weeklyLessonPlan = await _unitOfWork.LessonPlanWeaklies.GetOneAsync(x => x.IsActive && x.Id == model.LessonPlanWeeklyId);
-            if(weeklyLessonPlan != null)
+            if (weeklyLessonPlan != null)
             {
                 weeklyLessonPlan.Theme = model.WeeklyTheme;
                 _unitOfWork.LessonPlanWeaklies.Update(weeklyLessonPlan);
             }
             else
             {
-                if(String.IsNullOrEmpty(model.WeeklyTheme) == false)
+                if (String.IsNullOrEmpty(model.WeeklyTheme) == false)
                 {
                     weeklyLessonPlan = LessonPlanWeakly.Create(model, sundayDateOfWeek, _userId);
                     await _unitOfWork.LessonPlanWeaklies.Insert(weeklyLessonPlan);
-                }                
+                }
             }
             //Update daily theme
-            if(model.LessonPlanId == null)
+            if (model.LessonPlanId == null)
             {
-                if(String.IsNullOrEmpty(model.Theme) == false)
+                if (String.IsNullOrEmpty(model.Theme) == false)
                 {
                     var lessonPlan = LessonPlan.Create(model, _userId);
                     await _unitOfWork.LessonPlans.Insert(lessonPlan);
-                    await _unitOfWork.SaveAsync();
                 }
-                return Json(new JsonMessage { Color = "#ff6849", Message = "Lesson plan saved", Header = "Success", Icon = "success", AdditionalData = model });
 
             }
             else
@@ -93,9 +91,14 @@ namespace Kiddywee.Controllers
                 var lessonPlan = await _unitOfWork.LessonPlans.GetOneAsync(x => x.IsActive && x.Id == model.LessonPlanId);
                 lessonPlan.Update(model);
                 _unitOfWork.LessonPlans.Update(lessonPlan);
-                await _unitOfWork.SaveAsync();
-                return Json(new JsonMessage { Color = "#ff6849", Message = "Lesson plan saved", Header = "Success", Icon = "success", AdditionalData = model });
             }
-        }        
+            var result = await _unitOfWork.SaveAsync();
+            if (result.Succeeded)
+            {
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Lesson plan saved", Header = "Success", Icon = "success", AdditionalData = model });
+
+            }
+            return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Success", Icon = "error", AdditionalData = model });
+        }
     }
 }
