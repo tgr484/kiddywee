@@ -46,7 +46,7 @@ namespace Kiddywee.Controllers
             }
             var sundayDateOfWeek = model.Date.AddDays(7 - (int)model.Date.DayOfWeek);
             LessonPlanWeakly weeklyLessonPlan = await _unitOfWork.LessonPlanWeaklies.GetOneAsync(x => x.IsActive
-                                                                                        && x.ClassId == model.ClassId
+                                                                                        && x.ClassId == classId
                                                                                         && x.WeekDateSunday == sundayDateOfWeek);
             if(weeklyLessonPlan != null)
             {

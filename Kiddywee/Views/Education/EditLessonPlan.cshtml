@@ -1,6 +1,7 @@
 ﻿@model LessonPlanViewModel
 @{
-    Layout = "~/Views/Shared/_NullLayout.cshtml";
+    //Layout = "~/Views/Shared/_NullLayout.cshtml";
+    Layout = null;
 }
 <div class="modal-header">
     <h4 class="modal-title" id="myLargeModalLabel">Lesson plan</h4>
@@ -37,8 +38,8 @@
                 var valdata = {};
                 $('#lesson-plan-form').find('input').each(function () {
                     valdata[this.name] = $(this).val();
-                });               
-
+                });
+                console.log(valdata);
                 $.ajax({
                     url: "/Education/EditLessonPlan",
                     type: "POST",
@@ -55,7 +56,7 @@
                     });
                     $("body").removeClass("modal-open");
                     $(".modal").hide();      
-                    //$('.=lesson-plan-calendar').fullCalendar('refetchEvents')
+                    $('#lesson-plan-calendar').fullCalendar('refetchEvents');
                 });
             });
         })
