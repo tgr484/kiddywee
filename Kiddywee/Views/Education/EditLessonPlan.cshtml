@@ -1,13 +1,13 @@
 ﻿@model LessonPlanViewModel
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_NullLayout.cshtml";
 }
 <div class="modal-header">
     <h4 class="modal-title" id="myLargeModalLabel">Lesson plan</h4>
     <button type="button" class="close close-modal" data-dismiss="modal" aria-hidden="true">×</button>
 </div>
 <div class="modal-body">
-    <form class="form-material" id="Save" asp-action="EditLessonPlan" asp-controller="Education" method="post">
+    <div class="form-horizontal form-material" id="lesson-plan-form">
         <div class="form-group">
             <label>Weekly theme<span class="help"></span></label>
             <input type="text" asp-for="WeeklyTheme" class="form-control form-control-line" placeholder="Enter weekly theme...">
@@ -24,9 +24,40 @@
         <input type="hidden" asp-for="LessonPlanWeeklyId" />
         <input type="hidden" asp-for="ClassId" />
         <input type="hidden" asp-for="Date" />
-    </form>
+    </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-danger waves-effect close-modal" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-info waves-effect" form="Save">Save</button>
+    <button id="save-lesson-plan" type="button" class="btn btn-info waves-effect">Save</button>
 </div>
+<script>
+    $(document).ready(function () {
+        $(function () {
+            $("#save-lesson-plan").click(function (e) {
+                var valdata = {};
+                $('#lesson-plan-form').find('input').each(function () {
+                    valdata[this.name] = $(this).val();
+                });               
+
+                $.ajax({
+                    url: "/Education/EditLessonPlan",
+                    type: "POST",
+                    dataType: 'json',
+                    data: valdata
+                }).done(function (response) {
+                    $.toast({
+                        heading: response.header,
+                        text: response.message,
+                        position: 'bottom-right',
+                        loaderBg: response.color,
+                        icon: response.icon,
+                        hideAfter: 10000
+                    });
+                    $("body").removeClass("modal-open");
+                    $(".modal").hide();      
+                    //$('.=lesson-plan-calendar').fullCalendar('refetchEvents')
+                });
+            });
+        })
+    });
+</script>

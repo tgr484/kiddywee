@@ -285,7 +285,9 @@
 
         //Other functions
         function loadLessonPlan(classId) {
+            $('#lesson-plan-calendar').fullCalendar('destroy');            
             initLessonPlanCalendar(classId);
+            $('#lesson-plan-calendar').fullCalendar('render');
         }
 
         function initAttendanceDatepicker() {
@@ -313,10 +315,8 @@
             })
         }
 
-        function initLessonPlanCalendar(classId) {
-            var calendarEl = $('.lesson-plan-calendar');
-            calendarEl.fullCalendar('destroy');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
+        function initLessonPlanCalendar(classId) {            
+            $('#lesson-plan-calendar').fullCalendar({
                 initialView: 'dayGridMonth',
                 weekends: false,
                 weekNumbers: true,
@@ -337,7 +337,6 @@
                     loadModal(url);
                 }
             });
-            calendar.render();
             $('.fc-week-number').click(function () {
                 var mondayDayOfWeek = new Date($(this).parent().find(".fc-mon").data("date"));
                 var sundayDayOfWeek = new Date(mondayDayOfWeek.getFullYear(), mondayDayOfWeek.getMonth(), mondayDayOfWeek.getDate() + 6);

@@ -58,7 +58,7 @@ namespace Kiddywee.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditLessonPlan (LessonPlanViewModel model)
+        public async Task<JsonResult> EditLessonPlan (LessonPlanViewModel model)
         {
             //Update weekly theme
             var sundayDateOfWeek = model.Date.AddDays(7 - (int)model.Date.DayOfWeek);
@@ -84,8 +84,9 @@ namespace Kiddywee.Controllers
                     var lessonPlan = LessonPlan.Create(model, _userId);
                     await _unitOfWork.LessonPlans.Insert(lessonPlan);
                     await _unitOfWork.SaveAsync();
-                }                
-                return Redirect(Request.Headers["Referer"].ToString());
+                }
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Lesson plan saved", Header = "Success", Icon = "success", AdditionalData = model });
+
             }
             else
             {
@@ -93,7 +94,7 @@ namespace Kiddywee.Controllers
                 lessonPlan.Update(model);
                 _unitOfWork.LessonPlans.Update(lessonPlan);
                 await _unitOfWork.SaveAsync();
-                return Redirect(Request.Headers["Referer"].ToString());
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Lesson plan saved", Header = "Success", Icon = "success", AdditionalData = model });
             }
         }        
     }
