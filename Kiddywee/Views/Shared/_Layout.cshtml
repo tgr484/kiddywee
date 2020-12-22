@@ -149,7 +149,6 @@
             initAttendanceDatepicker();
             loadPeopleAndAttendance("person/", 0);
             initCarousel();
-
             $(document).on("click", ".class-select", function () {
                 var url = $(this).data("url");
                 var classId = $(this).data("classid");
@@ -277,9 +276,7 @@
                     });
                 }
             });
-        }
-
-
+        }   
 
         //Other functions
         function loadLessonPlan(classId) {

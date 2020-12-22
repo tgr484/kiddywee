@@ -1,6 +1,6 @@
 ﻿@model ChildEditEducationViewModel
 @{
-    Layout = "~/Views/Shared/_NullLayout.cshtml";
+    Layout = null;
 }
 <div class="card-body">
     <div class="form-horizontal form-material" id="SaveChildEducation">
@@ -42,6 +42,9 @@
 </div>
 <script>
     $(document).ready(function () {
+        $(".select2").select2({
+            dropdownParent: $(".modal")
+        });
         $(function () {
             $("#save-person-education").click(function (e) {
                 var valdata = {};

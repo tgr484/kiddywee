@@ -1,11 +1,11 @@
 ﻿@model StaffCreateViewModel
 @{
-    Layout = "~/Views/Shared/_NullLayout.cshtml";
+    Layout = null;
 }
 
 <div class="modal-header">
     <h4 class="modal-title" id="myLargeModalLabel">Create New Staff</h4>
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="javascipt: window.location.reload()">×</button>
+    <button type="button" class="close close-modal" data-dismiss="modal" aria-hidden="true">×</button>
 </div>
 <div class="modal-body">
     <form class="form-material" id="SavePerson" asp-action="CreateStaff" asp-controller="Person" method="post" enctype="multipart/form-data">
@@ -102,6 +102,14 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-danger waves-effect " data-dismiss="modal" onclick="javascipt: window.location.reload()">Close</button>
+    <button type="button" class="btn btn-danger waves-effect close-modal" data-dismiss="modal">Close</button>
     <button type="submit" class="btn btn-info waves-effect" form="SavePerson">Save</button>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $(".select2").select2({
+            dropdownParent: $(".modal")
+        });
+    });
+</script>
