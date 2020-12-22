@@ -67,38 +67,3 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        $(document).on("click", "#create-contact", function () {
-            var valdata = $("#CreateContact :input").serialize();            
-            $.ajax({
-                type: 'post',
-                url: "/Person/CreateContact",
-                data: valdata,
-                
-                success: function (data) {
-                    console.log(data);
-                    $("#contact").html(data);
-                },
-                error: function () {
-                    alert("Whoops something went wrong!");
-                }
-            });
-        });
-
-        $(document).on("click", "#cancel-create-contact", function () {
-            var url = $(this).data("url");
-            $.ajax({
-                type: 'get',
-                url: url,
-                success: function (data) {
-                    $("#contact").html(data);
-                },
-                error: function () {
-                    alert("Whoops something went wrong!");
-                }
-            });
-        });
-    });
-</script>
-

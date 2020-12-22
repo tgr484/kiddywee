@@ -344,10 +344,10 @@
                 type: "GET",
                 url: url,
                 success: function (response) {
-                    $(".modal-content").html(response)
+                    $(".modal-content").html(response);
+                    $(".loader").fadeOut();
                     $("body").addClass("modal-open");
                     $(".modal").show();
-                    $(".loader").fadeOut();
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert(thrownError);
@@ -450,7 +450,139 @@
                         'csv', 'pdf', 'print'
                     ]
                 });
-            }
+        }
+
+        ///Functions from pages
+        $(document).on("click", "#create-contact", function () {
+            var valdata = $("#CreateContact :input").serialize();
+            $.ajax({
+                type: 'post',
+                url: "/Person/CreateContact",
+                data: valdata,
+
+                success: function (data) {
+                    $("#contact").html(data);
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+
+        $(document).on("click", "#cancel-create-contact", function () {
+            var url = $(this).data("url");
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function (data) {
+                    $("#contact").html(data);
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+
+        $(document).on("click", "#edit-contact", function () {
+            var valdata = $("#EditContact :input").serialize();
+            $.ajax({
+                type: 'post',
+                url: "/Person/EditContact",
+                data: valdata,
+
+                success: function (data) {
+                    $("#contact").html(data);
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Contact saved',
+                        position: 'bottom-right',
+                        loaderBg: '#ff6849',
+                        icon: 'success',
+                        hideAfter: 10000
+                    });
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+
+        $(document).on("click", "#cancel-edit-contact", function () {
+            var url = $(this).data("url");
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function (data) {
+                    $("#contact").html(data);
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+
+        $(document).on("click", "#add-contact", function () {
+            $(".preloader").fadeIn();
+            var url = $(this).data("url");
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function (data) {
+                    $("#contact").html(data);
+                    $(".preloader").fadeOut();
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+
+
+        $(document).on("click", ".edit-contact", function () {
+            //$(".preloader").fadeIn();
+            var url = $(this).data("url");
+            var contactId = $(this).data("contact-id")
+
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function (data) {
+                    //$(".preloader").fadeOut();
+                    $("#contact").html(data);
+
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+        $(document).on("click", ".delete-contact", function () {
+            //$(".preloader").fadeIn();
+            var url = $(this).data("url");
+            var contactId = $(this).data("contact-id")
+
+            $.ajax({
+                type: 'delete',
+                url: url,
+                success: function (response) {
+                    //$(".preloader").fadeOut();
+
+                    $.toast({
+                        heading: response.header,
+                        text: response.message,
+                        position: 'bottom-right',
+                        loaderBg: response.color,
+                        icon: response.icon,
+                        hideAfter: 10000
+                    });
+                    $("#contact-" + contactId).remove();
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+
     });
     </script>
 </body>

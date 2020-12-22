@@ -56,7 +56,7 @@ namespace Kiddywee.DAL.Models
             };
         }
 
-        public static ChildEditContactViewModel Edit(Contact contact)
+        public static ChildEditContactViewModel Edit(Contact contact, Guid childId)
         {
             return new ChildEditContactViewModel()
             {
@@ -69,6 +69,7 @@ namespace Kiddywee.DAL.Models
                 PhoneHome = contact.PhoneHome,
                 PhoneMobile = contact.PhoneMobile,
                 PhoneWork = contact.PhoneWork,
+                ChildId = childId
             };
         }
 

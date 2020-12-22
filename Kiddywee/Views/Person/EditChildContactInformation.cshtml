@@ -22,7 +22,7 @@
                             </div>
                             <div class="el-overlay">
                                 <ul class="el-info">
-                                    <li><a class="btn default btn-outline edit-contact" data-url="@Url.Action("EditContact", "Person", new { contactId = item.ContactId })"><i class="sl-icon-user"></i></a></li>
+                                    <li><a class="btn default btn-outline edit-contact" data-url="@Url.Action("EditContact", "Person", new { contactId = item.ContactId, childId =  Model.ChildId})"><i class="sl-icon-user"></i></a></li>
                                     <li><a class="btn default btn-outline delete-contact" data-contact-id="@item.ContactId" data-url="@Url.Action("DeleteContact", "Person", new { contactId = item.ContactId })"><i class="sl-icon-ban"></i></a></li>
                                 </ul>
                             </div>
@@ -40,68 +40,8 @@
     }
 
 </div>
-<script>
+@*<script>
     $(document).ready(function () {
-        $(document).on("click", "#add-contact", function () {
-            $(".preloader").fadeIn();
-            var url = $(this).data("url");
-            $.ajax({
-                type: 'get',
-                url: url,
-                success: function (data) {
-                    $("#contact").html(data);
-                    $(".preloader").fadeOut();
-                },
-                error: function () {
-                    alert("Whoops something went wrong!");
-                }
-            });
-        });
-
-
-        $(document).on("click", ".edit-contact", function () {
-            //$(".preloader").fadeIn();
-            var url = $(this).data("url");
-            var contactId = $(this).data("contact-id")
-
-            $.ajax({
-                type: 'get',
-                url: url,
-                success: function (data) {
-                    //$(".preloader").fadeOut();
-                    $("#contact").html(data);
-                   
-                },
-                error: function () {
-                    alert("Whoops something went wrong!");
-                }
-            });
-        });
-        $(document).on("click", ".delete-contact", function () {
-            //$(".preloader").fadeIn();
-            var url = $(this).data("url");
-            var contactId = $(this).data("contact-id")
-
-            $.ajax({
-                type: 'delete',
-                url: url,
-                success: function (response) {
-                    //$(".preloader").fadeOut();
-
-                    $.toast({
-                        heading: response.header,
-                        text: response.message,
-                        position: 'bottom-right',
-                        loaderBg: response.color,
-                        icon: response.icon,
-                        hideAfter: 10000
-                    });
-                    $("#contact-" + contactId).remove();
-                },
-                error: function () {
-                    alert("Whoops something went wrong!");
-                }
-            });
-        });
+        
     });
-</script>
+</script>*@

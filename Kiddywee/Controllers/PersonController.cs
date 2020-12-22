@@ -364,9 +364,9 @@ namespace Kiddywee.Controllers
             return View(model);
         }
                
-        public async Task<IActionResult> EditContact(Guid contactId)
+        public async Task<IActionResult> EditContact(Guid contactId, Guid childId)
         {
-            ChildEditContactViewModel model = Contact.Edit(await _unitOfWork.Contacts.GetOneAsync(x => x.IsActive && x.Id == contactId));
+            ChildEditContactViewModel model = Contact.Edit(await _unitOfWork.Contacts.GetOneAsync(x => x.IsActive && x.Id == contactId), childId);
             return View(model);
         }
 
@@ -383,7 +383,7 @@ namespace Kiddywee.Controllers
                 {                    
                     var personToContacts = await _unitOfWork.PersonToContacts.GetAsync(x => x.IsActive && x.PersonId == model.ChildId, 
                                                                                             include: x => x.Include(p => p.Contact));
-                    var modelToView = Contact.Init(personToContacts.Select(x => x.Contact).ToList(), model.ChildId.Value);
+                    var modelToView = Contact.Init(personToContacts?.Select(x => x.Contact).ToList(), model.ChildId.Value);
                     var htmlPage = await RenderViewToString("EditChildContactInformation", modelToView);
                     return htmlPage;
                 }
