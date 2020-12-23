@@ -84,6 +84,7 @@
         switch ("@ViewBag.Page") {
             case "Attendance": initIndexPage(); break;
             case "Education": initEducationPage(); break;
+            case "DailyReports": initDailyReportsPage(); break;
             default: console.log("case defult");
         }
 
@@ -131,6 +132,19 @@
                 });
             }
 
+        function initDailyReportsPage() {
+
+            loadChildrenForDailyReport(0);
+            initCarousel();
+            $(document).on("click", ".class-select", function () {
+                //var url = $(this).data("url");
+                var classId = $(this).data("classid");
+                $(".selected-class").removeClass("selected-class");
+                loadChildrenForDailyReport(classId);
+                $("#class-id-" + classId).addClass("selected-class");
+            });
+        }
+
         function initEducationPage() {
             initCarousel();
             loadLessonPlan(0);
@@ -142,6 +156,8 @@
                 loadLessonPlan(classId)
                 $("#class-id-" + classId).addClass("selected-class");
             });
+
+
         }
 
         function initIndexPage() {
@@ -401,7 +417,24 @@
                         alert(thrownError);
                     }
                 });
+        }
+
+        function loadChildrenForDailyReport(classId) {
+            $(".loader").fadeIn();
+            var url = "Person/ChildrenForDailyReport"
+            if (classId.length != 0) {
+                url += "?classId=" + classId;// + "&date=" + date;
             }
+            else {
+                url += "?classId=null";//&date=" + date;
+            }
+            $.get(url, function (data) {
+                $(".people").html(data);
+                $("#class-id-" + classId).addClass("selected-class");
+                $(".loader").fadeOut();
+            })
+        }
+
 
         function loadPeopleAndAttendance(url, classId) {
             $(".loader").fadeIn();

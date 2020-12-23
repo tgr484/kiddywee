@@ -33,7 +33,7 @@ namespace Kiddywee.Controllers
             if (!classId.HasValue)
             {
                 people = await _unitOfWork.People
-                    .GetAsync(p => p.OrganizationId == _organizationId,
+                    .GetAsync(p => p.OrganizationId == _organizationId && p.IsActive,
                     include: p => p.Include(x => x.StaffInfo)
                                    .Include(x => x.ChildInfo)
                                    .Include(x => x.PersonToClasses)
@@ -41,7 +41,7 @@ namespace Kiddywee.Controllers
             }
             else
             {
-                people = await _unitOfWork.People.GetAsync(p => p.OrganizationId == _organizationId
+                people = await _unitOfWork.People.GetAsync(p => p.OrganizationId == _organizationId && p.IsActive
                     && p.PersonToClasses.Any(x => x.ClassId == classId.Value && x.IsActive),
                     include: p => p.Include(x => x.PersonToClasses)
                                    .Include(x => x.StaffInfo)
@@ -54,6 +54,30 @@ namespace Kiddywee.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> ChildrenForDailyReport(Guid? classId)
+        {
+            var people = new List<Person>();
+
+            if (!classId.HasValue)
+            {
+                people = await _unitOfWork.People
+                    .GetAsync(p => p.OrganizationId == _organizationId && p.IsActive && p.ChildInfo != null,
+                    include: p => p.Include(x => x.ChildInfo)
+                                   .Include(x => x.PersonToClasses)
+                                   .Include(x => x.Attendances));
+            }
+            else
+            {
+                people = await _unitOfWork.People.GetAsync(p => p.OrganizationId == _organizationId && p.ChildInfo != null
+                    && p.PersonToClasses.Any(x => x.ClassId == classId.Value && x.IsActive),
+                    include: p => p.Include(x => x.PersonToClasses)                                   
+                                   .Include(x => x.ChildInfo)
+                                   .Include(x => x.Attendances));
+            }
+            List<ChildDailyReportViewModel> model = Person.InitDailyReport(people, classId);
+
+            return View(model);
+        }
 
         #region Create
         [HttpGet]

@@ -119,6 +119,22 @@ namespace Kiddywee.DAL.Models
             return result;
         }
 
+        public static List<ChildDailyReportViewModel> InitDailyReport(List<Person> people, Guid? classId)
+        {
+            List<ChildDailyReportViewModel> result = new List<ChildDailyReportViewModel>();
+            foreach (var item in people)
+            {
+                result.Add(new ChildDailyReportViewModel()
+                {
+                    ClassId = classId.HasValue ? classId.Value.ToString() : "0",
+                    Id = item.Id,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                });
+            }
+            return result;
+        }
+
         public void Update(ChildEditGeneralViewModel model)
         {
             FirstName = model.FirstName;
