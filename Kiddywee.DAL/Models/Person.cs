@@ -122,14 +122,39 @@ namespace Kiddywee.DAL.Models
         public static List<ChildDailyReportViewModel> InitDailyReport(List<Person> people, Guid? classId)
         {
             List<ChildDailyReportViewModel> result = new List<ChildDailyReportViewModel>();
+
+            var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            Attendance attendance = null;
+            
+
             foreach (var item in people)
             {
+                if (classId.HasValue)
+                {
+                    attendance = item.Attendances.FirstOrDefault(x => x.IsActive && x.InDate >= startDate && x.InDate <= endDate && x.ClassId == classId.Value);
+                }
+                else
+                {
+                    attendance = item.Attendances.FirstOrDefault(x => x.IsActive && x.InDate >= startDate && x.InDate <= endDate && x.ClassId == null);
+                }
+
+                DateTime? checkInTime = null;
+                DateTime? checkOutTime = null;
+                if (attendance != null)
+                {
+                    checkInTime = attendance.InDate;
+                    checkOutTime = attendance.OutDate;
+                }
+
                 result.Add(new ChildDailyReportViewModel()
                 {
                     ClassId = classId.HasValue ? classId.Value.ToString() : "0",
                     Id = item.Id,
                     FirstName = item.FirstName,
                     LastName = item.LastName,
+                    CheckInTime = checkInTime,
+                    CheckOutTime = checkOutTime
                 });
             }
             return result;

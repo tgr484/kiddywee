@@ -6,9 +6,9 @@
     @foreach (ChildDailyReportViewModel item in Model)
     {
 
-        <div class="col-md-3 el-element-overlay person-card" data-name="@item.FullName">
+        <div class="col-md-3 el-element-overlay person-card " data-name="@item.FullName">
             <div class="el-card-item">
-                <div class="card card-body el-overlay-1 person-child">
+                <div class="card card-body el-overlay-1 person-child @item.AttendanceCssClass">
                     <div class="row">
                         <div class="col-md-5 text-center">
                             <img src="@Url.Action("GetProfileImage", "File", new { personId = item.Id})" style="width:85px;height:85px;" alt="user" class="img-circle img-responsive">

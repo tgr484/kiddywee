@@ -143,6 +143,28 @@
                 loadChildrenForDailyReport(classId);
                 $("#class-id-" + classId).addClass("selected-class");
             });
+
+            $("#search-person-reset").on('click', function () {
+                $('#search-person').val('');
+                $('.person-card').each(function () {
+                    $(this).show();
+                });
+            });
+            
+
+            $('#search-person').on('input', function () {
+                var searchString = this.value.toLowerCase();
+                var substrRegex = new RegExp(searchString, 'i');
+                $('.person-card').each(function () {
+                    var name = $(this).data('name').toLowerCase();
+                    if (substrRegex.test(name)) {
+                        $(this).show();
+                    }
+                    else {
+                        $(this).hide();
+                    }
+                });
+            });
         }
 
         function initEducationPage() {
