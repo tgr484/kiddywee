@@ -25,6 +25,10 @@
     <Compile Remove="Migrations\20201124153034_Files.Designer.cs" />
     <Compile Remove="Migrations\20201207151106_PersonToChild.cs" />
     <Compile Remove="Migrations\20201207151106_PersonToChild.Designer.cs" />
+    <Compile Remove="Migrations\20201228155023_DailyReport.cs" />
+    <Compile Remove="Migrations\20201228155023_DailyReport.Designer.cs" />
+    <Compile Remove="Migrations\20201228155314_DailyReport.cs" />
+    <Compile Remove="Migrations\20201228155314_DailyReport.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -88,6 +88,7 @@ namespace Kiddywee.DAL.Models
             EnrollmentSpots = model.EnrollmentSpots;
             StageType = model.StageType;
             TeacherStudentRatio = model.TeacherStudentRatio;
+            DailyReportTypes = model.DailyReportTypes?.Select(x => Convert.ToInt32(x)).ToList();
         }
         public static ClassEditViewModel Init(Class @class, List<Class> classesExeptSelected)
         {
@@ -99,7 +100,8 @@ namespace Kiddywee.DAL.Models
                 OrganizationId = @class.OrganizationId,
                 TeacherStudentRatio = @class.TeacherStudentRatio,
                 ClassId = @class.Id,
-                Classes = classesExeptSelected
+                Classes = classesExeptSelected,
+                DailyReportTypes = @class.DailyReportTypes?.Cast<EnumDailyReportType>().ToList()
             };
         }
         public static Class Create(ClassCreateViewModel model, string userId)

@@ -1,5 +1,9 @@
 ﻿@{
     var items = (List<ClassViewModel>)ViewBag.Classes;
+    if(ViewBag.Page == "DailyReports")
+    {
+        items = items.Where(x => x.ClassId != "0").ToList();
+    }
 }
 
 

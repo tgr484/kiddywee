@@ -27,7 +27,17 @@
             </label>
             <input type="text" asp-for="TeacherStudentRatio" class="form-control form-control-line" placeholder="Teachers/students">
         </div>
-
+        <div class="form-group">
+            <label>
+                Daily report types<span class="help"></span>
+            </label>
+            @foreach (EnumDailyReportType item in Enum.GetValues(typeof(EnumDailyReportType)))
+            {
+                <input name="DailyReportTypes" type="checkbox" value="@item"
+                       checked="@Model.DailyReportTypes?.Any(p=>p == item)" /> @item
+                    <text>&nbsp; &nbsp;</text>
+                }
+        </div>
         @*<div class="form-group">
             <label>
                 Move children to another class<span class="help"></span>

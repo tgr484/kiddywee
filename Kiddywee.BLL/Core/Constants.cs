@@ -13,6 +13,7 @@ namespace Kiddywee.BLL.Core
         public const string ROLE_GLOBALADMIN    = "GlobalAdmin";
 
         public const string CLAIM_ORGANIZATION  = "Organization";
-        public const string CLAIM_ORGANIZATIONID = "OrganizationId"; 
+        public const string CLAIM_ORGANIZATIONID = "OrganizationId";
+
     }
 }

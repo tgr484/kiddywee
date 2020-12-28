@@ -11,6 +11,7 @@ namespace Kiddywee.DAL.ViewModels.ClassesViewModels
         public ClassEditViewModel()
         {
             Classes = new List<Class>();
+            DailyReportTypes = new List<EnumDailyReportType>();
         }
         public bool IsMove { get; set; } = false;
         public bool IsActive { get; set; } = true;
@@ -22,7 +23,7 @@ namespace Kiddywee.DAL.ViewModels.ClassesViewModels
         public string Name { get; set; }
         public EnumStageType StageType { get; set; }
 
-        public List<int> DailyReportTypes { get; set; }
+        public List<EnumDailyReportType> DailyReportTypes { get; set; }
 
         public int? EnrollmentSpots { get; set; }
 

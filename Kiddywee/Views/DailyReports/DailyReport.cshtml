@@ -1,0 +1,36 @@
+﻿@model DailyReportViewModel
+@{
+    Layout = null;
+}
+<div class="modal-header">
+    <h4 class="modal-title" id="myLargeModalLabel">Edit class</h4>
+    <button type="button" class="close close-modal" data-dismiss="modal" aria-hidden="true">×</button>
+</div>
+<div class="modal-body">
+    <div class="form-horizontal form-material" id="dailyReport">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Daily report for @Model.PersonFullName<span class="help"></span></label>
+                </div>
+            </div>
+        </div>
+        @foreach (var r in Model?.ReportTypes)
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>@r.ToString()<span class="help"></span></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="r" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger waves-effect close-modal " data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-info waves-effect" form="Save">Save</button>
+</div>

@@ -133,8 +133,8 @@
             }
 
         function initDailyReportsPage() {
-
-            loadChildrenForDailyReport(0);
+            $(".class-box:first").addClass("selected-class");
+            loadChildrenForDailyReport($('.class-box.selected-class').data("classid"));
             initCarousel();
             $(document).on("click", ".class-select", function () {
                 //var url = $(this).data("url");
@@ -142,6 +142,13 @@
                 $(".selected-class").removeClass("selected-class");
                 loadChildrenForDailyReport(classId);
                 $("#class-id-" + classId).addClass("selected-class");
+            });
+
+            $(document).on("click", ".daily-report", function () {
+                var personId = $(this).data("personid");
+                var classId = $('.class-box.selected-class').data("classid");
+                var url = "DailyReports/DailyReport?personId=" + personId + "&classId=" + classId;
+                loadModal(url);
             });
 
             $("#search-person-reset").on('click', function () {

@@ -60,7 +60,7 @@ namespace Kiddywee.DAL.Models
                 DailySchedule = ci.DailySchedule?.Cast<EnumDailyScheduleType>().ToList(),               
                 PipeLineType = ci.PipeLineType,
                 WeaklySchedule = ci.WeaklySchedule?.Cast<EnumWeeklyScheduleType>().ToList(),
-                PersonId = person.Id
+                PersonId = person.Id,
             };
         }
 
