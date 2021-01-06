@@ -20,14 +20,14 @@ namespace Kiddywee.DAL.Models
         public string Report { get; set; }
         public string Notes { get; set; }
 
-        public EnumDailyReportType Type { get; set; }
+        public int Type { get; set; }
 
         public DateTime Date { get; set; }
 
         public static DailyReport Create(Guid personId, 
                                          Guid classId, 
                                          Guid organizationId, 
-                                         EnumDailyReportType type, 
+                                         int type, 
                                          DateTime date, 
                                          string report, 
                                          string notes,

@@ -15,15 +15,15 @@
                 </div>
             </div>
         </div>
-        @foreach (var r in Model?.ReportTypes)
+        @foreach (var r in Model.ReportTypes)
         {
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label>@r.ToString()<span class="help"></span></label>
+                        <label>@r<span class="help"></span></label>
                     </div>
                     <div class="form-group">
-                        <input type="text" name="r" />
+                        <input type="text" name="@r" value="@Model.Reports.FirstOrDefault(x=> x.Key == r).Value"/>
                     </div>
                 </div>
             </div>

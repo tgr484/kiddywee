@@ -33,6 +33,8 @@
     <Compile Remove="Migrations\20210106150241_DailyReport.Designer.cs" />
     <Compile Remove="Migrations\20210106150718_DailyReport.cs" />
     <Compile Remove="Migrations\20210106150718_DailyReport.Designer.cs" />
+    <Compile Remove="Migrations\20210106152219_DailyReportFixType.cs" />
+    <Compile Remove="Migrations\20210106152219_DailyReportFixType.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
