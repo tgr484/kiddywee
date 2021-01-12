@@ -11,29 +11,29 @@ namespace Kiddywee.DAL.ViewModels.DailyReportsViewModel
     {
         public DailyReportViewModel()
         {
-            Reports = new Dictionary<EnumDailyReportType, string>();
+            Notes = new List<DailyReportNoteViewModel>();
         }
 
         public Guid PersonId { get; set; }
         public string PersonFullName { get; set; }
         public Guid ClassId { get; set; }
-        public List<EnumDailyReportType> ReportTypes { get; set; }
-        public Dictionary<EnumDailyReportType, string> Reports { get; set; }
 
-        public static DailyReportViewModel Create(Guid personId, Guid classId, string personFullName, List<int> reportTypes, List<DailyReport> reports)
+        public Guid OrganizationId { get; set; }
+
+        public List<EnumDailyReportType> ReportTypes { get; set; }
+        public List<DailyReportNoteViewModel> Notes { get; set; }
+
+        public static DailyReportViewModel Create(Guid personId, Guid classId, Guid organizationId,string personFullName, List<int> reportTypes, List<DailyReportNote> reports)
         {
-            Dictionary<EnumDailyReportType, string> resultReports = new Dictionary<EnumDailyReportType, string>();
-            foreach(var item in reports)
-            {
-                resultReports.Add((EnumDailyReportType)item.Type, item.Report);
-            }
+            var notes = reports?.Select(x => new DailyReportNoteViewModel() { ClassId = x.ClassId, Date = x.Date, Id = x.Id, Note = x.Note, OrganizationId = x.OrganizationId, PersonId = x.PersonId }).ToList();
             return new DailyReportViewModel()
             {
                 ClassId = classId,
                 PersonId = personId,
                 PersonFullName = personFullName,
-                Reports = resultReports,
-                ReportTypes = reportTypes?.Cast<EnumDailyReportType>().ToList()
+                ReportTypes = reportTypes?.Cast<EnumDailyReportType>().ToList(),
+                OrganizationId = organizationId,
+                Notes = notes
             };
         }
     }

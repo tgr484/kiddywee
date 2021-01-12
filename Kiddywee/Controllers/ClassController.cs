@@ -4,6 +4,7 @@ using Kiddywee.DAL.Models;
 using Kiddywee.DAL.ViewModels.ClassesViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Kiddywee.Controllers
     [Authorize]
     public class ClassController : BaseController
     {
-        public ClassController(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public ClassController(IUnitOfWork unitOfWork, ICompositeViewEngine viewEngine) : base(unitOfWork, viewEngine)
         {
             _unitOfWork = unitOfWork;
         }
@@ -95,8 +96,8 @@ namespace Kiddywee.Controllers
         public async Task<JsonResult> InitClasses()
         {
             var result = new List<ClassViewModel>();
-            var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
 
             var classes = await _unitOfWork.Classes.GetAsync(p => p.IsActive && p.OrganizationId == _organizationId.Value);
             var attendancesForToday = _unitOfWork.Attendances.Get(x => x.IsActive

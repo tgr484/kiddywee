@@ -3,6 +3,7 @@ using Kiddywee.DAL.Interfaces;
 using Kiddywee.DAL.Models;
 using Kiddywee.DAL.ViewModels.EducationViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Kiddywee.Controllers
 {
     public class EducationController : BaseController
     {
-        public EducationController(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public EducationController(IUnitOfWork unitOfWork, ICompositeViewEngine viewEngine) : base(unitOfWork, viewEngine)
         {
             _unitOfWork = unitOfWork;
         }

@@ -1,0 +1,23 @@
+﻿@model DailyReportNoteViewModel
+@{ 
+    Layout = null;
+}
+<div id="add-note-form">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Note<span class="help"></span></label>
+                <input type="text" asp-for="Note" />
+            </div>
+        </div>
+    </div>
+    <input type="hidden" asp-for="ClassId" />
+    <input type="hidden" asp-for="OrganizationId" />
+    <input type="hidden" asp-for="PersonId" />
+    <input type="hidden" asp-for="Date" />
+    <input type="hidden" asp-for="ClassId" />
+</div>
+<div class="form-group text-right">
+    <button id="cancel-add-note" data-url="@Url.Action("GetNotes", "DailyReports")" class="btn btn-danger waves-effect">Cancel</button>
+    <button id="save-note" value="Save" data-url="@Url.Action("AddEditNote", "DailyReports")" class="btn btn-info">Save</button>
+</div>

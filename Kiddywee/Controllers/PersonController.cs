@@ -21,7 +21,7 @@ namespace Kiddywee.Controllers
     {
         private ICompositeViewEngine _viewEngine;
 
-        public PersonController(IUnitOfWork unitOfWork, ICompositeViewEngine viewEngine) : base(unitOfWork)
+        public PersonController(IUnitOfWork unitOfWork, ICompositeViewEngine viewEngine) : base(unitOfWork, viewEngine)
         {
             _unitOfWork = unitOfWork;
             _viewEngine = viewEngine;
@@ -476,33 +476,6 @@ namespace Kiddywee.Controllers
                 return Json(new JsonMessage { Color = "#ff6849", Message = "Contact deleted", Header = "Success", Icon = "success" });
             }
             return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error" });
-        }
-
-        private async Task<string> RenderViewToString(string viewName, object model)
-        {
-            if (string.IsNullOrEmpty(viewName))
-                viewName = ControllerContext.ActionDescriptor.ActionName;
-
-            ViewData.Model = model;
-
-            using (var writer = new System.IO.StringWriter())
-            {
-                ViewEngineResult viewResult =
-                    _viewEngine.FindView(ControllerContext, viewName, true);
-
-                ViewContext viewContext = new ViewContext(
-                    ControllerContext,
-                    viewResult.View,
-                    ViewData,
-                    TempData,
-                    writer,
-                    new HtmlHelperOptions()
-                );
-
-                await viewResult.View.RenderAsync(viewContext);
-
-                return writer.GetStringBuilder().ToString();
-            }
-        }
+        }        
     }
 }

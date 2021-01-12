@@ -33,7 +33,7 @@ namespace Kiddywee.DAL.Interfaces
         IGenericRepository<LessonPlan> LessonPlans { get;  }
         IGenericRepository<LessonPlanWeakly> LessonPlanWeaklies { get;  }
         IGenericRepository<PersonToClass> PersonToClasses { get; }
-        IGenericRepository<DailyReport> DailyReports { get; }
+        IGenericRepository<DailyReportNote> DailyReportNotes { get; }
         void Save();
         Task<IdentityResult> SaveAsync();
         Task<IdentityResult> SaveFileAsync();

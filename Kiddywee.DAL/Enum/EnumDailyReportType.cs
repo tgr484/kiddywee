@@ -13,6 +13,7 @@ namespace Kiddywee.DAL.Enum
         Bathroom,
         Medication,
         Activities,
-        Snapshots,
+        Snapshots
+        
     }
 }

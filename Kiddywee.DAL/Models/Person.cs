@@ -81,8 +81,8 @@ namespace Kiddywee.DAL.Models
             {
                 //var classId = item.PersonToClasses.FirstOrDefault(x => x.IsActive)?.ClassId;
 
-                var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-                var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+                var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+                var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
                 Attendance attendance = null;
                 if (classId.HasValue)
                 {
@@ -123,8 +123,8 @@ namespace Kiddywee.DAL.Models
         {
             List<ChildDailyReportViewModel> result = new List<ChildDailyReportViewModel>();
 
-            var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
             Attendance attendance = null;
             
 

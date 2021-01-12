@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Kiddywee.DAL.ViewModels.AttendanceViewModels;
 using Kiddywee.DAL.Models;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace Kiddywee.Controllers
 {
@@ -19,7 +20,7 @@ namespace Kiddywee.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork) : base(unitOfWork)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, ICompositeViewEngine viewEngine) : base(unitOfWork, viewEngine)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;            

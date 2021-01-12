@@ -4,6 +4,7 @@ using Kiddywee.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -13,6 +14,11 @@ namespace Kiddywee.Controllers
     [Authorize]
     public class FileController : BaseController
     {
+        public FileController(IUnitOfWork unitOfWork, ICompositeViewEngine viewEngine) : base(unitOfWork, viewEngine)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
         [HttpPost]
         public async Task<JsonResult>  UploadProfileImage(Guid personId, IFormFile file)
         {
@@ -37,10 +43,7 @@ namespace Kiddywee.Controllers
             return File(profileImageData, "image/png");
         }
 
-        public FileController(IUnitOfWork unitOfWork) : base(unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+        
         public async Task<IActionResult> DownloadFile(Guid fileId)
         {
             DAL.Models.FileInfo file = await _unitOfWork.FileInfos.GetOneAsync(x => x.Id == fileId);

@@ -5,6 +5,7 @@ using Kiddywee.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,15 @@ namespace Kiddywee.Controllers
 
     public class AttendanceController : BaseController
     {
-        public AttendanceController(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public AttendanceController(IUnitOfWork unitOfWork, ICompositeViewEngine viewEngine) : base(unitOfWork, viewEngine)
         {
             _unitOfWork = unitOfWork;
         }        
 
         public async Task<JsonResult> GetAttendanceAjax(Guid? classId, DateTime? date)
         {
-            DateTime startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day); ;
-            DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59); ;
+            DateTime startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day); ;
+            DateTime endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59); ;
             if (date.HasValue)
             {
                 startDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day);
@@ -62,8 +63,8 @@ namespace Kiddywee.Controllers
 
         public async Task<JsonResult> CheckInOut(Guid personId, Guid? classId)
         {
-            var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
 
             var inAttendance = await _unitOfWork.Attendances.GetOneAsync(x => x.IsActive && x.PersonId == personId && x.ClassId == classId && x.InDate >= startDate && x.InDate <= endDate);
             //Checkout

@@ -5,6 +5,9 @@ using Kiddywee.DAL.ViewModels.AccountViewModels;
 using Kiddywee.DAL.ViewModels.ClassesViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,10 +23,13 @@ namespace Kiddywee.Controllers
         public string _userId = null;
         public Guid? _organizationId = null;
         public Guid? _classId = null;
+        private ICompositeViewEngine _viewEngine;
 
-        public BaseController(IUnitOfWork unitOfWork)
+        public BaseController(IUnitOfWork unitOfWork, ICompositeViewEngine viewEngine)
         {
             _unitOfWork = unitOfWork;
+            _viewEngine = viewEngine;
+
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -40,8 +46,8 @@ namespace Kiddywee.Controllers
 
         private void SetClasses()
         {
-            var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
 
             var classes = _unitOfWork.Classes.Get(p => p.IsActive && p.OrganizationId == _organizationId.Value);
             var attendancesForToday = _unitOfWork.Attendances.Get(x => x.IsActive
@@ -91,6 +97,33 @@ namespace Kiddywee.Controllers
                     ClassName = "All"
                 });
                 ViewBag.Classes.AddRange(classesWithoutAll);
+            }
+        }
+
+        protected async Task<string> RenderViewToString(string viewName, object model)
+        {
+            if (string.IsNullOrEmpty(viewName))
+                viewName = ControllerContext.ActionDescriptor.ActionName;
+
+            ViewData.Model = model;
+
+            using (var writer = new System.IO.StringWriter())
+            {
+                ViewEngineResult viewResult =
+                    _viewEngine.FindView(ControllerContext, viewName, true);
+
+                ViewContext viewContext = new ViewContext(
+                    ControllerContext,
+                    viewResult.View,
+                    ViewData,
+                    TempData,
+                    writer,
+                    new HtmlHelperOptions()
+                );
+
+                await viewResult.View.RenderAsync(viewContext);
+
+                return writer.GetStringBuilder().ToString();
             }
         }
     }
