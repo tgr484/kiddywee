@@ -79,13 +79,28 @@ namespace Kiddywee.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> EditNote(Guid id)
+        {
+            var note = await _unitOfWork.DailyReportNotes.GetOneAsync(x => x.IsActive && x.Id == id);
+            return View("AddEditNote", DailyReportNoteViewModel.Create(note));
+        }
+
         [HttpPost]
         public async Task<JsonResult> AddEditNote(DailyReportNoteViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var note = DailyReportNote.Create(model.PersonId, model.ClassId, model.OrganizationId, model.Date, model.Note, _userId);
-                await _unitOfWork.DailyReportNotes.Insert(note);
+                if(model.Id == null)
+                {
+                    var note = DailyReportNote.Create(model.PersonId, model.ClassId, model.OrganizationId, model.Date, model.Note, _userId);
+                    await _unitOfWork.DailyReportNotes.Insert(note);
+                }
+                else
+                {
+                    var note = await _unitOfWork.DailyReportNotes.GetOneAsync(x => x.IsActive && x.Id == model.Id);
+                    note.Note = model.Note;
+                    _unitOfWork.DailyReportNotes.Update(note);
+                }
                 var result = await _unitOfWork.SaveAsync();
                 if (result.Succeeded)
                 {

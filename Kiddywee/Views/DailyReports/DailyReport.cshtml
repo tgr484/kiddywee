@@ -74,7 +74,7 @@
             });
         })
         $(document).on("click", "#save-note", function () {
-           
+
             var url = $(this).data("url");
             var valdata = {};
             $('#add-note-form').find('input').each(function () {
@@ -103,7 +103,14 @@
                     $("#tab-Notes").html(data);
                 });
             });
-        })
+        });
+
+        $(document).on("click", ".edit-note", function () { 
+            var url = $(this).data("url");
+            $.get(url, function (data) {
+                $("#tab-Notes").html(data);
+            });
+        });
 
         $(document).on("click", ".delete-note", function () {
             var url = $(this).data("url");

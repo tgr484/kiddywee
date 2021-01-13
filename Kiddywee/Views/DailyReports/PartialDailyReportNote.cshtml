@@ -12,6 +12,7 @@
             {
                 <tr id="@n.Id">
                     <td>@n.Note</td>
+                    <td><a href="#" class="edit-note" data-url="@Url.Action("EditNote", "DailyReports", new { id = n.Id} )">Edit</a></td>
                     <td><a href="#" class="delete-note" data-url="@Url.Action("DeleteNote", "DailyReports", new { id = n.Id} )">Delete</a></td>
                 </tr>
             }
