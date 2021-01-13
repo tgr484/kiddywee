@@ -1,0 +1,23 @@
+﻿@model List<DailyReportNapViewModel>
+@{
+    Layout = null;
+}
+<div class="text-right">
+    <button id="add-nap" data-url="@Url.Action("AddEditNap", "DailyReports")" class="btn btn-info waves-effect"><i class="sl-icon-plus"></i> Add nap/sleep</button>
+</div>
+<table class="table color-table info-table">
+    <tbody id="report-table">
+        @{
+            foreach (var n in Model)
+            {
+                <tr id="@n.Id">
+                    <td>@n.Note</td>
+                    <td>@n.StartTime</td>
+                    <td>@n.EndTime</td>
+                    <td><a href="#" class="edit-nap" data-url="@Url.Action("EditNap", "DailyReports", new { id = n.Id} )">Edit</a></td>
+                    <td><a href="#" class="delete-nap" data-url="@Url.Action("DeleteNap", "DailyReports", new { id = n.Id} )">Delete</a></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

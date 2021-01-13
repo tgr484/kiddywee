@@ -46,13 +46,104 @@ namespace Kiddywee.Controllers
 
         public async Task<IActionResult> GetReportsByType(Guid personId, Guid classId, int type, DateTime? date = null)
         {
-            //switch (type)
-            //{
-            //    case (int)EnumDailyReportType.Notes: { break; }
-            //}
+            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
+            switch (type)
+            {
+                case (int)EnumDailyReportType.NapsSleep: 
+                    {
+                        var naps = await _unitOfWork.DailyReportNaps.GetAsync(x => x.IsActive && x.PersonId == personId && x.ClassId == classId);
+
+                        return PartialView("PartialDailyReportNap", DailyReportNap.Init(naps));
+                    }
+            }
 
             return View();
         }
+
+        #region Naps
+        [HttpGet]
+        public async Task<IActionResult> GetNaps(Guid personId, Guid classId, Guid organizationId, DateTime? date)
+        {
+            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
+            
+            var naps = await _unitOfWork.DailyReportNaps.GetAsync(x => x.IsActive && x.OrganizationId == _organizationId
+                                                                               && x.ClassId == classId
+                                                                               && x.PersonId == personId
+                                                                               && x.Date >= startDate && x.Date <= endDate
+                                                                              );
+
+
+            return PartialView("PartialDailyReportNap", DailyReportNap.Init(naps));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddEditNap(Guid personId, Guid classId, Guid organizationId, DateTime? date = null)
+        {
+            //var date2 = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+
+            var model = DailyReportNap.Init(personId, classId, organizationId, DateTime.UtcNow);
+            return View(model);
+        }
+
+        public async Task<IActionResult> EditNap(Guid id)
+        {
+            var nap = await _unitOfWork.DailyReportNaps.GetOneAsync(x => x.IsActive && x.Id == id);
+            return View("AddEditNote", DailyReportNapViewModel.Create(nap));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddEditNap(DailyReportNapViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Id == null)
+                {
+                    var nap = DailyReportNap.Create(model.PersonId, model.ClassId, model.OrganizationId, model.Date,model.StartTime, model.EndTime, model.Note, _userId);
+                    await _unitOfWork.DailyReportNaps.Insert(nap);
+                }
+                else
+                {
+                    var nap = await _unitOfWork.DailyReportNaps.GetOneAsync(x => x.IsActive && x.Id == model.Id);
+                    nap.Note = model.Note;
+                    nap.StartTime = model.StartTime;
+                    nap.EndTime = model.EndTime;
+                    _unitOfWork.DailyReportNaps.Update(nap);
+                }
+                var result = await _unitOfWork.SaveAsync();
+                if (result.Succeeded)
+                {
+                    return Json(new JsonMessage { Color = "#ff6849", Message = "Nap saved", Header = "Success", Icon = "success", AdditionalData = model });
+
+                }
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Save Error", Header = "Error", Icon = "error", AdditionalData = model });
+
+            }
+            else
+            {
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Model Error", Header = "Error", Icon = "error", AdditionalData = model });
+            }
+        }
+
+        [HttpDelete]
+        public async Task<JsonResult> DeleteNap(Guid id)
+        {
+            var nap = await _unitOfWork.DailyReportNaps.GetOneAsync(x => x.Id == id);
+            nap.IsActive = false;
+            _unitOfWork.DailyReportNaps.Update(nap);
+            var result = await _unitOfWork.SaveAsync();
+            if (result.Succeeded)
+            {
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Nap deleted", Header = "Success", Icon = "success", AdditionalData = new { id = id } });
+            }
+            return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error", AdditionalData = new { id = id } });
+
+        }
+
+        #endregion
+
+        #region Notes
 
         [HttpGet]
         public async Task<IActionResult> GetNotes(Guid personId, Guid classId, Guid organizationId, DateTime? date)
@@ -130,5 +221,6 @@ namespace Kiddywee.Controllers
             return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error", AdditionalData = new { id = id } });
 
         }
+        #endregion
     }
 }

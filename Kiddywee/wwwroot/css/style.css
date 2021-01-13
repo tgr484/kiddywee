@@ -6606,3 +6606,6 @@ User card page
         color: #ffffff;
         background: #20aee3;
     }
+.clockpicker-popover {
+    z-index: 999999 !important;
+}

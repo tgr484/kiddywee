@@ -1,0 +1,58 @@
+﻿@model DailyReportNapViewModel
+@{
+    Layout = null;
+}
+<div id="add-nap-form">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Note<span class="help"></span></label>
+                <input type="text" asp-for="Note" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Start time<span class="help"></span></label>
+                <div class="input-group clockpicker " data-placement="bottom" data-align="top" data-autoclose="true">
+                    <input type="text" class="form-control" asp-for="StartTime" value="@Model.StartTime">
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="far fa-clock"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>End time<span class="help"></span></label>
+                <div class="input-group clockpicker " data-placement="bottom" data-align="top" data-autoclose="true">
+                    <input type="text" class="form-control" asp-for="EndTime" value="@Model.EndTime">
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="far fa-clock"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ClassId" />
+    <input type="hidden" asp-for="OrganizationId" />
+    <input type="hidden" asp-for="PersonId" />
+    <input type="hidden" asp-for="Date" />
+    <input type="hidden" asp-for="ClassId" />
+</div>
+<div class="form-group text-right">
+    <button id="cancel-add-nap" data-url="@Url.Action("GetNaps", "DailyReports")" class="btn btn-danger waves-effect">Cancel</button>
+    <button id="save-nap" value="Save" data-url="@Url.Action("AddEditNap", "DailyReports")" class="btn btn-info">Save</button>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker({
+            donetext: 'Done',
+        }).find('input').change(function () {
+            console.log(this.value);
+        });
+    });
+</script>

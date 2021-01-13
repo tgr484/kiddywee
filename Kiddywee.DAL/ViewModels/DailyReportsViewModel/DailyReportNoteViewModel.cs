@@ -8,7 +8,7 @@ namespace Kiddywee.DAL.ViewModels.DailyReportsViewModel
 {
     public class DailyReportNoteViewModel
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         public DateTime Date { get; set; }
         public Guid PersonId { get; set; }

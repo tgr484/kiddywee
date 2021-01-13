@@ -36,6 +36,7 @@ namespace Kiddywee.DAL.Repositories
         private IGenericRepository<PersonToClass> _personToClassesRepository;
         private IGenericRepository<PersonToChild> _personToChildrenRepository;
         private IGenericRepository<DailyReportNote> _dailyReportNoteRepository;
+        private IGenericRepository<DailyReportNap> _dailyReportNapRepository;
 
 
         
@@ -66,6 +67,7 @@ namespace Kiddywee.DAL.Repositories
         public IGenericRepository<ApplicationUser> Users => _usersRepository ??= new GenericRepository<ApplicationUser>(_context);
 
         public IGenericRepository<DailyReportNote> DailyReportNotes => _dailyReportNoteRepository ??= new GenericRepository<DailyReportNote>(_context);
+        public IGenericRepository<DailyReportNap> DailyReportNaps => _dailyReportNapRepository ??= new GenericRepository<DailyReportNap>(_context);
 
         public void Save()
         {
