@@ -43,6 +43,8 @@ namespace Kiddywee.DAL.Data
         public DbSet<PersonToChild> PersonToChildren { get; set; }
         public DbSet<DailyReportNote> DailyReportNotes { get; set; }
         public DbSet<DailyReportNap> DailyReportNaps { get; set; }
+        public DbSet<DailyReportMeal> DailyReportMeals { get; set; }
+        public DbSet<DailyReportFood> DailyReportFoods { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
