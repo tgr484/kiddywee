@@ -1,4 +1,71 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model DailyReportMealViewModel
+@{
+    Layout = null;
+}
+<div id="add-meal-form">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Meal type</label>
+                <select class="form-control " asp-for="MealType" asp-items="Html.GetEnumSelectList<EnumMealType>()"></select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Note</label>
+                <input class="form-control form-control-line" type="text" asp-for="Note" />
+            </div>
+        </div>
+    </div>
+    <div id="foods">
+        <div id="food" class="row default-food food">
+            <div class="col-md-7">
+                <div class="form-group">
+                    <label>Food</label>
+                    <input class="form-control form-control-line food-string" type="text" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <select class="form-control food-type" asp-items="Html.GetEnumSelectList<EnumFoodType>()"></select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <input class="btn btn-danger waves-effect remove-button" value="Remove" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <button id="add-food" class="btn btn-info waves-effect">Add food</button>
+
+
+
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ClassId" />
+    <input type="hidden" asp-for="OrganizationId" />
+    <input type="hidden" asp-for="PersonId" />
+    <input type="hidden" asp-for="Date" />
+    <input type="hidden" asp-for="ClassId" />
+</div>
+<div class="form-group text-right">
+    <button id="cancel-add-meal" data-url="@Url.Action("GetMeals", "DailyReports")" class="btn btn-danger waves-effect">Cancel</button>
+    <button id="save-meal" value="Save" data-url="@Url.Action("AddEditMeal", "DailyReports")" class="btn btn-info">Save</button>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#add-food").click( function () {
+            var newFood = $("#food").clone().attr('id', '').removeClass('default-food');
+            newFood.children('.col-md-3').children('.form-group').children('.remove-button').addClass('removable');
+            newFood.appendTo("#foods");
+        });
+
+        
+        
+    });
+</script>

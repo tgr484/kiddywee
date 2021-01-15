@@ -7,17 +7,17 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label>Class<span class="help"></span></label>
+                    <label>Class</label>
                     <select class="select2 select2-multiple" multiple="multiple" data-style="form-control form-control-line" asp-for="InClasses" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <label for="example-email">Pipeline Type<span class="help"></span></label>
+            <label for="example-email">Pipeline Type</label>
             <select class="form-control " asp-for="PipeLineType" asp-items="Html.GetEnumSelectList<EnumPipeLineType>()"></select>
         </div>
         <div class="form-group">
-            <label>Weekly schedule<span class="help"></span></label> <br />
+            <label>Weekly schedule</label> <br />
             @foreach (EnumWeeklyScheduleType item in Enum.GetValues(typeof(EnumWeeklyScheduleType)))
             {
                 <input name="WeaklySchedule" type="checkbox" value="@item"
@@ -26,7 +26,7 @@
                 }
         </div>
         <div class="form-group">
-            <label>Daily schedule<span class="help"></span></label> <br />
+            <label>Daily schedule</label> <br />
             @foreach (EnumDailyScheduleType item in Enum.GetValues(typeof(EnumDailyScheduleType)))
             {
                 <input name="DailySchedule" type="checkbox" value="@item"

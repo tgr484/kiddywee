@@ -5,6 +5,7 @@ using Kiddywee.DAL.Models;
 using Kiddywee.DAL.ViewModels.DailyReportsViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +56,18 @@ namespace Kiddywee.Controllers
                         var naps = await _unitOfWork.DailyReportNaps.GetAsync(x => x.IsActive && x.PersonId == personId && x.ClassId == classId);
 
                         return PartialView("PartialDailyReportNap", DailyReportNap.Init(naps));
+                        
+                    }
+                case (int)EnumDailyReportType.Meals:
+                    {
+                        var meals = await _unitOfWork.DailyReportMeals.GetAsync(x => x.IsActive && x.OrganizationId == _organizationId
+                                                                               && x.ClassId == classId
+                                                                               && x.PersonId == personId
+                                                                               && x.Date >= startDate && x.Date <= endDate,
+                                                                               include: p => p.Include(x => x.DailyReportFoods)
+                                                                              );
+                        return PartialView("PartialDailyReportMeal", DailyReportMeal.Init(meals));
+
                     }
             }
 
@@ -213,6 +226,107 @@ namespace Kiddywee.Controllers
             var note = await _unitOfWork.DailyReportNotes.GetOneAsync(x => x.Id == id);
             note.IsActive = false;
             _unitOfWork.DailyReportNotes.Update(note);
+            var result = await _unitOfWork.SaveAsync();
+            if (result.Succeeded)
+            {
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Note deleted", Header = "Success", Icon = "success", AdditionalData = new { id = id } });
+            }
+            return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error", AdditionalData = new { id = id } });
+
+        }
+        #endregion
+
+
+        #region Meal
+
+        [HttpGet]
+        public async Task<IActionResult> GetMeals(Guid personId, Guid classId, Guid organizationId, DateTime? date)
+        {
+            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
+            var meals = await _unitOfWork.DailyReportMeals.GetAsync(x => x.IsActive && x.OrganizationId == _organizationId
+                                                                               && x.ClassId == classId
+                                                                               && x.PersonId == personId
+                                                                               && x.Date >= startDate && x.Date <= endDate,
+                                                                               include: p => p.Include(x => x.DailyReportFoods)
+                                                                              );
+
+
+            return PartialView("PartialDailyReportMeal", DailyReportMeal.Init(meals));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddEditMeal(Guid personId, Guid classId, Guid organizationId, DateTime? date = null)
+        {
+            var model = DailyReportMeal.Init(personId, classId, organizationId, DateTime.UtcNow);
+            return View(model);
+        }
+
+        public async Task<IActionResult> EditMeal(Guid id)
+        {
+            var meal = await _unitOfWork.DailyReportMeals.GetOneAsync(x => x.IsActive && x.Id == id, include: p => p.Include(x=>x.DailyReportFoods));
+            return View("AddEditMeal", DailyReportMealViewModel.Create(meal));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddEditMeal(DailyReportMealViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Id == null)
+                {
+                    var meal = DailyReportMeal.Create(model.PersonId, model.ClassId, model.OrganizationId, model.Date, model.Note, _userId);
+                    await _unitOfWork.DailyReportMeals.Insert(meal);
+                    var saveMealResult = await _unitOfWork.SaveAsync();
+                    if(saveMealResult.Succeeded)
+                    {
+                        var foods = new List<DailyReportFood>();
+                        foreach(var f in model.Foods)
+                        {
+                            var food = DailyReportFood.Create(f.Food, f.FoodType, meal.Id, _userId);
+                            foods.Add(food);
+                        }
+                        await _unitOfWork.DailyReportFoods.InsertRange(foods);
+                    }
+                    
+                }
+                else
+                {
+                    var meal = await _unitOfWork.DailyReportMeals.GetOneAsync(x => x.IsActive && x.Id == model.Id, include: p => p.Include(x => x.DailyReportFoods));
+                    meal.DailyReportFoods.ForEach(x => x.IsActive = false);
+
+                    meal.Update(model);
+                    var foods = new List<DailyReportFood>();
+                    foreach (var f in model.Foods)
+                    {
+                        var food = DailyReportFood.Create(f.Food, f.FoodType, meal.Id, _userId);
+                        foods.Add(food);
+                    }
+                    meal.DailyReportFoods.AddRange(foods);
+                    _unitOfWork.DailyReportMeals.Update(meal);
+                }
+                var result = await _unitOfWork.SaveAsync();
+                if (result.Succeeded)
+                {
+                    return Json(new JsonMessage { Color = "#ff6849", Message = "Meal saved", Header = "Success", Icon = "success", AdditionalData = model });
+
+                }
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Save Error", Header = "Error", Icon = "error", AdditionalData = model });
+
+            }
+            else
+            {
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Model Error", Header = "Error", Icon = "error", AdditionalData = model });
+            }
+        }
+
+        [HttpDelete]
+        public async Task<JsonResult> DeleteMeal(Guid id)
+        {
+            var meal = await _unitOfWork.DailyReportMeals.GetOneAsync(x => x.Id == id, include: p => p.Include(x => x.DailyReportFoods));
+            meal.Delete();
+           
+            _unitOfWork.DailyReportMeals.Update(meal);
             var result = await _unitOfWork.SaveAsync();
             if (result.Succeeded)
             {

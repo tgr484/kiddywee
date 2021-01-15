@@ -38,6 +38,7 @@ namespace Kiddywee.DAL.Repositories
         private IGenericRepository<DailyReportNote> _dailyReportNoteRepository;
         private IGenericRepository<DailyReportNap> _dailyReportNapRepository;
         private IGenericRepository<DailyReportMeal> _dailyReportMealRepository;
+        private IGenericRepository<DailyReportFood> _dailyReportFoodRepository;
 
 
         
@@ -70,6 +71,7 @@ namespace Kiddywee.DAL.Repositories
         public IGenericRepository<DailyReportNote> DailyReportNotes => _dailyReportNoteRepository ??= new GenericRepository<DailyReportNote>(_context);
         public IGenericRepository<DailyReportNap> DailyReportNaps => _dailyReportNapRepository ??= new GenericRepository<DailyReportNap>(_context);
         public IGenericRepository<DailyReportMeal> DailyReportMeals => _dailyReportMealRepository ??= new GenericRepository<DailyReportMeal>(_context);
+        public IGenericRepository<DailyReportFood> DailyReportFoods => _dailyReportFoodRepository ??= new GenericRepository<DailyReportFood>(_context);
 
         public void Save()
         {

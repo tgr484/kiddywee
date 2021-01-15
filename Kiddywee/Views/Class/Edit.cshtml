@@ -10,26 +10,26 @@
     <form class="form-material" id="Save" asp-action="Edit" asp-controller="Class" method="post">
 
         <div class="form-group">
-            <label>Class name <span class="help"></span></label>
+            <label>Class name </label>
             <input type="text" asp-for="Name" class="form-control form-control-line" placeholder="Enter class name...">
         </div>
         <div class="form-group">
-            <label for="example-email">Select stage type <span class="help"></span></label>
+            <label for="example-email">Select stage type </label>
             <select class="form-control " asp-for="StageType" asp-items="Html.GetEnumSelectList<EnumStageType>()"></select>
         </div>
         <div class="form-group">
-            <label>Enrollment Spots<span class="help"></span></label>
+            <label>Enrollment Spots</label>
             <input type="text" asp-for="EnrollmentSpots" class="form-control form-control-line" placeholder="Max no. of children">
         </div>
         <div class="form-group">
             <label>
-                Teacher/student ratio<span class="help"></span>
+                Teacher/student ratio
             </label>
             <input type="text" asp-for="TeacherStudentRatio" class="form-control form-control-line" placeholder="Teachers/students">
         </div>
         <div class="form-group">
             <label>
-                Daily report types<span class="help"></span>
+                Daily report types
             </label>
             @foreach (EnumDailyReportType item in Enum.GetValues(typeof(EnumDailyReportType)))
             {
@@ -40,12 +40,12 @@
         </div>
         @*<div class="form-group">
             <label>
-                Move children to another class<span class="help"></span>
+                Move children to another class
             </label>
             <input type="checkbox" asp-for="IsMove" class="form-control form-control-line">
         </div>*@
         @*<div class="form-group">
-            <label>To class<span class="help"></span></label>
+            <label>To class</label>
             <select class="form-control" asp-for="MoveClassId" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
         </div>*@
         <input type="hidden" asp-for="ClassId" />

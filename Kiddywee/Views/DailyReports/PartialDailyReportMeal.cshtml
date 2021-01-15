@@ -1,4 +1,21 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<DailyReportMealViewModel>
+@{
+    Layout = null;
+}
+<div class="text-right">
+    <button id="add-meal" data-url="@Url.Action("AddEditMeal", "DailyReports")" class="btn btn-info waves-effect"><i class="sl-icon-plus"></i> Add meal</button>
+</div>
+<table class="table color-table info-table">
+    <tbody id="report-table">
+        @{
+            foreach (var n in Model)
+            {
+                <tr id="@n.Id">
+                    <td>@n.Note</td>
+                    <td><a href="#" class="edit-meal" data-url="@Url.Action("EditMeal", "DailyReports", new { id = n.Id} )">Edit</a></td>
+                    <td><a href="#" class="delete-meal" data-url="@Url.Action("DeleteMeal", "DailyReports", new { id = n.Id} )">Delete</a></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

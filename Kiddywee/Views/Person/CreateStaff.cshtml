@@ -12,13 +12,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Firstname <span class="help"></span></label>
+                    <label>Firstname </label>
                     <input type="text" asp-for="FirstName" class="form-control form-control-line" placeholder="Enter firstname...">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Lastname<span class="help"></span></label>
+                    <label>Lastname</label>
                     <input type="text" asp-for="LastName" class="form-control form-control-line" placeholder="Enter lastname">
                 </div>
             </div>
@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label>Class<span class="help"></span></label>
+                    <label>Class</label>
                     <select class="select2 select2-multiple" data-style="form-control form-control-line" asp-for="ClassId" style="width: 100%;" asp-items="@(new SelectList(Model.Classes, "Id", "Name"))"></select>
                 </div>
             </div>
@@ -34,14 +34,14 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Date Of Birth<span class="help"></span></label>
+                    <label>Date Of Birth</label>
                     <input type="date" asp-for="DateOfBirth" class="form-control form-control-line" placeholder="Enter date">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label>
-                        First aid training<span class="help"></span>
+                        First aid training
                     </label>
                     <input type="date" asp-for="FirstAidTraining" class="form-control form-control-line" placeholder="Enter date">
                 </div>
@@ -52,7 +52,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>
-                        Scr<span class="help"></span>
+                        Scr
                     </label>
                     <input type="date" asp-for="Scr" class="form-control form-control-line" placeholder="Enter date">
                 </div>
@@ -60,7 +60,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>
-                        Finger Printing<span class="help"></span>
+                        Finger Printing
                     </label>
                     <input type="date" asp-for="FingerPrinting" class="form-control form-control-line" placeholder="Enter date">
                 </div>
@@ -69,25 +69,25 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label>Salary<span class="help"></span></label>
+                    <label>Salary</label>
                     <input type="number" asp-for="Salary" class="form-control form-control-line" placeholder="Enter date">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="example-email">Salary type<span class="help"></span></label>
+                    <label for="example-email">Salary type</label>
                     <select class="form-control " asp-for="SalaryType" asp-items="Html.GetEnumSelectList<EnumSalaryType>()"></select>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="example-email">Employment Type<span class="help"></span></label>
+                    <label for="example-email">Employment Type</label>
                     <select class="form-control " asp-for="EmploymentType" asp-items="Html.GetEnumSelectList<EnumEmploymentType>()"></select>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <label>Weekly schedule<span class="help"></span></label> <br />
+            <label>Weekly schedule</label> <br />
             @foreach (EnumWeeklyScheduleType item in Enum.GetValues(typeof(EnumWeeklyScheduleType)))
             {
                 <input name="Schedule" type="checkbox" value="@item" /> @item

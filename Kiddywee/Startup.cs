@@ -20,6 +20,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Razor;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Kiddywee
 {
@@ -37,12 +39,22 @@ namespace Kiddywee
         {
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
-            services.AddTransient<IEmailSender, EmailSender>();
-
-
+           
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                options.ForwardLimit = 2;
+                options.ForwardedForHeaderName = "X-Forwarded-For";
+            });
+
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
             });
 
             services.AddDbContext<FileDbContext>(options =>
@@ -90,6 +102,7 @@ namespace Kiddywee
                 }
             );
 
+            services.AddTransient<IEmailSender, EmailSender>(); 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, CustomClaims>();
         }

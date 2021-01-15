@@ -2,6 +2,7 @@
 using Kiddywee.DAL.ViewModels.DailyReportsViewModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Kiddywee.DAL.Models
@@ -43,19 +44,48 @@ namespace Kiddywee.DAL.Models
             };
         }
 
-        //public static DailyReportMealViewModel Init(Guid personId,
-        //                                 Guid classId,
-        //                                 Guid organizationId,
-        //                                 DateTime date
-        //                                 )
-        //{
-        //    return new DailyReportMealViewModel()
-        //    {
-        //        ClassId = classId,
-        //        Date = date,
-        //        OrganizationId = organizationId,
-        //        PersonId = personId
-        //    };
-        //}
+        public static DailyReportMealViewModel Init(Guid personId,
+                                         Guid classId,
+                                         Guid organizationId,
+                                         DateTime date
+                                         )
+        {
+            return new DailyReportMealViewModel()
+            {
+                ClassId = classId,
+                Date = date,
+                OrganizationId = organizationId,
+                PersonId = personId,
+                Foods = new List<DailyReportFoodViewModel>(),
+
+            };
+        }
+
+        public void Update(DailyReportMealViewModel model)
+        {
+            this.Note = model.Note;
+            this.MealType = model.MealType;            
+        }
+
+        public void Delete()
+        {
+            this.IsActive = false;
+            this.DailyReportFoods?.ForEach(x => x.IsActive = false);
+        }
+
+        public static List<DailyReportMealViewModel> Init(List<DailyReportMeal> meals)
+        {
+            return meals.Select(x => new DailyReportMealViewModel()
+            {
+                ClassId = x.ClassId,
+                Id = x.Id,
+                Date = x.Date,
+                Note = x.Note,
+                OrganizationId = x.OrganizationId,
+                PersonId = x.PersonId,
+                MealType = x.MealType,
+                Foods = x.DailyReportFoods.Select(x => new DailyReportFoodViewModel() { Food = x.Food, FoodType = x.FoodType, Id = x.Id }).ToList()
+            }).ToList();
+        }
     }
 }

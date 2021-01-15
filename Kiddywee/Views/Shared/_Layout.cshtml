@@ -641,6 +641,11 @@
                 }
             });
         });
+        ///Dailyreport
+        $(document).on("click", ".remove-button.removable", function () {        
+            $(this).parent('.form-group').parent('.col-md-3').parent('.food').remove();
+        });
+       
 
     });
     </script>
