@@ -69,6 +69,17 @@ namespace Kiddywee.Controllers
                         return PartialView("PartialDailyReportMeal", DailyReportMeal.Init(meals));
 
                     }
+                case (int)EnumDailyReportType.Bathroom:
+                    {
+                        var baths = await _unitOfWork.DailyReportBathrooms.GetAsync(x => x.IsActive && x.OrganizationId == _organizationId
+                                                                               && x.ClassId == classId
+                                                                               && x.PersonId == personId
+                                                                               && x.Date >= startDate && x.Date <= endDate
+                                                                              
+                                                                              );
+                        return PartialView("PartialDailyReportBathroom", DailyReportBathroom.Init(baths));
+
+                    }
             }
 
             return View();
@@ -103,7 +114,7 @@ namespace Kiddywee.Controllers
         public async Task<IActionResult> EditNap(Guid id)
         {
             var nap = await _unitOfWork.DailyReportNaps.GetOneAsync(x => x.IsActive && x.Id == id);
-            return View("AddEditNote", DailyReportNapViewModel.Create(nap));
+            return View("AddEditNap", DailyReportNapViewModel.Create(nap));
         }
 
         [HttpPost]
@@ -335,6 +346,88 @@ namespace Kiddywee.Controllers
             return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error", AdditionalData = new { id = id } });
 
         }
+        #endregion
+
+        #region Bathroom
+        [HttpGet]
+        public async Task<IActionResult> GetBathrooms(Guid personId, Guid classId, Guid organizationId, DateTime? date)
+        {
+            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
+
+            var baths = await _unitOfWork.DailyReportBathrooms.GetAsync(x => x.IsActive && x.OrganizationId == _organizationId
+                                                                               && x.ClassId == classId
+                                                                               && x.PersonId == personId
+                                                                               && x.Date >= startDate && x.Date <= endDate
+                                                                              );
+
+
+            return PartialView("PartialDailyReportBathroom", DailyReportBathroom.Init(baths));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddEditBathroom(Guid personId, Guid classId, Guid organizationId, DateTime? date = null)
+        {
+            //var date2 = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+
+            var model = DailyReportBathroom.Init(personId, classId, organizationId, DateTime.UtcNow);
+            return View(model);
+        }
+
+        public async Task<IActionResult> EditBathroom(Guid id)
+        {
+            var bath = await _unitOfWork.DailyReportBathrooms.GetOneAsync(x => x.IsActive && x.Id == id);
+            return View("AddEditBathroom", DailyReportBathroomViewModel.Create(bath));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddEditBathroom(DailyReportBathroomViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Id == null)
+                {
+                    var bath = DailyReportBathroom.Create(model.PersonId, model.ClassId, model.OrganizationId, model.Date, model.Time, model.Type, model.Note, _userId);
+                    await _unitOfWork.DailyReportBathrooms.Insert(bath);
+                }
+                else
+                {
+                    var bath = await _unitOfWork.DailyReportBathrooms.GetOneAsync(x => x.IsActive && x.Id == model.Id);
+                    bath.Note = model.Note;
+                    bath.Time = model.Time;
+                    bath.Type = model.Type;
+                    _unitOfWork.DailyReportBathrooms.Update(bath);
+                }
+                var result = await _unitOfWork.SaveAsync();
+                if (result.Succeeded)
+                {
+                    return Json(new JsonMessage { Color = "#ff6849", Message = "Bath saved", Header = "Success", Icon = "success", AdditionalData = model });
+
+                }
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Save Error", Header = "Error", Icon = "error", AdditionalData = model });
+
+            }
+            else
+            {
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Model Error", Header = "Error", Icon = "error", AdditionalData = model });
+            }
+        }
+
+        [HttpDelete]
+        public async Task<JsonResult> DeleteBath(Guid id)
+        {
+            var bathroom = await _unitOfWork.DailyReportBathrooms.GetOneAsync(x => x.Id == id);
+            bathroom.IsActive = false;
+            _unitOfWork.DailyReportBathrooms.Update(bathroom);
+            var result = await _unitOfWork.SaveAsync();
+            if (result.Succeeded)
+            {
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Bath deleted", Header = "Success", Icon = "success", AdditionalData = new { id = id } });
+            }
+            return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error", AdditionalData = new { id = id } });
+
+        }
+
         #endregion
     }
 }

@@ -1,0 +1,22 @@
+﻿@model List<DailyReportBathroomViewModel>
+@{
+    Layout = null;
+}
+<div class="text-right">
+    <button id="add-bathroom" data-url="@Url.Action("AddEditBathroom", "DailyReports")" class="btn btn-info waves-effect"><i class="sl-icon-plus"></i> Add bathroom</button>
+</div>
+<table class="table color-table info-table">
+    <tbody id="report-table">
+        @{
+            foreach (var n in Model)
+            {
+                <tr id="@n.Id">
+                    <td>@n.Note</td>
+                    <td>@n.Time</td>
+                    <td><a href="#" class="edit-bathroom" data-url="@Url.Action("EditBathroom", "DailyReports", new { id = n.Id} )">Edit</a></td>
+                    <td><a href="#" class="delete-bathroom" data-url="@Url.Action("DeleteBathroom", "DailyReports", new { id = n.Id} )">Delete</a></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
