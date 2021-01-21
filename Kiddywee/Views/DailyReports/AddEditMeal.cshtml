@@ -64,8 +64,48 @@
             newFood.children('.col-md-3').children('.form-group').children('.remove-button').addClass('removable');
             newFood.appendTo("#foods");
         });
+        $("#save-meal").click(function () {
+            var valdata = {};
+            $('#add-meal-form').find('input').each(function () {
+                valdata[this.name] = $(this).val();
+            });
+            valdata['Foods'] = [];
+            $('.food').each(function () {
+                var search = $('.food-string')
+                var food = $(this).find(search).val();
+                search = $('.food-type');
+                var type = $(this).find(search).val();
+                valdata['Foods'].push({
+                    Food: food,
+                    FoodType: type
+                });
+            });
+            //console.log(valdata);
+            $.ajax({
+                url: "/DailyReports/AddEditMeal",
+                type: "POST",
+                dataType: 'json',
+                data: valdata
+            }).done(function (response) {
+                $.toast({
+                    heading: response.header,
+                    text: response.message,
+                    position: 'bottom-right',
+                    loaderBg: response.color,
+                    icon: response.icon,
+                    hideAfter: 10000
+                });
+                var personId = "@Model.PersonId";
+                var classId = "@Model.ClassId";
+                var organizationId = "@Model.OrganizationId";
+                var url = '/DailyReports/GetMeals?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
 
-        
-        
+                $.get(url, function (data) {
+                    $("#tab-Meals").html(data);
+                });
+            });
+        });
+
+
     });
 </script>

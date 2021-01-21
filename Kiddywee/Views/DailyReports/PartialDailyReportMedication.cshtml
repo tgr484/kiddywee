@@ -1,9 +1,9 @@
-﻿@model List<DailyReportBathroomViewModel>
-@{
+﻿@model List<DailyReportMedicationViewModel>
+@{ 
     Layout = null;
 }
 <div class="text-right">
-    <button id="add-bathroom" data-url="@Url.Action("AddEditBathroom", "DailyReports")" class="btn btn-info waves-effect"><i class="sl-icon-plus"></i> Add bathroom</button>
+    <button id="add-medication" data-url="@Url.Action("AddEditMedication", "DailyReports")" class="btn btn-info waves-effect"><i class="sl-icon-plus"></i> Add report</button>
 </div>
 <table class="table color-table info-table">
     <tbody id="report-table">
@@ -11,10 +11,9 @@
             foreach (var n in Model)
             {
                 <tr id="@n.Id">
-                    <td>@n.Note</td>
-                    <td>@n.Time</td>
-                    <td><a href="#" class="edit-bathroom" data-url="@Url.Action("EditBathroom", "DailyReports", new { id = n.Id} )">Edit</a></td>
-                    <td><a href="#" class="delete-bathroom" data-url="@Url.Action("DeleteBathroom", "DailyReports", new { id = n.Id} )">Delete</a></td>
+                    <td>@n.Medication</td>
+                    <td><a href="#" class="edit-medication" data-url="@Url.Action("EditMedication", "DailyReports", new { id = n.Id} )">Edit</a></td>
+                    <td><a href="#" class="delete-medication" data-url="@Url.Action("DeleteMedication", "DailyReports", new { id = n.Id} )">Delete</a></td>
                 </tr>
             }
         }
@@ -22,14 +21,14 @@
 </table>
 <script>
     $(document).ready(function () {
-        $(".edit-bathroom").click(function () {
+        $(".edit-medication").click(function () {
             var url = $(this).data("url");
             $.get(url, function (data) {
-                $("#tab-Bathroom").html(data);
+                $("#tab-Medication").html(data);
             });
         });
 
-        $(".delete-bathroom").click(function () {
+        $(".delete-medication").click(function () {
             var url = $(this).data("url");
             $.ajax({
                 url: url,

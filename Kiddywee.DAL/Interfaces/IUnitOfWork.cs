@@ -38,6 +38,7 @@ namespace Kiddywee.DAL.Interfaces
         IGenericRepository<DailyReportMeal> DailyReportMeals { get; }
         IGenericRepository<DailyReportFood> DailyReportFoods { get; }
         IGenericRepository<DailyReportBathroom> DailyReportBathrooms { get; }
+        IGenericRepository<DailyReportMedication> DailyReportMedications { get; }
         void Save();
         Task<IdentityResult> SaveAsync();
         Task<IdentityResult> SaveFileAsync();

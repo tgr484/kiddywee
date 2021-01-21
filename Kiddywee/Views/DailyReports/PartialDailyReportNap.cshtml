@@ -21,3 +21,32 @@
         }
     </tbody>
 </table>
+<script>
+    $(document).ready(function () {
+        $(".edit-nap").click(function () {
+            var url = $(this).data("url");
+            $.get(url, function (data) {
+                $("#tab-NapsSleep").html(data);
+            });
+        });
+
+        $(".delete-nap").click(function () {
+            var url = $(this).data("url");
+            $.ajax({
+                url: url,
+                type: "DELETE",
+                dataType: 'json',
+            }).done(function (response) {
+                $.toast({
+                    heading: response.header,
+                    text: response.message,
+                    position: 'bottom-right',
+                    loaderBg: response.color,
+                    icon: response.icon,
+                    hideAfter: 10000
+                });
+                $("#" + response.additionalData.id).remove();
+            });
+        });
+    });
+</script>

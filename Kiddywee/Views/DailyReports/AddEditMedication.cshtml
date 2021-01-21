@@ -1,13 +1,14 @@
-﻿@model DailyReportBathroomViewModel
-@{
+﻿@model DailyReportMedicationViewModel
+@{ 
     Layout = null;
 }
-<div id="add-bathroom-form">
+<div id="add-medication-form">
 
+   
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-group">
-                <label>Start time</label>
+                <label>Time</label>
                 <div class="input-group clockpicker " data-placement="bottom" data-align="top" data-autoclose="true">
                     <input type="text" class="form-control" asp-for="Time" value="@Model.Time">
                     <div class="input-group-append">
@@ -16,18 +17,24 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-group">
-                <label>&nbsp;</label>
-                <select class="form-control" asp-for="Type" asp-items="Html.GetEnumSelectList<EnumBathroomDetailsType>()"></select>
+                <label>Amount</label>
+                <input class="form-control form-control-line" type="text" asp-for="Amount" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Type</label>
+                <select class="form-control food-type" asp-items="Html.GetEnumSelectList<EnumMedicationValueType>()"></select>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label>Note</label>
-                <input class="form-control form-control-line" type="text" asp-for="Note" />
+                <label>Medication</label>
+                <input class="form-control form-control-line" type="text" asp-for="Medication" />
             </div>
         </div>
     </div>
@@ -39,8 +46,8 @@
     <input type="hidden" asp-for="ClassId" />
 </div>
 <div class="form-group text-right">
-    <button id="cancel-bathroom-nap" data-url="@Url.Action("GetBathrooms", "DailyReports")" class="btn btn-danger waves-effect">Cancel</button>
-    <button id="save-bathroom" value="Save" data-url="@Url.Action("AddEditBathroom", "DailyReports")" class="btn btn-info">Save</button>
+    <button id="cancel-add-medication" data-url="@Url.Action("GetMedications", "DailyReports")" class="btn btn-danger waves-effect">Cancel</button>
+    <button id="save-medication" value="Save" data-url="@Url.Action("AddEditMedication", "DailyReports")" class="btn btn-info">Save</button>
 </div>
 <script>
     $(document).ready(function () {
@@ -48,14 +55,15 @@
             donetext: 'Done',
         }).find('input').change(function () {
         });
-        $("#save-bathroom").click(function () {
+        $("#save-medication").click(function () {
+
             var url = $(this).data("url");
             var valdata = {};
-            $('#add-bathroom-form').find('input').each(function () {
+            $('#add-medication-form').find('input').each(function () {
                 valdata[this.name] = $(this).val();
             });
             $.ajax({
-                url: "/DailyReports/AddEditBathroom",
+                url: "/DailyReports/AddEditMedication",
                 type: "POST",
                 dataType: 'json',
                 data: valdata
@@ -71,10 +79,10 @@
                 var personId = "@Model.PersonId";
                 var classId = "@Model.ClassId";
                 var organizationId = "@Model.OrganizationId";
-                var url = '/DailyReports/GetBathrooms?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
+                var url = '/DailyReports/GetMedications?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
 
                 $.get(url, function (data) {
-                    $("#tab-Bathroom").html(data);
+                    $("#tab-Medication").html(data);
                 });
             });
         });

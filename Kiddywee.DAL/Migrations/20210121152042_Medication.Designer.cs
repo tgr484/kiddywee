@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using Kiddywee.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Kiddywee.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210121152042_Medication")]
+    partial class Medication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -634,9 +636,6 @@ namespace Kiddywee.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Amount")
-                        .HasColumnType("text");
-
                     b.Property<Guid>("ClassId")
                         .HasColumnType("uuid");
 
@@ -652,7 +651,7 @@ namespace Kiddywee.DAL.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Medication")
+                    b.Property<string>("Note")
                         .HasColumnType("text");
 
                     b.Property<Guid>("OrganizationId")
@@ -660,12 +659,6 @@ namespace Kiddywee.DAL.Migrations
 
                     b.Property<Guid>("PersonId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Time")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

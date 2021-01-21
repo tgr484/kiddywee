@@ -46,6 +46,7 @@ namespace Kiddywee.DAL.Data
         public DbSet<DailyReportMeal> DailyReportMeals { get; set; }
         public DbSet<DailyReportFood> DailyReportFoods { get; set; }
         public DbSet<DailyReportBathroom> DailyReportBathrooms { get; set; }
+        public DbSet<DailyReportMedication> DailyReportMedications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

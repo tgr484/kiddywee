@@ -53,7 +53,10 @@ namespace Kiddywee.Controllers
             {
                 case (int)EnumDailyReportType.NapsSleep: 
                     {
-                        var naps = await _unitOfWork.DailyReportNaps.GetAsync(x => x.IsActive && x.PersonId == personId && x.ClassId == classId);
+                        var naps = await _unitOfWork.DailyReportNaps.GetAsync(x => x.IsActive 
+                                                                                && x.PersonId == personId 
+                                                                                && x.ClassId == classId
+                                                                                && x.Date >= startDate && x.Date <= endDate);
 
                         return PartialView("PartialDailyReportNap", DailyReportNap.Init(naps));
                         
@@ -78,6 +81,17 @@ namespace Kiddywee.Controllers
                                                                               
                                                                               );
                         return PartialView("PartialDailyReportBathroom", DailyReportBathroom.Init(baths));
+
+                    }
+                case (int)EnumDailyReportType.Medication:
+                    {
+                        var medications = await _unitOfWork.DailyReportMedications.GetAsync(x => x.IsActive && x.OrganizationId == _organizationId
+                                                                               && x.ClassId == classId
+                                                                               && x.PersonId == personId
+                                                                               && x.Date >= startDate && x.Date <= endDate
+
+                                                                              );
+                        return PartialView("PartialDailyReportMedication", DailyReportMedication.Init(medications));
 
                     }
             }
@@ -428,6 +442,94 @@ namespace Kiddywee.Controllers
 
         }
 
+        #endregion
+
+        #region Medication
+
+        [HttpGet]
+        public async Task<IActionResult> GetMedications(Guid personId, Guid classId, Guid organizationId, DateTime? date)
+        {
+            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
+            var medications = await _unitOfWork.DailyReportMedications.GetAsync(x => x.IsActive && x.OrganizationId == _organizationId
+                                                                               && x.ClassId == classId
+                                                                               && x.PersonId == personId
+                                                                               && x.Date >= startDate && x.Date <= endDate
+                                                                              );
+
+
+            return PartialView("PartialDailyReportMedication", DailyReportMedication.Init(medications));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddEditMedication(Guid personId, Guid classId, Guid organizationId, DateTime? date = null)
+        {
+            //var date2 = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+
+            var model = DailyReportMedication.Init(personId, classId, organizationId, DateTime.UtcNow);
+            return View(model);
+        }
+
+        public async Task<IActionResult> EditMedication(Guid id)
+        {
+            var medication = await _unitOfWork.DailyReportMedications.GetOneAsync(x => x.IsActive && x.Id == id);
+            return View("AddEditMedication", DailyReportMedicationViewModel.Create(medication));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddEditMedication(DailyReportMedicationViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Id == null)
+                {
+                    var medication = DailyReportMedication.Create(
+                        model.PersonId, 
+                        model.ClassId, 
+                        model.OrganizationId, 
+                        model.Date, 
+                        model.Medication, 
+                        model.Time, 
+                        model.Amount, 
+                        model.Type, 
+                        _userId);
+                    await _unitOfWork.DailyReportMedications.Insert(medication);
+                }
+                else
+                {
+                    var medication = await _unitOfWork.DailyReportMedications.GetOneAsync(x => x.IsActive && x.Id == model.Id);
+                    medication.Update(model);
+                    _unitOfWork.DailyReportMedications.Update(medication);
+                }
+                var result = await _unitOfWork.SaveAsync();
+                if (result.Succeeded)
+                {
+                    return Json(new JsonMessage { Color = "#ff6849", Message = "Medication saved", Header = "Success", Icon = "success", AdditionalData = model });
+
+                }
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Save Error", Header = "Error", Icon = "error", AdditionalData = model });
+
+            }
+            else
+            {
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Model Error", Header = "Error", Icon = "error", AdditionalData = model });
+            }
+        }
+
+        [HttpDelete]
+        public async Task<JsonResult> DeleteMedication(Guid id)
+        {
+            var medication = await _unitOfWork.DailyReportMedications.GetOneAsync(x => x.Id == id);
+            medication.IsActive = false;
+            _unitOfWork.DailyReportMedications.Update(medication);
+            var result = await _unitOfWork.SaveAsync();
+            if (result.Succeeded)
+            {
+                return Json(new JsonMessage { Color = "#ff6849", Message = "Medication deleted", Header = "Success", Icon = "success", AdditionalData = new { id = id } });
+            }
+            return Json(new JsonMessage { Color = "#ff6849", Message = "Error", Header = "Error", Icon = "error", AdditionalData = new { id = id } });
+
+        }
         #endregion
     }
 }
