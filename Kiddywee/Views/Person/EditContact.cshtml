@@ -67,3 +67,44 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $("#cancel-edit-contact").click(function () {
+            var url = $(this).data("url");
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function (data) {
+                    $("#contact").html(data);
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+
+        $("#edit-contact").click(function () {
+            var valdata = $("#EditContact :input").serialize();
+            $.ajax({
+                type: 'post',
+                url: "/Person/EditContact",
+                data: valdata,
+
+                success: function (data) {
+                    $("#contact").html(data);
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Contact saved',
+                        position: 'bottom-right',
+                        loaderBg: '#ff6849',
+                        icon: 'success',
+                        hideAfter: 10000
+                    });
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+    });
+</script>

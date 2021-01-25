@@ -20,6 +20,31 @@
         </div>
     </div>
     <div id="foods">
+        @foreach (var f in Model.Foods)
+        {
+            <div class="row food">
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <label>Food</label>
+                        <input class="form-control form-control-line food-string" type="text" value="@f.Food"/>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        @*<select id="select-@f.Id" class="form-control food-type" asp-for="@f" asp-items="Html.GetEnumSelectList<EnumFoodType>()"></select>*@
+                        @Html.DropDownListFor(x => f.FoodType, new SelectList(Html.GetEnumSelectList<EnumFoodType>(), "Value", "Text"), htmlAttributes: new { @class = "form-control food-type" })
+                        
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <input class="btn btn-danger waves-effect remove-button removable" value="Remove" />
+                    </div>
+                </div>
+            </div>
+        }
         <div id="food" class="row default-food food">
             <div class="col-md-7">
                 <div class="form-group">
@@ -59,6 +84,10 @@
 </div>
 <script>
     $(document).ready(function () {
+        ///Dailyreport
+        $(document).on("click", ".remove-button.removable", function () {
+            $(this).parent('.form-group').parent('.col-md-3').parent('.food').remove();
+        });
         $("#add-food").click( function () {
             var newFood = $("#food").clone().attr('id', '').removeClass('default-food');
             newFood.children('.col-md-3').children('.form-group').children('.remove-button').addClass('removable');

@@ -67,3 +67,36 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $("#cancel-create-contact").click(function () {
+            var url = $(this).data("url");
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function (data) {
+                    $("#contact").html(data);
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+
+        $("#create-contact").click(function () {
+            var valdata = $("#CreateContact :input").serialize();
+            $.ajax({
+                type: 'post',
+                url: "/Person/CreateContact",
+                data: valdata,
+
+                success: function (data) {
+                    $("#contact").html(data);
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+    });
+</script>

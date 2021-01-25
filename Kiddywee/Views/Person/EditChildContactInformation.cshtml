@@ -40,3 +40,67 @@
     }
 
 </div>
+<script>
+    $(document).ready(function () {
+
+        $(".edit-contact").click(function () {
+            //$(".preloader").fadeIn();
+            var url = $(this).data("url");
+            var contactId = $(this).data("contact-id")
+
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function (data) {
+                    //$(".preloader").fadeOut();
+                    $("#contact").html(data);
+
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+        $(".delete-contact").click(function () {
+            //$(".preloader").fadeIn();
+            var url = $(this).data("url");
+            var contactId = $(this).data("contact-id")
+
+            $.ajax({
+                type: 'delete',
+                url: url,
+                success: function (response) {
+                    //$(".preloader").fadeOut();
+
+                    $.toast({
+                        heading: response.header,
+                        text: response.message,
+                        position: 'bottom-right',
+                        loaderBg: response.color,
+                        icon: response.icon,
+                        hideAfter: 10000
+                    });
+                    $("#contact-" + contactId).remove();
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+
+        $("#add-contact").click(function () {
+            var url = $(this).data("url");
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function (data) {
+                    $("#contact").html(data);
+                    $(".preloader").fadeOut();
+                },
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        });
+    });
+</script>

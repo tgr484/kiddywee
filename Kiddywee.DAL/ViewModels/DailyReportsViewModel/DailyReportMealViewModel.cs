@@ -44,7 +44,7 @@ namespace Kiddywee.DAL.ViewModels.DailyReportsViewModel
 
         public static object Create(DailyReportMeal meal)
         {
-            var foods = meal.DailyReportFoods?.Select(x => new DailyReportFoodViewModel() { Food = x.Food, FoodType = x.FoodType, Id = x.Id }).ToList();
+            var foods = meal.DailyReportFoods?.Where(x => x.IsActive)?.Select(x => new DailyReportFoodViewModel() { Food = x.Food, FoodType = x.FoodType, Id = x.Id }).ToList();
 
             return new DailyReportMealViewModel()
             {

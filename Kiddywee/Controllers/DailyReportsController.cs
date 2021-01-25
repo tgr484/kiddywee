@@ -321,14 +321,17 @@ namespace Kiddywee.Controllers
                     meal.DailyReportFoods.ForEach(x => x.IsActive = false);
 
                     meal.Update(model);
+                    _unitOfWork.DailyReportMeals.Update(meal);
+
+                    var saveMealResult = await _unitOfWork.SaveAsync();
+
                     var foods = new List<DailyReportFood>();
                     foreach (var f in model.Foods)
                     {
                         var food = DailyReportFood.Create(f.Food, f.FoodType, meal.Id, _userId);
                         foods.Add(food);
                     }
-                    meal.DailyReportFoods.AddRange(foods);
-                    _unitOfWork.DailyReportMeals.Update(meal);
+                    await _unitOfWork.DailyReportFoods.InsertRange(foods);
                 }
                 var result = await _unitOfWork.SaveAsync();
                 if (result.Succeeded)

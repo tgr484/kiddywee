@@ -84,7 +84,7 @@ namespace Kiddywee.DAL.Models
                 OrganizationId = x.OrganizationId,
                 PersonId = x.PersonId,
                 MealType = x.MealType,
-                Foods = x.DailyReportFoods.Select(x => new DailyReportFoodViewModel() { Food = x.Food, FoodType = x.FoodType, Id = x.Id }).ToList()
+                Foods = x.DailyReportFoods.Where(x => x.IsActive).Select(x => new DailyReportFoodViewModel() { Food = x.Food, FoodType = x.FoodType, Id = x.Id }).ToList()
             }).ToList();
         }
     }
