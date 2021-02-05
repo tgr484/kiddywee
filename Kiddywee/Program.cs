@@ -21,12 +21,12 @@ namespace Kiddywee
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    //webBuilder.UseKestrel(options =>
-                    //{
-                    //    options.Limits.MaxRequestBodySize = long.MaxValue;
-                    //});
-                    //webBuilder.UseContentRoot(Directory.GetCurrentDirectory());
-                    //webBuilder.UseUrls("http://localhost:10002");
+                    webBuilder.UseKestrel(options =>
+                    {
+                        options.Limits.MaxRequestBodySize = long.MaxValue;
+                    });
+                    webBuilder.UseContentRoot(Directory.GetCurrentDirectory());
+                    webBuilder.UseUrls("http://localhost:10002");
                     webBuilder.UseStartup<Startup>();
                 });
     }

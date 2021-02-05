@@ -11,48 +11,53 @@
     @*<input type="date" />*@
     <!-- Nav tabs -->
     <div class="row">
+        @if (Model.ReportTypes.Any())
+        {
+            <div class="vtabs customvtab col-md-12">
+                <ul class="nav nav-tabs tabs-vertical" role="tablist">
+                    <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab-Notes" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Notes</span> </a> </li>
 
-        <div class="vtabs customvtab col-md-12">
-            <ul class="nav nav-tabs tabs-vertical" role="tablist">
-                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab-Notes" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Notes</span> </a> </li>
+                    @foreach (EnumDailyReportType i in Model.ReportTypes)
+                    {
+                        int type = Convert.ToInt32(i);
+                        <li class="nav-item"> <a class="nav-link select-report-category" data-toggle="tab" data-url="@Url.Action("GetReportsByType", "DailyReports", new {personId = Model.PersonId, classId = Model.ClassId, type = type})" href="#tab-@i.ToString()" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">@i.GetDisplayName()</span> </a> </li>
 
-                @foreach (EnumDailyReportType i in Model.ReportTypes)
-                {
-                    int type = Convert.ToInt32(i);
-                    <li class="nav-item"> <a class="nav-link select-report-category" data-toggle="tab" data-url="@Url.Action("GetReportsByType", "DailyReports", new {personId = Model.PersonId, classId = Model.ClassId, type = type})" href="#tab-@i.ToString()" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">@i.GetDisplayName()</span> </a> </li>
+                    }
 
-                }
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-Notes" role="tabpanel">
+                        @Html.Partial("PartialDailyReportNote", Model.Notes);
+                    </div>
 
-            </ul>
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div class="tab-pane active" id="tab-Notes" role="tabpanel">
-                    @Html.Partial("PartialDailyReportNote", Model.Notes);
-                </div>
-
-                @foreach (EnumDailyReportType i in Model.ReportTypes)
-                {
-                    <div class="tab-pane" id="tab-@i" role="tabpanel">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-center">
-                                <div class="spinner-border" role="status">
-                                    <span class="sr-only">Loading...</span>
+                    @foreach (EnumDailyReportType i in Model.ReportTypes)
+                    {
+                        <div class="tab-pane" id="tab-@i" role="tabpanel">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center">
+                                    <div class="spinner-border" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
-            </div>
-        </div>
+                    }
+                </div>
+            </div>      
+        }
+        else
+        {
+            <div><p>No reports selected for this class</p></div>
+        }
     </div>
 </div>
 
 <div class="modal-footer">
     <button type="button" class="btn btn-danger waves-effect close-modal " data-dismiss="modal">Close</button>
-    @*<button type="submit" class="btn btn-info waves-effect" form="Save">Save</button>*@
 </div>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function () {       
         $('.select-report-category').click(function () {
             var url = $(this).data("url");
             var id = $(this).attr('href');
@@ -81,7 +86,7 @@
                 $("#tab-Notes").html(data);
             });
         })
-        
+
         //End Note
 
         //Nap
@@ -105,7 +110,7 @@
                 $("#tab-NapsSleep").html(data);
             });
         })
-       
+
         //End Nap
 
         //Meal
@@ -154,9 +159,9 @@
                 $("#tab-Bathroom").html(data);
             });
         });
-        
 
-        
+
+
         //End bathroom
 
         //Medication
@@ -179,10 +184,7 @@
             $.get(url, function (data) {
                 $("#tab-Medication").html(data);
             });
-        })
-       
-
-        
+        });
         //End Medication
 
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Kiddywee.Controllers
@@ -37,8 +38,8 @@ namespace Kiddywee.Controllers
             //Костыль для дефолтной картинки
             if(profileImageData == null)
             {
-                string path = @"C:\Users\Fluffy\source\repos\Kiddywee\Kiddywee\wwwroot\assets\images\users\1.png";
-                profileImageData = System.IO.File.ReadAllBytes(path);
+
+                profileImageData = Convert.FromBase64String(Constants.DEFAULT_USER_LOGO);                
             }
             return File(profileImageData, "image/png");
         }

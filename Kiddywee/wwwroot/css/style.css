@@ -1517,6 +1517,8 @@ File: scss
     .topbar .profile-pic {
         width: 30px;
         border-radius: 100%;
+        border-color: #f2f7f8;
+        border-width: 1px;
     }
 
     .topbar .dropdown-menu {

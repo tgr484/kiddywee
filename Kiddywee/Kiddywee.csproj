@@ -2365,6 +2365,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Shared\EditorTemplates\" />
+    <Folder Include="wwwroot\assets\img\" />
   </ItemGroup>
 
 </Project>

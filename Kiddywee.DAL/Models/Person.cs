@@ -66,12 +66,14 @@ namespace Kiddywee.DAL.Models
         }
         public static Person Create(StaffCreateViewModel model, Guid organizationId)
         {
+           
+
             return new Person()
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 DateOfBirth = model.DateOfBirth,
-                OrganizationId = organizationId,
+                OrganizationId = organizationId,                
             };
         }
         public static List<PersonViewModel> Init(List<Person> people, Guid? classId)

@@ -7,14 +7,11 @@
                     <div class="u-img"><img src="@Url.Action("GetProfileImage", "File", new { personId = ViewBag.User.UserId})" alt="user"></div>
                     <div class="u-text">
                         <h4>@ViewBag.User.UserFullName</h4>
-                        <p class="text-muted">@ViewBag.User.UserEmail</p><a href="pages-profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a>
                     </div>
                 </div>
             </li>
             <li role="separator" class="divider"></li>
-            <li><a href="#"><i class="ti-user"></i> My Profile</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
+            <li><a href="#"><i class="ti-user"></i> My Profile</a></li>                    
             <li role="separator" class="divider"></li>
             <li><a asp-action="Logout" asp-controller="Account"><i class="fa fa-power-off"></i> Logout</a></li>
         </ul>

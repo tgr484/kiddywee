@@ -12,6 +12,7 @@ namespace Kiddywee.DAL.ViewModels.DailyReportsViewModel
         public DailyReportViewModel()
         {
             Notes = new List<DailyReportNoteViewModel>();
+            ReportTypes = new List<EnumDailyReportType>();
         }
 
         public Guid PersonId { get; set; }
@@ -31,7 +32,7 @@ namespace Kiddywee.DAL.ViewModels.DailyReportsViewModel
                 ClassId = classId,
                 PersonId = personId,
                 PersonFullName = personFullName,
-                ReportTypes = reportTypes?.Cast<EnumDailyReportType>().ToList(),
+                ReportTypes = reportTypes != null ? reportTypes.Cast<EnumDailyReportType>().ToList() : new List<EnumDailyReportType>(),
                 OrganizationId = organizationId,
                 Notes = notes
             };
