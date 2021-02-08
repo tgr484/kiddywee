@@ -12,11 +12,14 @@ namespace Kiddywee.DAL.ViewModels.AccountViewModels
         public string UserFullName { get; set; }
 
         public string UserId { get; set; }
-        public UserViewModel(ClaimsPrincipal user)
+
+        public string PersonId { get; set; }
+        public UserViewModel(ClaimsPrincipal user, string personIdClaimName)
         {
             UserEmail = user.FindFirst(ClaimTypes.Email)?.Value;
             UserFullName = user.FindFirst(ClaimTypes.Name)?.Value;
             UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            PersonId = user.FindFirst(personIdClaimName)?.Value;
         }
     }
 }

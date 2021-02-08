@@ -39,7 +39,7 @@ namespace Kiddywee.Controllers
             {
                 _organizationId = context.HttpContext.User.Identity.GetOrganizationId();
             }
-            ViewBag.User = new UserViewModel(context.HttpContext.User);
+            ViewBag.User = new UserViewModel(context.HttpContext.User, Constants.CLAIM_PEROSONID);
             SetClasses();
             base.OnActionExecuting(context);
         }

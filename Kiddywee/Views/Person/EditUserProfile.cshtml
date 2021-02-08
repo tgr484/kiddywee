@@ -1,0 +1,143 @@
+﻿@model PersonEditUserProfileViewModel
+@{
+    Layout = null;
+}
+<div class="modal-header">
+    <h4 class="modal-title" id="myLargeModalLabel">Edit profile</h4>
+    <button type="button" class="close close-modal" data-dismiss="modal" aria-hidden="true">×</button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-lg-4 col-xlg-3 col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <center class="m-t-30">
+                        <div class="el-element-overlay">
+                            <div class="el-card-item">
+                                <div class="el-overlay-1 img-circle " style="width:150px; height:150px">
+                                    <img id="image-profile" src="@Url.Action("GetProfileImage", "File", new { personId = Model.PersonId})" />
+                                    <div class="el-overlay">
+                                        <ul class="el-info">
+                                            <li><a class="btn default btn-outline" id="upload-logo"><i class="sl-icon-cloud-upload"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="card-title m-t-10" id="person-full-name">@Model.FullName</h4>
+                        <input id="file-input" type="file" name="profileLogo" accept="image/*" style="display:none" />
+                    </center>
+                </div>
+                <div>
+                    <hr>
+                </div>
+                <!--<div class="card-body">-->
+                    @*<small class="text-muted">Role</small>
+                        <h5 id="person-address">%TODO%</h5>*@
+                    <!--<small class="text-muted p-t-30 db">Date Of Birth</small>
+                    <h5 id="person-date">Model.NormalizedDateOfBirth</h5>
+                </div>-->
+            </div>
+        </div>
+        <div class="col-lg-8 col-xlg-9 col-md-7">
+            <div class="card">
+                <ul class="nav nav-tabs profile-tab" role="tablist">
+                    <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#profile" role="tab">General</a> </li>                    
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="profile" role="tabpanel">
+                        <div class="card-body">
+                            <div class="form-horizontal form-material" id="SavePerson">
+                                <div class="form-group">
+                                    <label class="col-md-12">Firstname</label>
+                                    <div class="col-md-12">
+                                        <input type="text" asp-for="FirstName" placeholder="Enter firstname..." class="form-control form-control-line">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">Lastname</label>
+                                    <div class="col-md-12">
+                                        <input type="text" asp-for="LastName" placeholder="Enter lastname..." class="form-control form-control-line">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">Date of Birth</label>
+                                    <div class="col-md-12">
+                                        <input type="date" asp-for="DateOfBirth" class="form-control form-control-line" placeholder="Enter date">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">Email</label>
+                                    <div class="col-md-12">
+                                        <input type="email" asp-for="Email" class="form-control form-control-line" placeholder="Enter email">
+                                    </div>
+                                </div>
+
+                                <input type="hidden" asp-for="PersonId" />
+                                <div class="text-right">
+                                    <button id="save-person-submit" class="btn btn-info waves-effect">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger waves-effect close-modal" data-dismiss="modal">Close</button>
+</div>
+<script>
+    $(document).ready(function () {
+        $(function () {
+            $('#upload-logo').click(function (e) {
+                $('#file-input').click();
+            });
+            $('#file-input').change(sendFile);
+        });
+
+
+        function sendFile() {
+            var formData = new FormData();
+            formData.append('file', $('#file-input')[0].files[0]);
+            $.ajax({
+                type: 'post',
+                url: 'File/UploadProfileImage?personId=@Model.PersonId',
+                data: formData,
+                success: function (response) {
+                    $("#image-profile").attr("src", response.additionalData.src);
+                },
+                processData: false,
+                contentType: false,
+                error: function () {
+                    alert("Whoops something went wrong!");
+                }
+            });
+        }
+
+        //$(function () {
+        //    $("#save-person-submit").click(function (e) {
+        //        var valdata = $("#SavePerson :input").serialize();
+        //        $.ajax({
+        //            url: "/Person/EditStaffGeneralInformation",
+        //            type: "POST",
+        //            dataType: 'json',
+        //            data: valdata
+        //        }).done(function (response) {
+        //            $.toast({
+        //                heading: response.header,
+        //                text: response.message,
+        //                position: 'bottom-right',
+        //                loaderBg: response.color,
+        //                icon: response.icon,
+        //                hideAfter: 10000
+        //            });
+        //            $("#person-full-name").html(response.additionalData.fullName);
+        //            //$("#person-address").html(response.additionalData.address);
+        //            $("#person-date").html(response.additionalData.normalizedDateOfBirth);
+        //        });
+        //    });
+        //})
+    });
+</script>

@@ -1,17 +1,17 @@
 ﻿<li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="@Url.Action("GetProfileImage", "File", new { personId = ViewBag.User.UserId})" alt="user" class="profile-pic" /></a>
+    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="@Url.Action("GetProfileImage", "File", new { personId = ViewBag.User.PersonId})" alt="user" class="profile-pic" /></a>
     <div class="dropdown-menu dropdown-menu-right animated flipInY">
         <ul class="dropdown-user">
             <li>
                 <div class="dw-user-box">
-                    <div class="u-img"><img src="@Url.Action("GetProfileImage", "File", new { personId = ViewBag.User.UserId})" alt="user"></div>
+                    <div class="u-img"><img src="@Url.Action("GetProfileImage", "File", new { personId = ViewBag.User.PersonId})" alt="user"></div>
                     <div class="u-text">
                         <h4>@ViewBag.User.UserFullName</h4>
                     </div>
                 </div>
             </li>
             <li role="separator" class="divider"></li>
-            <li><a href="#"><i class="ti-user"></i> My Profile</a></li>                    
+            <li><a id="user-profile" data-url="@Url.Action("EditUserProfile","Person", new { personId = ViewBag.User.PersonId} )"><i class="ti-user"></i> My Profile</a></li>                    
             <li role="separator" class="divider"></li>
             <li><a asp-action="Logout" asp-controller="Account"><i class="fa fa-power-off"></i> Logout</a></li>
         </ul>

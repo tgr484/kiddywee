@@ -30,9 +30,12 @@ namespace Kiddywee.Core
                 var person = await _ctx.People
                     .FirstAsync(p => p.Id == user.PersonId);
 
-                identity.AddClaim(new Claim(Constants.CLAIM_ORGANIZATIONID, person.OrganizationId.ToString()));  
+                identity.AddClaim(new Claim(Constants.CLAIM_ORGANIZATIONID, person.OrganizationId.ToString()));
+                identity.AddClaim(new Claim(Constants.CLAIM_PEROSONID, person.Id.ToString()));
+
             }
 
+            identity.AddClaim(new Claim(Constants.CLAIM_PEROSONID, user.PersonId.ToString()));
 
             return identity;
         }

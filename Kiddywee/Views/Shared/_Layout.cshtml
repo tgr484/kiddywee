@@ -80,6 +80,11 @@
             $(".modal").hide();
         });
 
+        $(document).on("click", "#user-profile", function () {
+            var url = $(this).data("url");
+            loadModal(url);
+        });
+
         initClassPartialViewLogic();
         switch ("@ViewBag.Page") {
             case "Attendance": initIndexPage(); break;

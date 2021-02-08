@@ -461,6 +461,15 @@ namespace Kiddywee.Controllers
         }
         #endregion
 
+        [HttpGet]
+        public async Task<IActionResult> EditUserProfile(Guid personId)
+        {
+            var person = await _unitOfWork.People.GetOneAsync(x => x.Id == personId);
+            var user = await _unitOfWork.Users.GetOneAsync(x => x.PersonId == personId);
+            
+            return View(PersonEditUserProfileViewModel.Init(person, user));
+        }
+
         [HttpDelete]
         public async Task<JsonResult> DeleteContact(Guid contactId)
         {
