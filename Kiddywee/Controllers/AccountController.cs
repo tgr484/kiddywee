@@ -10,6 +10,8 @@ using Kiddywee.DAL.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Kiddywee.BLL;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Kiddywee.Controllers
 {
@@ -70,9 +72,7 @@ namespace Kiddywee.Controllers
 
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                //EmailService emailService = new EmailService();
-                //await emailService.SendEmailAsync(model.Email, "Reset Password",
-                //    $"Для сброса пароля пройдите по ссылке: <a href='{callbackUrl}'>link</a>");
+                await _emailSender.SendEmailAsync(model.Email, "Reset Password", $"To reset your password, follow the link: <a href='{callbackUrl}'>link</a>");
                 return View("ForgotPasswordConfirmation");
             }
             return View(model);
@@ -159,7 +159,20 @@ namespace Kiddywee.Controllers
                     {
                         await _unitOfWork.People.Insert(person);
                         await _unitOfWork.SaveAsync();
-                        return RedirectToAction(nameof(Login));
+
+                        // генерация токена для пользователя
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(applicationUser);
+                        var callbackUrl = Url.Action(
+                            "ConfirmEmail",
+                            "Account",
+                            new { userId = applicationUser.Id, code = code },
+                            protocol: HttpContext.Request.Scheme);
+                        
+                        await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+                            $"Confirm your registration by clicking on the link: < a href='{callbackUrl}'>link</a>");
+
+                        return Content("To complete the registration, check your email address and follow the link provided in the email");
+                        //return RedirectToAction(nameof(Login));
                     }
                     AddErrors(user);
                 }
@@ -170,6 +183,27 @@ namespace Kiddywee.Controllers
             }
             return View(model);
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+                return RedirectToAction("Index", "Home");
+            else
+                return View("Error");
+        }
+
         public IActionResult ForgotPassword()
         {
             return View();
