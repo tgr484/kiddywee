@@ -8,7 +8,7 @@
 </div>
 <div class="modal-body">
     <h4 class="card-title">Daily report for @Model.PersonFullName by </h4>
-    @*<input type="date" />*@
+    <input type="text" class="form-control" id="report-datepicker" placeholder="mm/dd/yyyy">
     <!-- Nav tabs -->
     <div class="row">
         @if (Model.ReportTypes.Any())
@@ -44,7 +44,7 @@
                         </div>
                     }
                 </div>
-            </div>      
+            </div>
         }
         else
         {
@@ -57,12 +57,46 @@
     <button type="button" class="btn btn-danger waves-effect close-modal " data-dismiss="modal">Close</button>
 </div>
 <script>
-    $(document).ready(function () {       
+    $(document).ready(function () {
+        //Date for report
+        var wDate = new Date();
+        //url
+        var wUrl = "";
+        //id
+        var wId = "";
+
+        var wIsDateChanged = false;
+        console.log($(".select-report-category").first());
+        var today = new Date(wDate.getFullYear(), wDate.getMonth(), wDate.getDate());
+        $('#report-datepicker').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            endDate: today,
+        });
+
+        $('#report-datepicker').datepicker('setDate', today);
+        $('#report-datepicker').datepicker()
+            .on('changeDate', function (e) {
+                window.wIsDateChanged = true;
+                window.date = $('#report-datepicker').data('datepicker').getFormattedDate('yyyy-mm-dd');;
+                console.log(window.date);
+                $.get(window.wUrl + "&date=" + window.date, function (data) {
+                    $(window.wId).html(data);
+                });
+            });
+        
         $('.select-report-category').click(function () {
             var url = $(this).data("url");
             var id = $(this).attr('href');
+            if (window.wIsDateChanged) {
+                url += "&date=" + window.date;
+            }
+            
+            console.log(url);
             $.get(url, function (data) {
                 $(id).html(data);
+                window.wUrl = url;
+                window.wId = id;
             });
         });
         //Note
