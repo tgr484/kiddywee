@@ -58,12 +58,10 @@
         //url
         var wUrl = '';
         window.wUrl = $('.select-notes').data("url");
-        console.log(window.wUrl);
         //id
         var wId = "";
         window.wId = $('.select-notes').attr('href');
         var wIsDateChanged = false;
-        //console.log($(".select-report-category").first());
         var today = new Date(wDate.getFullYear(), wDate.getMonth(), wDate.getDate());
         $('#report-datepicker').datepicker({
             autoclose: true,
@@ -76,7 +74,6 @@
             .on('changeDate', function (e) {
                 window.wIsDateChanged = true;
                 window.date = $('#report-datepicker').data('datepicker').getFormattedDate('yyyy-mm-dd');
-                console.log(window.date);
                 $.get(window.wUrl + "&date=" + window.date, function (data) {
                     $(window.wId).html(data);
                 });
@@ -90,7 +87,6 @@
                 url += "&date=" + window.date;
             }
 
-            console.log(url);
             $.get(url, function (data) {
                 $(id).html(data);                
                 window.wId = id;
@@ -108,7 +104,6 @@
                 url += "&date=" + window.date;
             }
 
-            //console.log(url);
             $.get(url, function (data) {
                 $(id).html(data);
                 window.wId = id;

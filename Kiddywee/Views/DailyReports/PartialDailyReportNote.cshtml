@@ -30,7 +30,6 @@
 
         $(".delete-note").click(function () {
             var url = $(this).data("url");
-            console.log(url);
             $.ajax({
                 url: url,
                 type: "DELETE",
