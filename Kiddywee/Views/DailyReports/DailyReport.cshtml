@@ -11,27 +11,26 @@
     <input type="text" class="form-control" id="report-datepicker" placeholder="mm/dd/yyyy">
     <!-- Nav tabs -->
     <div class="row">
-        @if (Model.ReportTypes.Any())
-        {
-            <div class="vtabs customvtab col-md-12">
-                <ul class="nav nav-tabs tabs-vertical" role="tablist">
-                    <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tab-Notes" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Notes</span> </a> </li>
-
-                    @foreach (EnumDailyReportType i in Model.ReportTypes)
+        <div class="vtabs customvtab col-md-12">
+            <ul class="nav nav-tabs tabs-vertical" role="tablist">
+                <li class="nav-item"> <a class="nav-link select-notes active" data-toggle="tab" data-url="@Url.Action("GetNotes", "DailyReports", new { personId = Model.PersonId, classId = Model.ClassId })" href="#tab-Notes" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Notes</span> </a> </li>
+                @if (Model.ReportTypes.Any())
+                {
+                    foreach (EnumDailyReportType i in Model.ReportTypes)
                     {
                         int type = Convert.ToInt32(i);
-                        <li class="nav-item"> <a class="nav-link select-report-category" data-toggle="tab" data-url="@Url.Action("GetReportsByType", "DailyReports", new {personId = Model.PersonId, classId = Model.ClassId, type = type})" href="#tab-@i.ToString()" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">@i.GetDisplayName()</span> </a> </li>
-
+                        <li class="nav-item"> <a class="nav-link select-report-category" data-toggle="tab" data-url="@Url.Action("GetReportsByType", "DailyReports", new { personId = Model.PersonId, classId = Model.ClassId, type = type })" href="#tab-@i.ToString()" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">@i.GetDisplayName()</span> </a> </li>
                     }
-
-                </ul>
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div class="tab-pane active" id="tab-Notes" role="tabpanel">
-                        @Html.Partial("PartialDailyReportNote", Model.Notes);
-                    </div>
-
-                    @foreach (EnumDailyReportType i in Model.ReportTypes)
+                }
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab-Notes" role="tabpanel">
+                    @Html.Partial("PartialDailyReportNote", Model.Notes);
+                </div>
+                @if (Model.ReportTypes.Any())
+                {
+                    foreach (EnumDailyReportType i in Model.ReportTypes)
                     {
                         <div class="tab-pane" id="tab-@i" role="tabpanel">
                             <div class="card-body">
@@ -43,13 +42,9 @@
                             </div>
                         </div>
                     }
-                </div>
+                }
             </div>
-        }
-        else
-        {
-            <div><p>No reports selected for this class</p></div>
-        }
+        </div>        
     </div>
 </div>
 
@@ -61,12 +56,14 @@
         //Date for report
         var wDate = new Date();
         //url
-        var wUrl = "";
+        var wUrl = '';
+        window.wUrl = $('.select-notes').data("url");
+        console.log(window.wUrl);
         //id
         var wId = "";
-
+        window.wId = $('.select-notes').attr('href');
         var wIsDateChanged = false;
-        console.log($(".select-report-category").first());
+        //console.log($(".select-report-category").first());
         var today = new Date(wDate.getFullYear(), wDate.getMonth(), wDate.getDate());
         $('#report-datepicker').datepicker({
             autoclose: true,
@@ -78,34 +75,55 @@
         $('#report-datepicker').datepicker()
             .on('changeDate', function (e) {
                 window.wIsDateChanged = true;
-                window.date = $('#report-datepicker').data('datepicker').getFormattedDate('yyyy-mm-dd');;
+                window.date = $('#report-datepicker').data('datepicker').getFormattedDate('yyyy-mm-dd');
                 console.log(window.date);
                 $.get(window.wUrl + "&date=" + window.date, function (data) {
                     $(window.wId).html(data);
                 });
             });
-        
+
         $('.select-report-category').click(function () {
             var url = $(this).data("url");
+            window.wUrl = url;
             var id = $(this).attr('href');
             if (window.wIsDateChanged) {
                 url += "&date=" + window.date;
             }
-            
+
             console.log(url);
             $.get(url, function (data) {
-                $(id).html(data);
-                window.wUrl = url;
+                $(id).html(data);                
                 window.wId = id;
             });
         });
+
+
         //Note
+        $('.select-notes').click(function () {
+            var url = $(this).data("url");
+            window.wUrl = url;
+
+            var id = $(this).attr('href');
+            if (window.wIsDateChanged) {
+                url += "&date=" + window.date;
+            }
+
+            //console.log(url);
+            $.get(url, function (data) {
+                $(id).html(data);
+                window.wId = id;
+            });
+        });
+
         $(document).on("click", "#add-note", function () {
             var personId = "@Model.PersonId";
             var classId = "@Model.ClassId";
             var organizationId = "@Model.OrganizationId";
             var url = $(this).data("url");
             url += '?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
+            if (window.wIsDateChanged) {
+                url += "&date=" + window.date;
+            }
             $.get(url, function (data) {
                 $("#tab-Notes").html(data);
             });
@@ -130,6 +148,9 @@
             var organizationId = "@Model.OrganizationId";
             var url = $(this).data("url");
             url += '?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
+            if (window.wIsDateChanged) {
+                url += "&date=" + window.date;
+            }
             $.get(url, function (data) {
                 $("#tab-NapsSleep").html(data);
             });
@@ -140,6 +161,9 @@
             var organizationId = "@Model.OrganizationId";
             var url = $(this).data("url");
             url += '?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
+            if (window.wIsDateChanged) {
+                url += "&date=" + window.date;
+            }
             $.get(url, function (data) {
                 $("#tab-NapsSleep").html(data);
             });
@@ -154,6 +178,9 @@
             var organizationId = "@Model.OrganizationId";
             var url = $(this).data("url");
             url += '?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
+            if (window.wIsDateChanged) {
+                url += "&date=" + window.date;
+            }
             $.get(url, function (data) {
                 $("#tab-Meals").html(data);
             });
@@ -164,6 +191,9 @@
             var organizationId = "@Model.OrganizationId";
             var url = $(this).data("url");
             url += '?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
+            if (window.wIsDateChanged) {
+                url += "&date=" + window.date;
+            }
             $.get(url, function (data) {
                 $("#tab-Meals").html(data);
             });
@@ -179,6 +209,9 @@
             var organizationId = "@Model.OrganizationId";
             var url = $(this).data("url");
             url += '?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
+            if (window.wIsDateChanged) {
+                url += "&date=" + window.date;
+            }
             $.get(url, function (data) {
                 $("#tab-Bathroom").html(data);
             });
@@ -189,6 +222,9 @@
             var organizationId = "@Model.OrganizationId";
             var url = $(this).data("url");
             url += '?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
+            if (window.wIsDateChanged) {
+                url += "&date=" + window.date;
+            }
             $.get(url, function (data) {
                 $("#tab-Bathroom").html(data);
             });
@@ -205,6 +241,9 @@
             var organizationId = "@Model.OrganizationId";
             var url = $(this).data("url");
             url += '?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
+            if (window.wIsDateChanged) {
+                url += "&date=" + window.date;
+            }
             $.get(url, function (data) {
                 $("#tab-Medication").html(data);
             });
@@ -215,6 +254,9 @@
             var organizationId = "@Model.OrganizationId";
             var url = $(this).data("url");
             url += '?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
+            if (window.wIsDateChanged) {
+                url += "&date=" + window.date;
+            }
             $.get(url, function (data) {
                 $("#tab-Medication").html(data);
             });

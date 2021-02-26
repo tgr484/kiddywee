@@ -50,10 +50,14 @@
         });
         $("#save-bathroom").click(function () {
             var url = $(this).data("url");
+            var date = $('#report-datepicker').data('datepicker').getFormattedDate('yyyy-mm-dd');
+
             var valdata = {};
             $('#add-bathroom-form').find('input').each(function () {
                 valdata[this.name] = $(this).val();
             });
+            valdata["date"] = date;
+
             $.ajax({
                 url: "/DailyReports/AddEditBathroom",
                 type: "POST",
@@ -71,7 +75,7 @@
                 var personId = "@Model.PersonId";
                 var classId = "@Model.ClassId";
                 var organizationId = "@Model.OrganizationId";
-                var url = '/DailyReports/GetBathrooms?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
+                var url = '/DailyReports/GetBathrooms?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId + '&date=' + date;
 
                 $.get(url, function (data) {
                     $("#tab-Bathroom").html(data);

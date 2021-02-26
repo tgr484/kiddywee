@@ -94,6 +94,8 @@
             newFood.appendTo("#foods");
         });
         $("#save-meal").click(function () {
+            var date = $('#report-datepicker').data('datepicker').getFormattedDate('yyyy-mm-dd');
+
             var valdata = {};
             $('#add-meal-form').find('input').each(function () {
                 valdata[this.name] = $(this).val();
@@ -109,7 +111,7 @@
                     FoodType: type
                 });
             });
-            //console.log(valdata);
+            valdata["date"] = date;
             $.ajax({
                 url: "/DailyReports/AddEditMeal",
                 type: "POST",
@@ -127,7 +129,7 @@
                 var personId = "@Model.PersonId";
                 var classId = "@Model.ClassId";
                 var organizationId = "@Model.OrganizationId";
-                var url = '/DailyReports/GetMeals?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
+                var url = '/DailyReports/GetMeals?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId + '&date=' + date;
 
                 $.get(url, function (data) {
                     $("#tab-Meals").html(data);

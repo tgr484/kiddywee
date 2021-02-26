@@ -47,8 +47,12 @@ namespace Kiddywee.Controllers
 
         public async Task<IActionResult> GetReportsByType(Guid personId, Guid classId, int type, DateTime? date = null)
         {
-            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
-            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
+            if (date.HasValue == false)
+            {
+                date = DateTime.UtcNow;
+            }
+            var startDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day);
+            var endDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, 23, 59, 59);
             switch (type)
             {
                 case (int)EnumDailyReportType.NapsSleep: 
@@ -103,8 +107,13 @@ namespace Kiddywee.Controllers
         [HttpGet]
         public async Task<IActionResult> GetNaps(Guid personId, Guid classId, Guid organizationId, DateTime? date)
         {
-            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
-            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
+            if (date.HasValue == false)
+            {
+                date = DateTime.UtcNow;
+            }
+
+            var startDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day);
+            var endDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, 23, 59, 59);
             
             var naps = await _unitOfWork.DailyReportNaps.GetAsync(x => x.IsActive && x.OrganizationId == _organizationId
                                                                                && x.ClassId == classId
@@ -119,9 +128,12 @@ namespace Kiddywee.Controllers
         [HttpGet]
         public async Task<IActionResult> AddEditNap(Guid personId, Guid classId, Guid organizationId, DateTime? date = null)
         {
-            //var date2 = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+            if (date.HasValue == false)
+            {
+                date = DateTime.UtcNow;
+            }
 
-            var model = DailyReportNap.Init(personId, classId, organizationId, DateTime.UtcNow);
+            var model = DailyReportNap.Init(personId, classId, organizationId, date.Value);
             return View(model);
         }
 
@@ -184,10 +196,16 @@ namespace Kiddywee.Controllers
         #region Notes
 
         [HttpGet]
-        public async Task<IActionResult> GetNotes(Guid personId, Guid classId, Guid organizationId, DateTime? date)
+        public async Task<IActionResult> GetNotes(Guid personId, Guid classId, Guid organizationId, DateTime? date = null)
         {
-            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
-            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
+            if(date.HasValue == false)
+            {
+                date = DateTime.UtcNow;
+            }
+
+            var startDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day);
+            var endDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, 23, 59, 59);
+            
             var dailyReports = await _unitOfWork.DailyReportNotes.GetAsync(x => x.IsActive && x.OrganizationId == _organizationId
                                                                                && x.ClassId == classId
                                                                                && x.PersonId == personId
@@ -202,9 +220,12 @@ namespace Kiddywee.Controllers
         [HttpGet]
         public async Task<IActionResult> AddEditNote(Guid personId, Guid classId, Guid organizationId, DateTime? date = null)
         {
-            //var date2 = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+            if (date.HasValue == false)
+            {
+                date = DateTime.UtcNow;
+            }
 
-            var model = DailyReportNote.Init(personId, classId, organizationId, DateTime.UtcNow);
+            var model = DailyReportNote.Init(personId, classId, organizationId, date.Value);
             return View(model);
         }
 
@@ -267,8 +288,12 @@ namespace Kiddywee.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMeals(Guid personId, Guid classId, Guid organizationId, DateTime? date)
         {
-            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
-            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
+            if (date.HasValue == false)
+            {
+                date = DateTime.UtcNow;
+            }
+            var startDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day);
+            var endDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, 23, 59, 59);
             var meals = await _unitOfWork.DailyReportMeals.GetAsync(x => x.IsActive && x.OrganizationId == _organizationId
                                                                                && x.ClassId == classId
                                                                                && x.PersonId == personId
@@ -283,7 +308,11 @@ namespace Kiddywee.Controllers
         [HttpGet]
         public async Task<IActionResult> AddEditMeal(Guid personId, Guid classId, Guid organizationId, DateTime? date = null)
         {
-            var model = DailyReportMeal.Init(personId, classId, organizationId, DateTime.UtcNow);
+            if (date.HasValue == false)
+            {
+                date = DateTime.UtcNow;
+            }
+            var model = DailyReportMeal.Init(personId, classId, organizationId, date.Value);
             return View(model);
         }
 
@@ -369,8 +398,12 @@ namespace Kiddywee.Controllers
         [HttpGet]
         public async Task<IActionResult> GetBathrooms(Guid personId, Guid classId, Guid organizationId, DateTime? date)
         {
-            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
-            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
+            if (date.HasValue == false)
+            {
+                date = DateTime.UtcNow;
+            }
+            var startDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day);
+            var endDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, 23, 59, 59);
 
             var baths = await _unitOfWork.DailyReportBathrooms.GetAsync(x => x.IsActive && x.OrganizationId == _organizationId
                                                                                && x.ClassId == classId
@@ -385,9 +418,12 @@ namespace Kiddywee.Controllers
         [HttpGet]
         public async Task<IActionResult> AddEditBathroom(Guid personId, Guid classId, Guid organizationId, DateTime? date = null)
         {
-            //var date2 = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+            if (date.HasValue == false)
+            {
+                date = DateTime.UtcNow;
+            }
 
-            var model = DailyReportBathroom.Init(personId, classId, organizationId, DateTime.UtcNow);
+            var model = DailyReportBathroom.Init(personId, classId, organizationId, date.Value);
             return View(model);
         }
 
@@ -452,8 +488,12 @@ namespace Kiddywee.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMedications(Guid personId, Guid classId, Guid organizationId, DateTime? date)
         {
-            var startDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
-            var endDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59);
+            if (date.HasValue == false)
+            {
+                date = DateTime.UtcNow;
+            }
+            var startDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day);
+            var endDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, 23, 59, 59);
             var medications = await _unitOfWork.DailyReportMedications.GetAsync(x => x.IsActive && x.OrganizationId == _organizationId
                                                                                && x.ClassId == classId
                                                                                && x.PersonId == personId
@@ -467,9 +507,12 @@ namespace Kiddywee.Controllers
         [HttpGet]
         public async Task<IActionResult> AddEditMedication(Guid personId, Guid classId, Guid organizationId, DateTime? date = null)
         {
-            //var date2 = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
+            if (date.HasValue == false)
+            {
+                date = DateTime.UtcNow;
+            }
 
-            var model = DailyReportMedication.Init(personId, classId, organizationId, DateTime.UtcNow);
+            var model = DailyReportMedication.Init(personId, classId, organizationId, date.Value);
             return View(model);
         }
 

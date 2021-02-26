@@ -55,10 +55,14 @@
         });
         $("#save-nap").click(function () {
             var url = $(this).data("url");
+            var date = $('#report-datepicker').data('datepicker').getFormattedDate('yyyy-mm-dd');
+
             var valdata = {};
             $('#add-nap-form').find('input').each(function () {
                 valdata[this.name] = $(this).val();
             });
+            valdata["date"] = date;
+
             $.ajax({
                 url: "/DailyReports/AddEditNap",
                 type: "POST",
@@ -76,7 +80,7 @@
                 var personId = "@Model.PersonId";
                 var classId = "@Model.ClassId";
                 var organizationId = "@Model.OrganizationId";
-                var url = '/DailyReports/GetNaps?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId;
+                var url = '/DailyReports/GetNaps?personId=' + personId + '&classId=' + classId + '&organizationId=' + organizationId + '&date=' + date;
 
                 $.get(url, function (data) {
                     $("#tab-NapsSleep").html(data);
